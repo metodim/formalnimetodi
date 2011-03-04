@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp codebase="$$codebase" href="$$name" spec="6.0+">
+	<security>
+		<all-permissions/>
+	</security> 
+	<information>
+      <title>CCS Application</title>
+      <vendor>Institute of Informatics</vendor>
+      <homepage href="http://ii.edu.mk"/>
+      <description>Reactive Systems</description>
+      <description kind="short">CCS Application</description>
+	</information>
+	<resources>
+    	<java version="1.6+"/>
+    	<jar href="joda-time-1.6.2.jar"/>    
+    	<jar href="miglayout-swing-3.7.4-swing.jar"/>
+    	<jar href="swing-core-1.6.2.jar"/>
+    	<jar href="log4j-1.2.16.jar"/>
+	</resources>
+	<application-desc main-class="ii.edu.mk.gui.StartClient" />
+</jnlp>
