@@ -1,38 +1,70 @@
 grammar Ccs;
 
 options {
-language=Java;
+	output=AST;
+	language=Java;
+	ASTLabelType=CommonTree;
+}
+
+tokens {
+	DEF;
+	ADD;
+	SYNC;
+//	RESTRICT;
+//	RENAME;
+//	PROCESS;
+	TRANSITION;
 }
 
 @header {
-package mk.edu.ii.parser;
+	package ii.edu.mk.parser;
 }
 
 process_def
-	: process_var '=' process
+	: PROCESS_VAR '=' process -> ^(DEF PROCESS_VAR process)
+	;
+	
+process
+	: (PROCESS_VAR process
+	| parentheses
+	| transition
+	| renaming
+	| restriction
+	| WS)
+//	(  addition | synchronization )*	
 	;
 
-process 
-	: process_var
-	| '(' process ')'
-	| transition_var '.' process
-	| add_process
-	| sync_process
-	| '[' transition_var '/' transition_var ']'
-	| '\{' transition_var '}'	
+parentheses
+	: 	'(' process ')'	
 	;
 	
-add_process
-	: 	'+' process	
+transition
+	: 	TRANSITION_VAR '.' process -> ^(TRANSITION TRANSITION_VAR process)
+	//| 	PROCESS_VAR '.' process -> ^(TRANSITION PROCESS_VAR process)
 	;
-	
-sync_process
-	:	'|' process
+
+renaming
+	: 	'[' (TRANSITION_VAR '/' TRANSITION_VAR) (',' TRANSITION_VAR '/' TRANSITION_VAR)* ']'
 	;
-	
-process_var
-	: ('A'..'Z') ('A'..'Z' |'0'..'9' )*
+
+restriction
+	:	'\{' (TRANSITION_VAR) (',' TRANSITION_VAR)* '}'
 	;
-transition_var
-	: ('a'..'z') ('a'..'z' |'0'..'9' )*
+
+//addition
+//	: 	'+' process 
+//	;
+//
+//synchronization
+//	:	'|' process
+//	;	
+
+
+TRANSITION_VAR
+	: ('a'..'z'|'_')('a'..'z'|'0'..'9'|'_')*
+	;
+PROCESS_VAR  	
+	:('A'..'Z'|'_')('A'..'Z'|'0'..'9'|'_')*
+	;
+WS  	:   ( ' ' | '\t' | '\r' | '\n' )+ { $channel = HIDDEN; }
 	;
