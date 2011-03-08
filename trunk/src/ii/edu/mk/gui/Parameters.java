@@ -14,7 +14,7 @@ public class Parameters<T> {
 	public static final Parameters<String> APP_NAME =  new Parameters<String>("CCS");
 	public static final Parameters<Dimension> SCREEN_RESOLUTION = new Parameters<Dimension>(new Dimension(800, 600));
 	
-	private T value;
+	private T value; 
 	private Parameters(T value) {
 		setValue(value);
 	}

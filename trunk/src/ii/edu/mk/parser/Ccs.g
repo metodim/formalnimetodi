@@ -2,7 +2,6 @@ grammar Ccs;
 
 options {
 	output=AST;
-	language=Java;
 	ASTLabelType=CommonTree;
 }
 
@@ -10,10 +9,11 @@ tokens {
 	DEF;
 	ADD;
 	SYNC;
-//	RESTRICT;
-//	RENAME;
-//	PROCESS;
+	RESTRICT;
+	RENAME;
+	PROCESS;
 	TRANSITION;
+	ZAGRADI;
 }
 
 @header {
@@ -21,43 +21,45 @@ tokens {
 }
 
 process_def
-	: PROCESS_VAR '=' process -> ^(DEF PROCESS_VAR process)
+	: var=PROCESS_VAR '=' proc=process -> ^(DEF $var $proc)
 	;
 	
 process
-	: (PROCESS_VAR process
-	| parentheses
-	| transition
-	| renaming
-	| restriction
+	: 
+	( proc=PROCESS_VAR r=process -> ^($r $proc)
+	| trans=TRANSITION_VAR r=process -> ^($r $trans)
+	| parentheses r=process -> ^(ZAGRADI $r)
+	| transition r=process -> ^(TRANSITION $r)
+	| renaming r=process -> ^(RENAME $r)
+	| restriction r=process -> ^(RESTRICT $r)
 	| WS)
-//	(  addition | synchronization )*	
+	//(  addition -> ^(ADD addition)
+	//| synchronization -> ^(SYNC synchronization))*	
 	;
 
 parentheses
-	: 	'(' process ')'	
+	: 	'(' process ')' ->  process
 	;
 	
 transition
-	: 	TRANSITION_VAR '.' process -> ^(TRANSITION TRANSITION_VAR process)
-	//| 	PROCESS_VAR '.' process -> ^(TRANSITION PROCESS_VAR process)
+	: 	'.' -> ^()
 	;
 
 renaming
-	: 	'[' (TRANSITION_VAR '/' TRANSITION_VAR) (',' TRANSITION_VAR '/' TRANSITION_VAR)* ']'
+	: 	'[' rens+=(TRANSITION_VAR '/' TRANSITION_VAR) (',' rens+=(TRANSITION_VAR '/' TRANSITION_VAR))* ']' -> ^($rens)
 	;
 
 restriction
-	:	'\{' (TRANSITION_VAR) (',' TRANSITION_VAR)* '}'
+	:	'\{' rests+=TRANSITION_VAR (',' rests+=TRANSITION_VAR)* '}' {System.out.println("cmd="+$rests.toString());} -> ^($rests)
 	;
 
-//addition
-//	: 	'+' process 
-//	;
-//
-//synchronization
-//	:	'|' process
-//	;	
+addition
+	: 	'+' process -> process
+	;
+
+synchronization
+	:	'|' process -> process
+	;	
 
 
 TRANSITION_VAR
