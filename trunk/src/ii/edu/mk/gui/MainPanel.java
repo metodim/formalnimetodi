@@ -51,13 +51,15 @@ public class MainPanel extends JXPanel{
 		JLabel parseStatusMessageLabel = new JLabel("Status Message");
 		JLabel expressionTokensLabel = new JLabel("Expression Tokens:");
 		
-		JTextArea testExpressionArea = new JTextArea(500,50);
-		testExpressionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JTextArea testExpressionArea = new JTextArea();
+		JScrollPane testExpressionScrollPane = new JScrollPane(testExpressionArea, 20, 30);
+		testExpressionScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		testExpressionArea.setEnabled(true);
 		testExpressionArea.setEditable(true);
 
-		JTextArea tokenExpressionArea = new JTextArea(500,50);
-		tokenExpressionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JTextArea tokenExpressionArea = new JTextArea();
+		JScrollPane tokenExpressionScrollPane = new JScrollPane(tokenExpressionArea, 20, 30);
+		tokenExpressionScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		tokenExpressionArea.setEnabled(true);
 		tokenExpressionArea.setEditable(false);
 		
@@ -65,12 +67,12 @@ public class MainPanel extends JXPanel{
 		parserButton.addActionListener(new ParserButtonAction(testExpressionArea, tokenExpressionArea, parseStatusMessageLabel));
 		
 		parserPanel.add(testExpresionLabel);
-		parserPanel.add(new JScrollPane(testExpressionArea, 20, 30), "wrap");
+		parserPanel.add(testExpressionScrollPane, "grow, wrap");
 		parserPanel.add(parseStatusLabel);
 		parserPanel.add(parseStatusMessageLabel, "split 2, al l");
 		parserPanel.add(parserButton, "al r, wrap");
 		parserPanel.add(expressionTokensLabel);
-		parserPanel.add(new JScrollPane(tokenExpressionArea, 20, 30));
+		parserPanel.add(tokenExpressionScrollPane, "grow");
 		return parserPanel;
 	}
 	
