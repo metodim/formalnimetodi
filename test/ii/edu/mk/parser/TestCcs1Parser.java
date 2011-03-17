@@ -24,9 +24,6 @@ public class TestCcs1Parser extends BaseTest{
 //		parser = getCcs1Parser(ts("(a.0 | _a.A)\\{a,#}"));parser.expr();
 //		assertThat(parser.getNumberOfSyntaxErrors(), comparesEqualTo(0));
 		
-//		parser = getCcs1Parser(ts("a.B + [a/b]"));parser.expr();
-//		assertThat(parser.getNumberOfSyntaxErrors(),is(0));
-		
 		parser = getCcs1Parser(ts("#.#.B + 0"));parser.expr();
 		assertThat(parser.getNumberOfSyntaxErrors(), comparesEqualTo(0));
 		
@@ -65,66 +62,77 @@ public class TestCcs1Parser extends BaseTest{
 			fail("Expression: " + expr + " should not be recognized by the lexer");
 		}catch (RecognitionException e) {}
 		
-//		try{
-//			String expr = "a.0 + _a.A)\\{a,b}";
-//			parser = getCcs1Parser(ts(expr));parser.expr();
-//			fail("Expression: " + expr + " should not be recognized by the lexer");
-//		}catch (RecognitionException e) {}
-//		
-//		try{
-//			String expr = "(a.0 | _a.A)\\{a,#}";
-//			parser = getCcs1Parser(ts(expr));parser.expr();
-//			fail("Expression: " + expr + " should not be recognized by the lexer");
-//		}catch (RecognitionException e) {}
-		
-//		try{
-//			String expr = "a.B + [a/b]";
-//			parser = getCcs1Parser(ts(expr));parser.expr();
-//			fail("Expression: " + expr + " should not be recognized by the lexer");
-//		}catch (RecognitionException e) {}
-		
 		try{
-			String expr = "#.#.B + (0";
-			parser = getCcs1Parser(ts(expr));parser.expr();
-			fail("Expression: " + expr + " should not be recognized by the lexer");
-		}catch (RecognitionException e) {}
-		
-		try{
-			String expr = "(a.B + aBb.B)/[a/b, b/a]";
+			String expr = "a.0 + _a.A)\\{a,b}";
 			parser = getCcs1Parser(ts(expr));parser.expr();
 			System.out.println(parser.getNumberOfSyntaxErrors());
 			fail("Expression: " + expr + " should not be recognized by the lexer");
 		}catch (RecognitionException e) {}
 		
 		try{
+			String expr = "(a.0 | _a.A)\\{a,#}";
+			parser = getCcs1Parser(ts(expr));parser.expr();
+			System.out.println(parser.toString());
+			fail("Expression: " + expr + " should not be recognized by the lexer");
+		}catch (RecognitionException e) {}
+		catch (RuntimeException e) {}
+		
+		try{
+			String expr = "a.B + [a/b]";
+			parser = getCcs1Parser(ts(expr));parser.expr();
+			fail("Expression: " + expr + " should not be recognized by the lexer");
+		}catch (RecognitionException e) {}//NoViableAlternative
+		
+		try{
+			String expr = "#.#.B + (0";
+			parser = getCcs1Parser(ts(expr));parser.expr();
+			fail("Expression: " + expr + " should not be recognized by the lexer");
+		}catch (RecognitionException e) {}//MismatchTokenException
+		
+		try{
+			String expr = "(a.B + aBb.B)/[a/b, b/a]";
+			parser = getCcs1Parser(ts(expr));parser.expr();
+			System.out.println(parser.getNumberOfSyntaxErrors());
+			fail("Expression: " + expr + " should not be recognized by the lexer");
+		}catch (RecognitionException e) {}//MismatchTokenException
+		
+		try{
 			String expr = "(a.B + asd(0) #.B)[a/#, b/a]";
 			parser = getCcs1Parser(ts(expr));parser.expr();
 			fail("Expression: " + expr + " should not be recognized by the lexer");
-		}catch (RecognitionException e) {}
+		}catch (RecognitionException e) {}//MismatchTokenException
 		
 		try{
 			String expr = "(a.b.A + __a.0)|B";
 			parser = getCcs1Parser(ts(expr));parser.expr();
 			fail("Expression: " + expr + " should not be recognized by the lexer");
-		}catch (RecognitionException e) {}
+		}
+		catch (RecognitionException e) {}//MismatchTokenException
+		catch (RuntimeException e) {}//MismatchTokenException
 		
 		try{
 			String expr = "(a_A.b.A + _a.0).B";
 			parser = getCcs1Parser(ts(expr));parser.expr();
 			fail("Expression: " + expr + " should not be recognized by the lexer");
-		}catch (RecognitionException e) {}
+		}catch (RecognitionException e) {}//MismatchTokenException
 		
 		try{
 			String expr = "(a.b.A + _a.0(())))+B";
 			parser = getCcs1Parser(ts(expr));parser.expr();
 			fail("Expression: " + expr + " should not be recognized by the lexer");
-		}catch (RecognitionException e) {}
+		}catch (RecognitionException e) {}//MismatchTokenException
 		
 		try{
-			String expr = "(0 ||| 0) + 0";
+			String expr = "(a.b.A + _a.0.(())))+B";
 			parser = getCcs1Parser(ts(expr));parser.expr();
 			fail("Expression: " + expr + " should not be recognized by the lexer");
-		}catch (RecognitionException e) {}
+		}catch (RecognitionException e) {}//NoViableAlternative
+		
+		try{
+			String expr = "(0 ||| 0) + 0"; 
+			parser = getCcs1Parser(ts(expr));parser.expr();
+			fail("Expression: " + expr + " should not be recognized by the lexer");
+		}catch (RecognitionException e) {}//NoViableAlternative
 		
 	}
 	
