@@ -1,9 +1,7 @@
 package ii.edu.mk.parser;
 
 
-import org.antlr.runtime.BaseRecognizer;
 import org.antlr.runtime.CharStream;
-import org.antlr.runtime.DFA;
 import org.antlr.runtime.EarlyExitException;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.MismatchedSetException;
@@ -36,6 +34,12 @@ public class Ccs1Lexer extends Lexer {
     public static final int TRANSITION_VAR=12;
     public static final int WS=13;
 
+    	@Override
+    	public void reportError(RecognitionException e) {
+    		throw new RuntimeException(e);
+    	}
+
+
     // delegates
     // delegators
 
@@ -54,8 +58,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__14;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:3:7: ( '=' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:3:9: '='
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:10:7: ( '=' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:10:9: '='
             {
             match('='); 
 
@@ -74,8 +78,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__15;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:4:7: ( '(' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:4:9: '('
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:11:7: ( '(' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:11:9: '('
             {
             match('('); 
 
@@ -94,8 +98,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__16;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:5:7: ( ')' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:5:9: ')'
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:12:7: ( ')' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:12:9: ')'
             {
             match(')'); 
 
@@ -114,8 +118,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__17;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:6:7: ( '.' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:6:9: '.'
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:13:7: ( '.' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:13:9: '.'
             {
             match('.'); 
 
@@ -134,8 +138,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__18;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:7:7: ( '+' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:7:9: '+'
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:14:7: ( '+' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:14:9: '+'
             {
             match('+'); 
 
@@ -154,8 +158,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__19;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:8:7: ( '|' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:8:9: '|'
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:15:7: ( '|' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:15:9: '|'
             {
             match('|'); 
 
@@ -174,8 +178,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__20;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:9:7: ( '[' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:9:9: '['
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:16:7: ( '[' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:16:9: '['
             {
             match('['); 
 
@@ -194,8 +198,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__21;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:10:7: ( '/' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:10:9: '/'
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:17:7: ( '/' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:17:9: '/'
             {
             match('/'); 
 
@@ -214,8 +218,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__22;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:11:7: ( ',' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:11:9: ','
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:18:7: ( ',' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:18:9: ','
             {
             match(','); 
 
@@ -234,8 +238,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__23;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:12:7: ( ']' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:12:9: ']'
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:19:7: ( ']' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:19:9: ']'
             {
             match(']'); 
 
@@ -254,8 +258,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__24;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:13:7: ( '\\{' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:13:9: '\\{'
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:20:7: ( '\\{' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:20:9: '\\{'
             {
             match('{'); 
 
@@ -274,8 +278,8 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = T__25;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:14:7: ( '}' )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:14:9: '}'
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:21:7: ( '}' )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:21:9: '}'
             {
             match('}'); 
 
@@ -294,7 +298,7 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = TRANSITION_VAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:2: ( '#' | ( ( '_' )? ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* ) )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:2: ( '#' | ( ( '_' )? ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* ) )
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -312,19 +316,19 @@ public class Ccs1Lexer extends Lexer {
             }
             switch (alt3) {
                 case 1 :
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:4: '#'
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:4: '#'
                     {
                     match('#'); 
 
                     }
                     break;
                 case 2 :
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:10: ( ( '_' )? ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* )
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:10: ( ( '_' )? ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* )
                     {
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:10: ( ( '_' )? ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* )
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:11: ( '_' )? ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )*
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:10: ( ( '_' )? ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* )
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:11: ( '_' )? ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )*
                     {
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:11: ( '_' )?
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:11: ( '_' )?
                     int alt1=2;
                     int LA1_0 = input.LA(1);
 
@@ -333,7 +337,7 @@ public class Ccs1Lexer extends Lexer {
                     }
                     switch (alt1) {
                         case 1 :
-                            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:12: '_'
+                            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:12: '_'
                             {
                             match('_'); 
 
@@ -342,14 +346,14 @@ public class Ccs1Lexer extends Lexer {
 
                     }
 
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:17: ( 'a' .. 'z' )
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:18: 'a' .. 'z'
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:17: ( 'a' .. 'z' )
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:18: 'a' .. 'z'
                     {
                     matchRange('a','z'); 
 
                     }
 
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:70:27: ( 'a' .. 'z' | '0' .. '9' | '_' )*
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:89:27: ( 'a' .. 'z' | '0' .. '9' | '_' )*
                     loop2:
                     do {
                         int alt2=2;
@@ -403,14 +407,14 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = PROCESS_VAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:75:2: ( '0' | ( ( 'A' .. 'Z' | '_' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* ) )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:93:2: ( '0' | ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* ) )
             int alt5=2;
             int LA5_0 = input.LA(1);
 
             if ( (LA5_0=='0') ) {
                 alt5=1;
             }
-            else if ( ((LA5_0>='A' && LA5_0<='Z')||LA5_0=='_') ) {
+            else if ( ((LA5_0>='A' && LA5_0<='Z')) ) {
                 alt5=2;
             }
             else {
@@ -421,28 +425,26 @@ public class Ccs1Lexer extends Lexer {
             }
             switch (alt5) {
                 case 1 :
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:75:4: '0'
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:93:5: '0'
                     {
                     match('0'); 
 
                     }
                     break;
                 case 2 :
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:75:10: ( ( 'A' .. 'Z' | '_' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* )
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:93:11: ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* )
                     {
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:75:10: ( ( 'A' .. 'Z' | '_' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* )
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:75:11: ( 'A' .. 'Z' | '_' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )*
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:93:11: ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* )
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:93:12: ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )*
                     {
-                    if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_' ) {
-                        input.consume();
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:93:12: ( 'A' .. 'Z' )
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:93:13: 'A' .. 'Z'
+                    {
+                    matchRange('A','Z'); 
 
                     }
-                    else {
-                        MismatchedSetException mse = new MismatchedSetException(null,input);
-                        recover(mse);
-                        throw mse;}
 
-                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:75:25: ( 'A' .. 'Z' | '0' .. '9' | '_' )*
+                    // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:93:22: ( 'A' .. 'Z' | '0' .. '9' | '_' )*
                     loop4:
                     do {
                         int alt4=2;
@@ -496,10 +498,10 @@ public class Ccs1Lexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:79:6: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:79:10: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:97:6: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:97:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:79:10: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:97:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt6=0;
             loop6:
             do {
@@ -552,7 +554,145 @@ public class Ccs1Lexer extends Lexer {
     public void mTokens() throws RecognitionException {
         // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:1:8: ( T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | TRANSITION_VAR | PROCESS_VAR | WS )
         int alt7=15;
-        alt7 = dfa7.predict(input);
+        switch ( input.LA(1) ) {
+        case '=':
+            {
+            alt7=1;
+            }
+            break;
+        case '(':
+            {
+            alt7=2;
+            }
+            break;
+        case ')':
+            {
+            alt7=3;
+            }
+            break;
+        case '.':
+            {
+            alt7=4;
+            }
+            break;
+        case '+':
+            {
+            alt7=5;
+            }
+            break;
+        case '|':
+            {
+            alt7=6;
+            }
+            break;
+        case '[':
+            {
+            alt7=7;
+            }
+            break;
+        case '/':
+            {
+            alt7=8;
+            }
+            break;
+        case ',':
+            {
+            alt7=9;
+            }
+            break;
+        case ']':
+            {
+            alt7=10;
+            }
+            break;
+        case '{':
+            {
+            alt7=11;
+            }
+            break;
+        case '}':
+            {
+            alt7=12;
+            }
+            break;
+        case '#':
+        case '_':
+        case 'a':
+        case 'b':
+        case 'c':
+        case 'd':
+        case 'e':
+        case 'f':
+        case 'g':
+        case 'h':
+        case 'i':
+        case 'j':
+        case 'k':
+        case 'l':
+        case 'm':
+        case 'n':
+        case 'o':
+        case 'p':
+        case 'q':
+        case 'r':
+        case 's':
+        case 't':
+        case 'u':
+        case 'v':
+        case 'w':
+        case 'x':
+        case 'y':
+        case 'z':
+            {
+            alt7=13;
+            }
+            break;
+        case '0':
+        case 'A':
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'E':
+        case 'F':
+        case 'G':
+        case 'H':
+        case 'I':
+        case 'J':
+        case 'K':
+        case 'L':
+        case 'M':
+        case 'N':
+        case 'O':
+        case 'P':
+        case 'Q':
+        case 'R':
+        case 'S':
+        case 'T':
+        case 'U':
+        case 'V':
+        case 'W':
+        case 'X':
+        case 'Y':
+        case 'Z':
+            {
+            alt7=14;
+            }
+            break;
+        case '\t':
+        case '\n':
+        case '\r':
+        case ' ':
+            {
+            alt7=15;
+            }
+            break;
+        default:
+            NoViableAltException nvae =
+                new NoViableAltException("", 7, 0, input);
+
+            throw nvae;
+        }
+
         switch (alt7) {
             case 1 :
                 // /home/carevski/workspace/formalnimetodi/src/ii/edu/mk/parser/Ccs1.g:1:10: T__14
@@ -665,76 +805,6 @@ public class Ccs1Lexer extends Lexer {
     }
 
 
-    protected DFA7 dfa7 = new DFA7(this);
-    static final String DFA7_eotS =
-        "\16\uffff\1\17\2\uffff";
-    static final String DFA7_eofS =
-        "\21\uffff";
-    static final String DFA7_minS =
-        "\1\11\15\uffff\1\141\2\uffff";
-    static final String DFA7_maxS =
-        "\1\175\15\uffff\1\172\2\uffff";
-    static final String DFA7_acceptS =
-        "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1"+
-        "\15\1\uffff\1\16\1\17";
-    static final String DFA7_specialS =
-        "\21\uffff}>";
-    static final String[] DFA7_transitionS = {
-            "\2\20\2\uffff\1\20\22\uffff\1\20\2\uffff\1\15\4\uffff\1\2\1"+
-            "\3\1\uffff\1\5\1\11\1\uffff\1\4\1\10\1\17\14\uffff\1\1\3\uffff"+
-            "\32\17\1\7\1\uffff\1\12\1\uffff\1\16\1\uffff\32\15\1\13\1\6"+
-            "\1\14",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "\32\15",
-            "",
-            ""
-    };
-
-    static final short[] DFA7_eot = DFA.unpackEncodedString(DFA7_eotS);
-    static final short[] DFA7_eof = DFA.unpackEncodedString(DFA7_eofS);
-    static final char[] DFA7_min = DFA.unpackEncodedStringToUnsignedChars(DFA7_minS);
-    static final char[] DFA7_max = DFA.unpackEncodedStringToUnsignedChars(DFA7_maxS);
-    static final short[] DFA7_accept = DFA.unpackEncodedString(DFA7_acceptS);
-    static final short[] DFA7_special = DFA.unpackEncodedString(DFA7_specialS);
-    static final short[][] DFA7_transition;
-
-    static {
-        int numStates = DFA7_transitionS.length;
-        DFA7_transition = new short[numStates][];
-        for (int i=0; i<numStates; i++) {
-            DFA7_transition[i] = DFA.unpackEncodedString(DFA7_transitionS[i]);
-        }
-    }
-
-    class DFA7 extends DFA {
-
-        public DFA7(BaseRecognizer recognizer) {
-            this.recognizer = recognizer;
-            this.decisionNumber = 7;
-            this.eot = DFA7_eot;
-            this.eof = DFA7_eof;
-            this.min = DFA7_min;
-            this.max = DFA7_max;
-            this.accept = DFA7_accept;
-            this.special = DFA7_special;
-            this.transition = DFA7_transition;
-        }
-        public String getDescription() {
-            return "1:1: Tokens : ( T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | TRANSITION_VAR | PROCESS_VAR | WS );";
-        }
-    }
  
 
 }
