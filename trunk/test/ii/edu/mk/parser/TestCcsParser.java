@@ -18,11 +18,8 @@ public class TestCcsParser extends BaseTest{
 		parser = getCcs2Parser(ts("a.b.A + B"));parser.expr();
 		assertThat(parser.getNumberOfSyntaxErrors(), comparesEqualTo(0));
 		
-//		parser = getCcsParser(ts("(a.0 + _a.A)\\{a,b}"));parser.expr();
-//		assertThat(parser.getNumberOfSyntaxErrors(), comparesEqualTo(0));
-//		
-//		parser = getCcsParser(ts("(a.0 | _a.A)\\{a,#}"));parser.expr();
-//		assertThat(parser.getNumberOfSyntaxErrors(), comparesEqualTo(0));
+		parser = getCcs2Parser(ts("(a.0 + _a.A)\\{a,b}"));parser.expr();
+		assertThat(parser.getNumberOfSyntaxErrors(), comparesEqualTo(0));
 		
 		parser = getCcs2Parser(ts("#.#.B + 0"));parser.expr();
 		assertThat(parser.getNumberOfSyntaxErrors(), comparesEqualTo(0));
