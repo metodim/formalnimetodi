@@ -10,7 +10,9 @@ tokens {
 	ADD;
 	SYNC;
 	RESTRICT;
+	RESTRICT_LABELS;
 	RENAME;
+	RENAME_CLAUSE;
 	RENAME_SINGLE;
 	PROCESS;
 	TRANSITION;
@@ -47,18 +49,29 @@ tokens {
 @header {
 	package ii.edu.mk.parser;
 }
+/* 
+	Excerpt from the book: Reactive Systems 
+	Section "2.2. CCS, formally" 
+	page 23
+	
+	... we use the convention that the operators have decreasing binding strength in the following
+	order: restriction and relabelling (the tightest binding), action prefixing, parallel
+	composition and summation. For example, the expression a.0 | b.P \ L + c.0
+	stands for ((a.0) | (b.(P \ L))) + (c.0).
+*/
 
 expr
-	: var=PROCESS_VAR '=' proc=sync EOF 	-> ^(DEF $var $proc)
-	| sync EOF!
+	: var=PROCESS_VAR '=' proc=plus EOF 	-> ^(DEF $var $proc)
+	| plus EOF!
 	;
-	 
-sync	: plus ('|'^ p=plus)*;	// TODO: we should try to produce non-binary AST tree
 
 plus	: start ('+'^ start)*;	// TODO: we should try to produce non-binary AST tree
+	 
+sync	: plus ('|'^ p=plus)*;	// TODO: we should try to produce non-binary AST tree
  
 start 	: 	trans
- 	| 	('('! s=sync ')'! | p=process) (rest=restriction | ren=renaming)?
+ 	| 	('(' s=sync ')' | p=process) (		rest=restriction -> ^(RESTRICT $s? $p? $rest) 
+ 						| 	ren=renaming -> ^(RENAME $s? $p? $ren))?
 	;
 	
 trans	:	t+=trans_var ('.' (t+=trans_var | t+=process | t+=sync))+ -> ^(TRANSITION $t+);
@@ -69,12 +82,12 @@ trans_var
 	:	action;
 	
 renaming
-	: 	'[' r+=ren1 (',' r+=ren1)* ']' 		-> ^(RENAME $r+)
+	: 	'[' r+=ren1 (',' r+=ren1)* ']' 		-> ^(RENAME_CLAUSE $r+)
 	;
 ren1	:	action '/' action 	-> ^(RENAME_SINGLE action+);
 
 restriction
-	:	'\\{' rests+=label_or_colabel (',' rests+=label_or_colabel)* '}' -> ^(RESTRICT $rests+)
+	:	'\\{' rests+=label_or_colabel (',' rests+=label_or_colabel)* '}' -> ^(RESTRICT_LABELS $rests+)
 	;	
 
 action
