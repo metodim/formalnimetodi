@@ -7,7 +7,7 @@ import org.antlr.runtime.CommonTokenStream;
 public class BaseTest {
 	
 	public static Ccs2Parser getCcs2Parser(String expression){
-	    CcsLexer lex = new CcsLexer(new ANTLRStringStream(expression));
+	    Ccs2Lexer lex = new Ccs2Lexer(new ANTLRStringStream(expression));
 	    CommonTokenStream tokens = new CommonTokenStream(lex);
 	    return new Ccs2Parser(tokens);
 	}
