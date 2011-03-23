@@ -6,16 +6,10 @@ import org.antlr.runtime.CommonTokenStream;
 
 public class BaseTest {
 	
-	public static CcsParser getCcsParser(String expression){
+	public static Ccs2Parser getCcs2Parser(String expression){
 	    CcsLexer lex = new CcsLexer(new ANTLRStringStream(expression));
 	    CommonTokenStream tokens = new CommonTokenStream(lex);
-	    return new CcsParser(tokens);
-	}
-	
-	public static Ccs1Parser getCcs1Parser(String expression){
-	    Ccs1Lexer lex = new Ccs1Lexer(new ANTLRStringStream(expression));
-	    CommonTokenStream tokens = new CommonTokenStream(lex);
-	    return new Ccs1Parser(tokens);
+	    return new Ccs2Parser(tokens);
 	}
 	
 	public static String ts(String str){
