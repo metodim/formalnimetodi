@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	TestCcsParser.class,
-	TestCcs1Parser.class
+	TestCcsParser.class
 })
 public class AllParserTests {
 

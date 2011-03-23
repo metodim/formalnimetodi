@@ -1,7 +1,7 @@
 package ii.edu.mk.gui;
 
-import ii.edu.mk.parser.Ccs1Lexer;
-import ii.edu.mk.parser.Ccs1Parser;
+import ii.edu.mk.parser.Ccs2Parser;
+import ii.edu.mk.parser.CcsLexer;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -93,9 +92,9 @@ public class MainPanel extends JXPanel{
 			boolean success = true;
 			for(String expr : testExprs){
 				try{
-				    Ccs1Lexer lex = new Ccs1Lexer(new ANTLRStringStream(expr));
+				    CcsLexer lex = new CcsLexer(new ANTLRStringStream(expr));
 				    CommonTokenStream tokens = new CommonTokenStream(lex);
-				    Ccs1Parser parser = new Ccs1Parser(tokens);
+				    Ccs2Parser parser = new Ccs2Parser(tokens);
 				    CommonTree root = (CommonTree)parser.expr().getTree();
 				    for(int i = 0; i<root.getChildCount(); i++){
 				    	CommonTree child = (CommonTree) root.getChildren().get(i);
