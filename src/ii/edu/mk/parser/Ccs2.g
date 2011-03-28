@@ -7,14 +7,11 @@ options {
 
 tokens {
 	DEF;
-	ADD;
-	SYNC;
 	RESTRICT;
 	RESTRICT_LABELS;
 	RENAME;
 	RENAME_CLAUSE;
 	RENAME_SINGLE;
-	PROCESS;
 	TRANSITION;
 }
 
@@ -61,22 +58,24 @@ tokens {
 */
 
 expr
-	: var=PROCESS_VAR '=' proc=plus EOF 	-> ^(DEF $var $proc)
-	| plus EOF!
+	: var=PROCESS '=' proc=sync EOF 	-> ^(DEF $var $proc)
+	| sync EOF!
 	;
 
-plus	: start ('+'^ start)*;	// TODO: we should try to produce non-binary AST tree
-	 
 sync	: plus ('|'^ p=plus)*;	// TODO: we should try to produce non-binary AST tree
+
+plus	: start ('+'^ start)*;	// TODO: we should try to produce non-binary AST tree
  
 start 	: 	trans
- 	| 	('(' s=sync ')' | p=process) (		rest=restriction -> ^(RESTRICT $s? $p? $rest) 
- 						| 	ren=renaming -> ^(RENAME $s? $p? $ren))?
+ 	| 	('(' s=sync ')' | p=process)	 (	rest=restriction 	-> ^(RESTRICT $s? $p? $rest) 
+ 						| 	ren=renaming 		-> ^(RENAME $s? $p? $ren)
+ 						|	WS* 			-> $s? $p?)
+
 	;
 	
 trans	:	t+=trans_var ('.' (t+=trans_var | t+=process | t+=sync))+ -> ^(TRANSITION $t+);
 
-process	:	PROCESS_VAR;
+process	:	PROCESS;
 
 trans_var
 	:	action;
@@ -110,7 +109,7 @@ TAU
 	:	'#'
 	;
 		
-PROCESS_VAR  	
+PROCESS  	
 	: 	'0' | (('A'..'Z')('A'..'Z'|'0'..'9'|'_')*)
 	;
 	
