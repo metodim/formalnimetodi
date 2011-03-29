@@ -17,7 +17,7 @@ public class TestASTDomainBuilder extends BaseTest {
 	@Test
 	public void test1() throws Exception {
 
-		CcsOperation root = new ASTDomainBuilder().getRoot("a.B");
+		CcsOperation root = ASTDomainBuilder.INSTANCE.getRoot("a.B");
 		assertEquals(OperatorType.TRANSITION, root.getType());
 
 		assertTrue(root instanceof CcsTrans);
@@ -32,7 +32,7 @@ public class TestASTDomainBuilder extends BaseTest {
 	@Test
 	public void test2() throws Exception {
 
-		CcsOperation root = new ASTDomainBuilder().getRoot("(a.B+b.C)\\{a}");
+		CcsOperation root = ASTDomainBuilder.INSTANCE.getRoot("(a.B+b.C)\\{a}");
 		assertEquals(root.getType(), OperatorType.RESTRICTION);
 
 		assertTrue(root instanceof CcsRestrict);

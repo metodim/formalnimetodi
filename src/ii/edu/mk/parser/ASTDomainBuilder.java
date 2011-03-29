@@ -1,5 +1,6 @@
 package ii.edu.mk.parser;
 
+import static ii.edu.mk.parser.Ccs2Parser.DEF;
 import static ii.edu.mk.parser.Ccs2Parser.ADD;
 import static ii.edu.mk.parser.Ccs2Parser.PROCESS;
 import static ii.edu.mk.parser.Ccs2Parser.CO_LABEL;
@@ -14,6 +15,7 @@ import static ii.edu.mk.parser.Ccs2Parser.TRANSITION;
 import static ii.edu.mk.parser.Ccs2Parser.RENAME_SINGLE;
 import ii.edu.mk.ccs.domain.CcsAction;
 import ii.edu.mk.ccs.domain.CcsAdd;
+import ii.edu.mk.ccs.domain.CcsDefinition;
 import ii.edu.mk.ccs.domain.CcsProcess;
 import ii.edu.mk.ccs.domain.CcsRename;
 import ii.edu.mk.ccs.domain.CcsRestrict;
@@ -35,75 +37,77 @@ import org.antlr.runtime.tree.Tree;
 
 public class ASTDomainBuilder {
 
-	private CommonTree getAstFromExpression(String expression)
-			throws RecognitionException {
+	public static final ASTDomainBuilder INSTANCE = new ASTDomainBuilder();
+	
+	public CcsOperation getRoot(String expression) throws Exception {
+		return (CcsOperation) getDomain(getAstFromExpression(expression));
+	}
+
+	private CommonTree getAstFromExpression(String expression) throws RecognitionException {
 		Ccs2Lexer lex = new Ccs2Lexer(new ANTLRStringStream(expression));
 		CommonTokenStream tokens = new CommonTokenStream(lex);
 		Ccs2Parser parser = new Ccs2Parser(tokens);
 		return (CommonTree) parser.expr().getTree();
 	}
-
-	public CcsOperation getRoot(String expression) throws Exception {
-		return (CcsOperation) getDomain(getAstFromExpression(expression));
-	}
-
+	
 	private CcsOperator getDomain(Tree node) throws IllegalArgumentException {
 
 		switch (node.getType()) {
-
-		case ADD:
-			return new CcsAdd((CcsOperation) getDomain(node.getChild(0)),
-					(CcsOperation) getDomain((CommonTree) node.getChild(1)));
-
-		case SYNC:
-			return new CcsSynch((CcsOperation) getDomain(node.getChild(0)),
-					(CcsOperation) getDomain(node.getChild(1)));
-
-		case RESTRICT:
-			return new CcsRestrict((CcsOperation) getDomain(node.getChild(0)),
-					getRestrictActions(node.getChild(1)));
-
-		case RENAME:
-			return new CcsRename((CcsOperation) getDomain(node.getChild(0)),
-					getRenameMap(node.getChild(1)));
-
-			// Action = TAU | CO_LABEL | LABEL
-		case TAU:
-			return CcsAction.TAU;
-
-		case LABEL:
-			return new CcsAction(node.getText());
-
-		case CO_LABEL:
-			return new CcsAction(node.getText(), true);
-
-		case TRANSITION:
-			return new CcsTrans((CcsAction) getDomain(node.getChild(0)),
-					(CcsOperation) getDomain(node.getChild(1)));
-
-		case PROCESS:
-			return new CcsProcess(node.getText());
-
-		default:
-			throw new IllegalArgumentException(
-					"Should not be here node.getType()=" + node.getType());
+			case DEF:
+				return new CcsDefinition(new CcsProcess(node.getChild(0).getText()),
+						(CcsOperation) getDomain((CommonTree) node.getChild(1)));
+		
+			case ADD:
+				return new CcsAdd((CcsOperation) getDomain(node.getChild(0)),
+						(CcsOperation) getDomain((CommonTree) node.getChild(1)));
+	
+			case SYNC:
+				return new CcsSynch((CcsOperation) getDomain(node.getChild(0)),
+						(CcsOperation) getDomain(node.getChild(1)));
+	
+			case RESTRICT:
+				return new CcsRestrict((CcsOperation) getDomain(node.getChild(0)),
+						getRestrictActions(node.getChild(1)));
+	
+			case RENAME:
+				return new CcsRename((CcsOperation) getDomain(node.getChild(0)),
+						getRenameMap(node.getChild(1)));
+	
+				// Action = TAU | CO_LABEL | LABEL
+			case TAU:
+				return CcsAction.TAU;
+	
+			case LABEL:
+				return new CcsAction(node.getText());
+	
+			case CO_LABEL:
+				return new CcsAction(node.getText(), true);
+	
+			case TRANSITION:
+				return new CcsTrans((CcsAction) getDomain(node.getChild(0)),
+						(CcsOperation) getDomain(node.getChild(1)));
+	
+			case PROCESS:
+				return new CcsProcess(node.getText());
+	
+			default:
+				throw new IllegalArgumentException("Should not be here node.getType()=" + node.getType());
 		}
 	}
 
 	private List<CcsAction> getRestrictActions(Tree node) {
 
-		if (node.getType() != RESTRICT_LABELS)
-			throw new IllegalArgumentException(
-					"node.type must be RESTRICT_LABELS !");
-
+		if (node.getType() != RESTRICT_LABELS){
+			throw new IllegalArgumentException("node.type must be RESTRICT_LABELS !");
+		}
+		
 		List<CcsAction> restrictActions = new ArrayList<CcsAction>();
 
 		for (int i = 0; i < node.getChildCount(); i++) {
 			if (node.getChild(i).getType() != LABEL
 					&& node.getChild(i).getType() != CO_LABEL
 					&& node.getChild(i).getType() != TAU)
-				throw new IllegalArgumentException(
-						"node type must be LABEL, CO_LABEL or TAU !");
+				throw new IllegalArgumentException("node type must be LABEL, CO_LABEL or TAU !");
 
 			restrictActions.add((CcsAction) getDomain(node.getChild(i)));
 		}
@@ -114,8 +118,7 @@ public class ASTDomainBuilder {
 	private Map<CcsAction, CcsAction> getRenameMap(Tree node) {
 
 		if (node.getType() != RENAME_CLAUSE)
-			throw new IllegalArgumentException(
-					"node.type must be RENAME_CLAUSE !");
+			throw new IllegalArgumentException("node.type must be RENAME_CLAUSE !");
 
 		Map<CcsAction, CcsAction> renameMap = new HashMap<CcsAction, CcsAction>();
 
@@ -123,12 +126,10 @@ public class ASTDomainBuilder {
 			Tree renameSingle = node.getChild(i);
 
 			if (renameSingle.getType() != RENAME_SINGLE)
-				throw new IllegalArgumentException(
-						"renameSingle node type must be RENAME_SINGLE !");
+				throw new IllegalArgumentException("renameSingle node type must be RENAME_SINGLE !");
 
 			if (renameSingle.getChildCount() != 2)
-				throw new IllegalArgumentException(
-						"renameSingle node must have exactly 2 children !");
+				throw new IllegalArgumentException("renameSingle node must have exactly 2 children !");
 
 			renameMap.put((CcsAction) getDomain(renameSingle.getChild(0)),
 					(CcsAction) getDomain(renameSingle.getChild(1)));

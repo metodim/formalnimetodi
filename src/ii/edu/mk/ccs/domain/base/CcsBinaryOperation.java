@@ -1,7 +1,6 @@
 package ii.edu.mk.ccs.domain.base;
 
-public abstract class CcsBinaryOperation<LEFT extends CcsOperator, RIGHT extends CcsOperator>
-		extends CcsOperation {
+public abstract class CcsBinaryOperation<LEFT extends CcsOperator, RIGHT extends CcsOperator> extends CcsOperation {
 
 	private final LEFT left;
 	private final RIGHT right;
