@@ -1,7 +1,6 @@
 package ii.edu.mk.ccs.domain.base;
 
-public abstract class CcsUnaryOperation<OPERAND extends CcsOperator> extends
-		CcsOperation {
+public abstract class CcsUnaryOperation<OPERAND extends CcsOperator> extends CcsOperation {
 
 	private final OPERAND operand;
 
