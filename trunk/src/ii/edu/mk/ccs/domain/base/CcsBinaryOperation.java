@@ -18,5 +18,4 @@ public abstract class CcsBinaryOperation<LEFT extends CcsOperator, RIGHT extends
 	public RIGHT getRight() {
 		return right;
 	}
-
 }
