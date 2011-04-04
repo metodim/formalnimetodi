@@ -1,6 +1,10 @@
 package ii.edu.mk.ccs.domain.base;
 
-public abstract class CcsUnaryOperation<OPERAND extends CcsOperator> extends CcsOperation {
+import java.util.Arrays;
+import java.util.Iterator;
+
+public abstract class CcsUnaryOperation<OPERAND extends CcsOperation> extends
+		CcsOperation {
 
 	private final OPERAND operand;
 
@@ -13,4 +17,8 @@ public abstract class CcsUnaryOperation<OPERAND extends CcsOperator> extends Ccs
 		return operand;
 	}
 
+	@Override
+	public Iterator<CcsOperation> iterator() {
+		return Arrays.asList((CcsOperation) getOperand()).iterator();
+	}
 }

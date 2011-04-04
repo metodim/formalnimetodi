@@ -1,6 +1,5 @@
 package ii.edu.mk.parser;
 
-//import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import ii.edu.mk.ccs.domain.CcsAdd;

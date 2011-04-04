@@ -46,4 +46,14 @@ public class CcsAction extends CcsOperator {
 		return coLabel;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	public boolean canSynchWith(CcsAction action) {
+		return this.coLabel == !action.coLabel
+				&& this.name.equals(action.name.substring(1));
+	}
+
 }
