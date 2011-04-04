@@ -30,11 +30,13 @@ public class SosGraphNode {
 
 	final CcsOperation ccsTree;
 	final String ccsTreeHash;
+	final String name;
 
-	public SosGraphNode(CcsOperation ccsTree) {
+	public SosGraphNode(String name, CcsOperation ccsTree) {
 		super();
 		this.ccsTree = ccsTree;
 		this.ccsTreeHash = null; // TODO compute this
+		this.name = name;
 
 		/**
 		 * We use a linked hash map to keep the order of the keys and values in
@@ -54,5 +56,17 @@ public class SosGraphNode {
 
 	public Collection<SosGraphNode> getChildNodes() {
 		return getTransitions().values();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public CcsOperation getCcsTree() {
+		return ccsTree;
+	}
+
+	public String getCcsTreeHash() {
+		return ccsTreeHash;
 	}
 }

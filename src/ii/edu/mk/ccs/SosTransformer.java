@@ -21,26 +21,26 @@ public class SosTransformer {
 	 * @param root
 	 *            the root of the tree
 	 */
-	public SosGraphNode getSosGraph(CcsOperation rootOfCcsTree) {
+	public SosGraphNode buildSosGraph(SosGraphNode graph) {
 
-		SosGraphNode startNodeInGraph = new SosGraphNode(rootOfCcsTree);
+		int i = 1;
+		for (SosRule rule : applySosTransformations(graph.ccsTree))
+			graph.getTransitions().put(rule, new SosGraphNode(graph.name + "." + i++, rule.getCcsOpNext()));
 
-		for (SosRule rule : applySosTransformations(rootOfCcsTree)) {
-			startNodeInGraph.getTransitions().put(rule, new SosGraphNode(rule.getCcsOpNext()));
-		}
+		buildGraph(graph);
 
-		buildSosGraph(startNodeInGraph);
-
-		return startNodeInGraph;
+		return graph;
 	}
 
-	private void buildSosGraph(SosGraphNode graph) {
-		for (SosGraphNode next : graph.transitions.values())
+	private void buildGraph(SosGraphNode graph) {
+		for (SosGraphNode next : graph.transitions.values()) {
+			int i = 1;
 			for (SosRule rule : applySosTransformations(next.ccsTree)) {
-				SosGraphNode nextNode = new SosGraphNode(rule.getCcsOpNext());
+				SosGraphNode nextNode = new SosGraphNode(next.name + "." + i++, rule.getCcsOpNext());
 				next.getTransitions().put(rule, nextNode);
 				buildSosGraph(nextNode);
 			}
+		}
 	}
 
 	private List<SosRule> applySosTransformations(CcsOperation tree) {
