@@ -10,8 +10,7 @@ public class SosRule {
 	final CcsOperation ccsOpNext;
 	final CcsAction action;
 
-	public SosRule(SosRuleType type, CcsOperation ccsOpCurrent,
-			CcsOperation ccsOpNext, CcsAction action) {
+	public SosRule(SosRuleType type, CcsOperation ccsOpCurrent, CcsOperation ccsOpNext, CcsAction action) {
 		super();
 		this.type = type;
 		this.ccsOpCurrent = ccsOpCurrent;
@@ -39,11 +38,17 @@ public class SosRule {
 	}
 
 	/**
+	 * Example: --[SUM,a]-->
+	 */
+	public String getSymbol() {
+		return String.format("--[%s,%s]-->", type, action);
+	}
+
+	/**
 	 * Example: a.A+B --[SUM,a]--> A
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s  --[%s,%s]-->  %s", ccsOpCurrent, type,
-				action, ccsOpNext);
+		return String.format("%s\t%s\t%s", ccsOpCurrent, getSymbol(), ccsOpNext);
 	}
 }
