@@ -11,7 +11,7 @@ import ii.edu.mk.ccs.domain.base.OperatorType;
 
 import org.junit.Test;
 
-public class TestASTDomainBuilder extends BaseTest {
+public class TestASTDomainBuilder extends BaseParserTest {
 
 	@Test
 	public void testRecursive1() throws Exception {

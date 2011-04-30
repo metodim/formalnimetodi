@@ -11,7 +11,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JWindow;
 
-
+/**
+ * 
+ * @author Vladimir Carevski
+ */
 public class SplashScreen extends JWindow {
 
 	private static final long serialVersionUID = 1L;

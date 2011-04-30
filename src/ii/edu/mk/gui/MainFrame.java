@@ -25,7 +25,10 @@ import org.jdesktop.swingx.JXStatusBar;
 import org.joda.time.DateTime;
 
 
-
+/**
+ * 
+ * @author Vladimir Carevski
+ */
 @SuppressWarnings("serial")
 public class MainFrame extends JXFrame {
 

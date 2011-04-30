@@ -30,7 +30,7 @@ public enum Images {
 	
 	public ImageIcon loadImageIcon() {
 		try {
-			//TODO (CV): should work within jar file
+			//note (CV): should work within jar file
 			ClassLoader classloader = this.getClass().getClassLoader();
 			InputStream inputStream = classloader.getResourceAsStream(Parameters.RESOURCE_PATH.getValue() + imageName);
 			if(inputStream != null){
