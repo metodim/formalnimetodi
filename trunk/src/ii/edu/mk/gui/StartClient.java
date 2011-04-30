@@ -9,7 +9,10 @@ import javax.swing.RepaintManager;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-
+/**
+ * 
+ * @author Vladimir Carevski
+ */
 public class StartClient {
 
 	private static SplashScreen splashScreen;

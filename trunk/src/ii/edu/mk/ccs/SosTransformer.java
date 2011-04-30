@@ -12,8 +12,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 public class SosTransformer {
 
+	private static final Logger LOG = LogManager.getLogger(SosTransformer.class);
+	
 	/**
 	 * Returns an {@link SosGraphNode} oriented graph, from a
 	 * {@link CcsOperation} tree.
@@ -47,7 +52,7 @@ public class SosTransformer {
 
 		switch (tree.getType()) {
 
-		case ADDITION:
+		case ADDITION: LOG.debug("ADDITION");
 			final CcsAdd add = (CcsAdd) tree;
 			List<SosRule> addRules = new ArrayList<SosRule>();
 
@@ -61,7 +66,7 @@ public class SosTransformer {
 
 			return addRules;
 
-		case SYNCHRONIZATION:
+		case SYNCHRONIZATION: LOG.debug("SYNC");
 			final CcsSynch synch = (CcsSynch) tree;
 			List<SosRule> synchRules = new ArrayList<SosRule>();
 
@@ -81,12 +86,12 @@ public class SosTransformer {
 
 			return synchRules;
 
-		case TRANSITION:
+		case TRANSITION: LOG.debug("TRANSITION");
 			final CcsTrans trans = (CcsTrans) tree;
 			// ACT: a.A -> A
 			return Arrays.asList(new SosRule(SosRuleType.ACT, trans, trans.getRight(), trans.getAction()));
 
-		case PROCESS:
+		case PROCESS: LOG.debug("PROCESS");
 			final CcsProcess process = (CcsProcess) tree;
 			// TODO: Implement this
 			return Collections.emptyList();

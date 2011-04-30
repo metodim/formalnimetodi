@@ -8,7 +8,7 @@ import static org.junit.Assert.fail;
 import org.antlr.runtime.RecognitionException;
 import org.junit.Test;
 
-public class TestCcsParser extends BaseTest{
+public class TestCcsParser extends BaseParserTest{
 
 	@Test
 	public void testValidExpressions() throws RecognitionException{
