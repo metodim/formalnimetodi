@@ -14,7 +14,7 @@ import org.junit.Test;
 public class ASTMarshalerTest extends BaseParserTest{
 
 	@Test
-	public void test() throws Exception {
+	public void testMarshalingASTtoString() throws Exception {
 		CcsOperation root = null;
 		
 		root = ASTDomainBuilder.INSTANCE.getRoot("a.B");
