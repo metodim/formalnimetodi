@@ -51,7 +51,6 @@ public class AldebaranFile {
 			throw new IllegalArgumentException("Illegal argument for aldebaran descriptor");
 		
 		String lines[] = desc.split(",+");
-		System.out.println(lines[0]);
 		firstState = Integer.parseInt(lines[0].split("\\(")[1].replaceAll(" +", ""));
 		numberOfTransitions = Integer.parseInt(lines[1].replaceAll(" +", ""));
 		numberOfStates = Integer.parseInt(lines[2].split("\\)")[0].replaceAll(" +", ""));
