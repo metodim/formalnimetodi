@@ -5,7 +5,10 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	TestCcsParser.class,
+	 TestCcsParser.class
+	,ASTMarshalerTest.class
+	,TestASTDomainBuilder.class
+//	,TestSosTranformer.class
 })
 public class AllParserTests {
 

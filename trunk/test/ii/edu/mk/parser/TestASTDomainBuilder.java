@@ -14,7 +14,7 @@ import org.junit.Test;
 public class TestASTDomainBuilder extends BaseParserTest {
 
 	@Test
-	public void testRecursive1() throws Exception {
+	public void testRecursiveDomainBuilder1() throws Exception {
 
 		CcsOperation root = ASTDomainBuilder.INSTANCE.getRoot("a.B");
 		assertEquals(OperatorType.TRANSITION, root.getType());
@@ -28,7 +28,7 @@ public class TestASTDomainBuilder extends BaseParserTest {
 	}
 
 	@Test
-	public void testRecursive2() throws Exception {
+	public void testRecursiveDomainBuilder2() throws Exception {
 
 		CcsOperation root = ASTDomainBuilder.INSTANCE.getRoot("(a.B+b.C)\\{a}");
 		assertEquals(root.getType(), OperatorType.RESTRICTION);
@@ -54,7 +54,7 @@ public class TestASTDomainBuilder extends BaseParserTest {
 	}
 	
 	@Test
-	public void testNonRecursive1() throws Exception {
+	public void testNonRecursiveDomainBuilder1() throws Exception {
 
 		CcsOperation root = ASTDomainBuilder.INSTANCE.getRootNoRecursion("a.B");
 		assertEquals(OperatorType.TRANSITION, root.getType());
@@ -68,7 +68,7 @@ public class TestASTDomainBuilder extends BaseParserTest {
 	}
 	
 	@Test
-	public void testNonRecursive2() throws Exception {
+	public void testNonRecursiveDomainBuilder2() throws Exception {
 
 		CcsOperation root = ASTDomainBuilder.INSTANCE.getRootNoRecursion("(a.B+b.C)\\{a}");
 		assertEquals(root.getType(), OperatorType.RESTRICTION);

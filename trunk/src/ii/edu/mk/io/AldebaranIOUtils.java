@@ -21,7 +21,7 @@ public class AldebaranIOUtils {
 		String line = bufReader.readLine(); //aldebaran descriptor
 		aldebaranFile.readDescriptor(line);
 		while((line = bufReader.readLine()) != null){
-			aldebaranFile.readLine(line);
+			aldebaranFile.parseLine(line);
 		}
 		
 		bufReader.close();

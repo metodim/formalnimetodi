@@ -1,4 +1,4 @@
-package ii.edu.mk.io;
+package ii.edu.mk.core;
 
 import ii.edu.mk.gui.Parameters;
 
@@ -12,7 +12,7 @@ import java.net.URL;
  * 
  * @author Vladimir Carevski
  */
-public class BaseIOTest {
+public class BaseTest {
 
 	private static final String folderPath = "test" + File.separator + Parameters.RESOURCE_PATH.getValue();
 	

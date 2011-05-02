@@ -61,11 +61,19 @@ public class AldebaranFile {
 		return "des (0, " + numberOfTransitions + ", " + numberOfStates + ")";
 	}
 	
-	public void readLine(String line){
+	public void parseLine(String line){
 		if(line == null || line.isEmpty())
 			throw new IllegalArgumentException("Illegal argument for aldebaran descriptor");
 		
 		lines.add(AldebaranFileLine.fromString(line));
+	}
+	
+	public void addLine(String startState, String label, String endState){
+		lines.add(new AldebaranFileLine(Integer.parseInt(startState), label, Integer.parseInt(endState)));
+	}
+	
+	public void addLine(Integer startState, String label, Integer endState){
+		lines.add(new AldebaranFileLine(startState, label, endState));
 	}
 	
 	public static class AldebaranFileLine{

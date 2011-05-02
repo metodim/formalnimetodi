@@ -1,301 +1,256 @@
 package ii.edu.mk.bisimulation;
 
-import java.util.LinkedList;
+import ii.edu.mk.io.AldebaranFile;
+import ii.edu.mk.io.AldebaranIOUtils;
+import ii.edu.mk.io.AldebaranFile.AldebaranFileLine;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class MainClass {
-	
-	// primer 1	
-	public static Graph GenerateGraph()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "b"));
-		node1.SetTransition(new Dvojki(3, "a"));		
-		
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);
-		node2.SetTransition(new Dvojki(4, "c"));
-		
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);
-		node3.SetTransition(new Dvojki(4, "c"));
-		
-		graf.addNode(node3);
-		
-		Node node4 = new Node(4);
-		node4.SetTransition(new Dvojki(2, "b"));
-		node4.SetTransition(new Dvojki(3, "a"));
-		node4.SetTransition(new Dvojki(1, "a"));		
-		
-		graf.addNode(node4);
-		
-		return graf;
-	}
-	
-	//	 primer 2
-	public static Graph GenerateGraph1()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "a"));
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);
-		node2.SetTransition(new Dvojki(1, "a"));		
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);
-		node3.SetTransition(new Dvojki(2, "a"));
-		node3.SetTransition(new Dvojki(4, "a"));		
-		graf.addNode(node3);
-		
-		Node node4 = new Node(4);
-		node4.SetTransition(new Dvojki(3, "b"));
-		node4.SetTransition(new Dvojki(5, "a"));
-		graf.addNode(node4);
-		
-		Node node5 = new Node(5);		
-		graf.addNode(node5);
-		
-		return graf;
-	}
-	
-	//	 primer 3
-	public static Graph GenerateGraph2()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "a"));
-		node1.SetTransition(new Dvojki(3, "a"));
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);
-		node2.SetTransition(new Dvojki(4, "b"));		
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);
-		node3.SetTransition(new Dvojki(4, "c"));				
-		graf.addNode(node3);
-		
-		Node node4 = new Node(4);		
-		graf.addNode(node4);
-		
-		return graf;
-	}
-	
-	//	 primer 4	
-	public static Graph GenerateGraph3()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "a"));		
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);
-		node2.SetTransition(new Dvojki(3, "b"));
-		node2.SetTransition(new Dvojki(4, "c"));
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);						
-		graf.addNode(node3);
-		
-		Node node4 = new Node(4);		
-		graf.addNode(node4);
-		
-		return graf;
-	}
-	
-	//	 primer 5	
-	public static Graph GenerateGraph4()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "a"));
-		node1.SetTransition(new Dvojki(3, "a"));
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);		
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);
-		node3.SetTransition(new Dvojki(4, "b"));
-		graf.addNode(node3);
-		
-		Node node4 = new Node(4);		
-		graf.addNode(node4);
-		
-		return graf;
-	}
-	
-	//	 primer 6	
-	public static Graph GenerateGraph5()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "a"));		
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);
-		node2.SetTransition(new Dvojki(3, "b"));
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);		
-		graf.addNode(node3);		
-		
-		return graf;
+
+	public static void main(String[] args) {
+
+		System.out.println("\n####################################################");
+		System.out.println("#                                                  #");
+		System.out.println("# STRONG BISIMULATION MINIMISATION AND EQUIVALENCE #");
+		System.out.println("#                                                  #");
+		System.out.println("####################################################\n");
+
+		System.out.println("=====/ EXAMPLE 1 /=====\n");
+
+		System.out.println("Graph1:");
+		Graph graph1 = generateGraph("lts002.aut");
+		System.out.println(graph1);
+
+		Graph graph11 = new Graph(graph1);
+		Graph graph12 = new Graph(graph1);
+
+		System.out.println("Graph2:");
+		Graph graph2 = generateGraph("lts007.aut");
+		System.out.println(graph2);
+
+		Graph graph21 = new Graph(graph2);
+		Graph graph22 = new Graph(graph2);
+
+		System.out.println("\n1) Minimisation using standard bisimulation algorithm\n");
+
+		ListPairProcess L1 = graph11.findMaximumBisimulationStandard();
+		System.out.println("Pairs of bisimilar states in Graph1: " + L1);
+		System.out.println();
+		graph11.minimizationGraph(L1);
+		System.out.println("Minimised Graph1:");
+		System.out.println(graph11);
+
+		ListPairProcess L2 = graph21.findMaximumBisimulationStandard();
+		System.out.println("Pairs of bisimilar states in Graph2: " + L2);
+		System.out.println();
+		graph21.minimizationGraph(L2);
+		System.out.println("Minimised Graph2:");
+		System.out.println(graph21);
+
+		System.out.println("Are the two graphs strongly bisimilar?");
+		System.out.println(graph11.equalGraph(graph11.getInitialNode(), graph21, graph21.getInitialNode()));
+
+		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");
+
+		Partition P1 = graph12.findMaximumBisimulationFernandez();
+		System.out.println("Sets of mutually bisimilar states in Graph1: " + P1);
+		System.out.println();
+		graph12.minimizationGraph(P1);
+		System.out.println("Minimised Graph1:");
+		System.out.println(graph12);
+
+		Partition P2 = graph22.findMaximumBisimulationFernandez();
+		System.out.println("Sets of mutually bisimilar states in Graph2: " + P2);
+		System.out.println();
+		graph22.minimizationGraph(P2);
+		System.out.println("Minimised Graph2:");
+		System.out.println(graph22);
+
+		System.out.println("Are the two graphs strongly bisimilar?");
+		System.out.println(graph12.equalGraph(graph12.getInitialNode(), graph22, graph22.getInitialNode()));
+
+		System.out.println("\n***********************\n");
+
+		System.out.println("=====/ EXAMPLE 2 /=====\n");
+
+		System.out.println("Graph3:");
+		Graph graph3 = generateGraph("lts006.aut");
+		System.out.println(graph3);
+
+		Graph graph31 = new Graph(graph3);
+		Graph graph32 = new Graph(graph3);
+
+		System.out.println("Graph4:");
+		Graph graph4 = generateGraph("lts008.aut");
+		System.out.println(graph4);
+
+		Graph graph41 = new Graph(graph4);
+		Graph graph42 = new Graph(graph4);
+
+		System.out.println("\n1) Minimisation using standard bisimulation algorithm\n");
+
+		ListPairProcess L3 = graph31.findMaximumBisimulationStandard();
+		System.out.println("Pairs of bisimilar states in Graph3: " + L3);
+		System.out.println();
+		graph31.minimizationGraph(L3);
+		System.out.println("Minimised Graph3:");
+		System.out.println(graph31);
+
+		ListPairProcess L4 = graph41.findMaximumBisimulationStandard();
+		System.out.println("Pairs of bisimilar states in Graph4: " + L4);
+		System.out.println();
+		graph41.minimizationGraph(L4);
+		System.out.println("Minimised Graph4:");
+		System.out.println(graph41);
+
+		System.out.println("Are the two graphs strongly bisimilar?");
+		System.out.println(graph31.equalGraph(graph31.getInitialNode(), graph41, graph41.getInitialNode()));
+
+		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");
+
+		Partition P3 = graph32.findMaximumBisimulationFernandez();
+		System.out.println("Sets of mutually bisimilar states in Graph3: " + P3);
+		System.out.println();
+		graph32.minimizationGraph(P3);
+		System.out.println("Minimised Graph3:");
+		System.out.println(graph32);
+
+		Partition P4 = graph42.findMaximumBisimulationFernandez();
+		System.out.println("Sets of mutually bisimilar states in Graph4: " + P4);
+		System.out.println();
+		graph42.minimizationGraph(P4);
+		System.out.println("Minimised Graph4:");
+		System.out.println(graph42);
+
+		System.out.println("Are the two graphs strongly bisimilar?");
+		System.out.println(graph32.equalGraph(graph32.getInitialNode(), graph42, graph42.getInitialNode()));
+
+		System.out.println("\n***********************\n");
+
 	}
 
-	//	 primer 7
-	public static Graph GenerateGraph6()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "a"));
-		node1.SetTransition(new Dvojki(4, "a"));
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);
-		node2.SetTransition(new Dvojki(2, "b"));
-		node2.SetTransition(new Dvojki(4, "b"));
-		node2.SetTransition(new Dvojki(3, "c"));
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);		
-		graf.addNode(node3);
-		
-		Node node4 = new Node(4);
-		node4.SetTransition(new Dvojki(2, "b"));
-		node4.SetTransition(new Dvojki(5, "c"));
-		graf.addNode(node4);
-		
-		Node node5 = new Node(5);		
-		graf.addNode(node5);
-		
-		return graf;
+	//should only be used for testing purposes
+	public static Graph generateGraph(String filename) {
+		return generateGraph(new File("test/ii/resources/"+filename));
 	}
 	
-	//	 primer 8	
-	public static Graph GenerateGraph7()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "a"));
-		node1.SetTransition(new Dvojki(3, "a"));
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);
-		node2.SetTransition(new Dvojki(4, "b"));		
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);
-		node3.SetTransition(new Dvojki(5, "c"));
-		graf.addNode(node3);
-		
-		Node node4 = new Node(4);		
-		graf.addNode(node4);
-		
-		Node node5 = new Node(5);		
-		graf.addNode(node5);
-		
-		return graf;
-	}
-	
-	//	 primer 9
-	public static Graph GenerateGraph8()
-	{
-		Graph graf = new Graph();
-		
-		Node node1 = new Node(1);
-		node1.SetTransition(new Dvojki(2, "a"));		
-		graf.addNode(node1);
-		
-		Node node2 = new Node(2);
-		node2.SetTransition(new Dvojki(3, "b"));
-		node2.SetTransition(new Dvojki(4, "b"));
-		graf.addNode(node2);
-		
-		Node node3 = new Node(3);
-		node3.SetTransition(new Dvojki(5, "d"));
-		node3.SetTransition(new Dvojki(6, "c"));
-		graf.addNode(node3);
-		
-		Node node4 = new Node(4);
-		node4.SetTransition(new Dvojki(7, "d"));
-		node4.SetTransition(new Dvojki(6, "c"));
-		graf.addNode(node4);
-		
-		Node node5 = new Node(5);		
-		graf.addNode(node5);
-		
-		Node node6 = new Node(6);		
-		graf.addNode(node6);
-		
-		Node node7 = new Node(7);		
-		graf.addNode(node7);
-		
-		return graf;
-	}
-	
-	public static void main(String[] args) {
-		
-		Graph graf = new Graph();
-		graf = GenerateGraph8();	
-		System.out.println(graf);
-		
-		LinkedList<Integer> procesi = new LinkedList<Integer>();		
-		for (int i = 0; i < graf.size(); i++)
-		{
-			procesi.add(graf.getNodeName(i));			
+	public static Graph generateGraph(File file){
+		try{
+			return generateGraphFromAldebaranFile(AldebaranIOUtils.readFile(file));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return null;
+	}
+	
+	public static Graph generateGraphFromAldebaranFile(AldebaranFile alFile){
+		Graph graph = new Graph();
 		
-		ListaDvojkiProcesi listaR0 = new ListaDvojkiProcesi();
+		String start = alFile.getFirstState().toString();
 		
-		for (int i = 0; i < graf.size(); i++)
-		{
-			for (int j = 0; j < graf.size(); j++)
-			{
-				if (i < j)
-				{
-					DvojkiProcesi dvojka = new DvojkiProcesi(graf.getNode(i), graf.getNode(j));
-					listaR0.addDvojkiProces(dvojka);
+		Node nodes[] = new Node[alFile.getNumberOfStates()];
+		nodes[0] = new Node(start);
+		graph.addNode(nodes[0]);
+
+		for(AldebaranFileLine line : alFile.getLines()){
+			String node1 = line.getStartState().toString();
+			String action = line.getLabel();
+			String node2 = line.getEndState().toString();
+
+			graph.addAction(action);
+
+			int state1 = Integer.parseInt(node1);
+			int state2 = Integer.parseInt(node2);
+
+			if (nodes[state1] == null) {
+				nodes[state1] = new Node(node1);
+				nodes[state1].addPostTransition(new PostTransition(node2, action));
+				graph.addNode(nodes[state1]);
+			} else {
+				Node n1 = graph.getNodeByProcess(node1);
+				n1.addPostTransition(new PostTransition(node2, action));
+			}
+
+			if (nodes[state2] == null) {
+				nodes[state2] = new Node(node2);
+				nodes[state2].addCoupleInverseTransition(new CoupleTransition(action, node1));
+				graph.addNode(nodes[state2]);
+			} else {
+				Node n2 = graph.getNodeByProcess(node2);
+				n2.addCoupleInverseTransition(new CoupleTransition(action, node1));
+			}
+		}
+
+		Node tmp = graph.getNodeByProcess(start);
+		graph.setInitialNode(tmp);
+
+		return graph;
+	}
+	
+	public static Graph generateGraphFromFile(File file){
+		Graph graph = new Graph();
+		try {
+			Scanner scanner = new Scanner(file);
+
+			String descriptor = scanner.nextLine();
+			String des = descriptor.substring(descriptor.indexOf('(') + 1, descriptor.indexOf(')'));
+
+			String[] desElements = des.split(", ");
+			String start = desElements[0];
+			int numberTransitions = Integer.parseInt(desElements[1]);
+			int numberStates = Integer.parseInt(desElements[2]);
+
+			Node nodes[] = new Node[numberStates];
+			nodes[0] = new Node(start);
+			graph.addNode(nodes[0]);
+
+			for (int i = 1; i <= numberTransitions; i++) {
+				String edge = scanner.nextLine();
+				String ed = edge.substring(edge.indexOf('(') + 1, edge.indexOf(')'));
+
+				String[] edgeElements = ed.split(", ");
+				String node1 = edgeElements[0];
+				String action = edgeElements[1];
+				String node2 = edgeElements[2];
+
+				graph.addAction(action);
+
+				int state1 = Integer.parseInt(node1);
+				int state2 = Integer.parseInt(node2);
+
+				if (nodes[state1] == null) {
+					nodes[state1] = new Node(node1);
+					nodes[state1].addPostTransition(new PostTransition(node2, action));
+					graph.addNode(nodes[state1]);
+				} else {
+					Node n1 = graph.getNodeByProcess(node1);
+					n1.addPostTransition(new PostTransition(node2, action));
+				}
+
+				if (nodes[state2] == null) {
+					nodes[state2] = new Node(node2);
+					nodes[state2].addCoupleInverseTransition(new CoupleTransition(action, node1));
+					graph.addNode(nodes[state2]);
+				} else {
+					Node n2 = graph.getNodeByProcess(node2);
+					n2.addCoupleInverseTransition(new CoupleTransition(action, node1));
 				}
 			}
-		}		
-		
-		ListaDvojkiProcesi listaR1 = new ListaDvojkiProcesi();
-		
-		int k= 0;
-		
-		do
-		{		
-			if (k != 0)
-			{
-				listaR0.ResetLista(listaR1);
-			}			
-			
-			k++;
-			
-			listaR1 = new ListaDvojkiProcesi();
-			
-			for (int i = 0; i < listaR0.size(); i++)
-			{					
-				if(listaR0.Sodrzi(listaR0.getDvojkiProcesi(i), graf))
-				{
-					listaR1.addDvojkiProces(listaR0.getDvojkiProcesi(i));
-				}
-			}			
-		} while (!listaR0.Ednakvi(listaR1));
-		
-		System.out.println(listaR1);
+
+			Node tmp = graph.getNodeByProcess(start);
+			graph.setInitialNode(tmp);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return graph;
 	}
+	
+
 }
