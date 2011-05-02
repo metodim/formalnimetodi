@@ -1,14 +1,11 @@
 package ii.edu.mk.bisimulation;
 
-import ii.edu.mk.io.AldebaranFile;
-import ii.edu.mk.io.AldebaranIOUtils;
-import ii.edu.mk.io.AldebaranFile.AldebaranFileLine;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
+
+//remove this class when this test are converted into unit tests
 public class MainClass {
 
 	public static void main(String[] args) {
@@ -135,62 +132,7 @@ public class MainClass {
 
 	//should only be used for testing purposes
 	public static Graph generateGraph(String filename) {
-		return generateGraph(new File("test/ii/resources/"+filename));
-	}
-	
-	public static Graph generateGraph(File file){
-		try{
-			return generateGraphFromAldebaranFile(AldebaranIOUtils.readFile(file));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static Graph generateGraphFromAldebaranFile(AldebaranFile alFile){
-		Graph graph = new Graph();
-		
-		String start = alFile.getFirstState().toString();
-		
-		Node nodes[] = new Node[alFile.getNumberOfStates()];
-		nodes[0] = new Node(start);
-		graph.addNode(nodes[0]);
-
-		for(AldebaranFileLine line : alFile.getLines()){
-			String node1 = line.getStartState().toString();
-			String action = line.getLabel();
-			String node2 = line.getEndState().toString();
-
-			graph.addAction(action);
-
-			int state1 = Integer.parseInt(node1);
-			int state2 = Integer.parseInt(node2);
-
-			if (nodes[state1] == null) {
-				nodes[state1] = new Node(node1);
-				nodes[state1].addPostTransition(new PostTransition(node2, action));
-				graph.addNode(nodes[state1]);
-			} else {
-				Node n1 = graph.getNodeByProcess(node1);
-				n1.addPostTransition(new PostTransition(node2, action));
-			}
-
-			if (nodes[state2] == null) {
-				nodes[state2] = new Node(node2);
-				nodes[state2].addCoupleInverseTransition(new CoupleTransition(action, node1));
-				graph.addNode(nodes[state2]);
-			} else {
-				Node n2 = graph.getNodeByProcess(node2);
-				n2.addCoupleInverseTransition(new CoupleTransition(action, node1));
-			}
-		}
-
-		Node tmp = graph.getNodeByProcess(start);
-		graph.setInitialNode(tmp);
-
-		return graph;
+		return generateGraphFromFile(new File("test/ii/resources/"+filename));
 	}
 	
 	public static Graph generateGraphFromFile(File file){
