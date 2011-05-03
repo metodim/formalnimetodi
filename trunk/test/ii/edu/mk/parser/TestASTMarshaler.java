@@ -11,7 +11,7 @@ import org.junit.Test;
  * 
  * @author Vladimir Carevski
  */
-public class ASTMarshalerTest extends BaseParserTest{
+public class TestASTMarshaler extends BaseParserTest{
 
 	@Test
 	public void testMarshalingASTtoString() throws Exception {
