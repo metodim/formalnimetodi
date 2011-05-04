@@ -62,7 +62,7 @@ public class ASTDomainBuilder {
 	}
 	
 	/**
-	 * Recursive implementation for building the Ccs domain model tree form AST tree.
+	 * Non recursive implementation for building the Ccs domain model tree form AST tree.
 	 * 
 	 * @param node - the root node of the AST tree
 	 * @return CcsOperator - root node of the model domain model tree
@@ -302,6 +302,7 @@ public class ASTDomainBuilder {
 	}
 	
 	//for debugging purposes
+	@SuppressWarnings("unused")
 	private void toStringNode(Tree node){
 		switch(node.getType()){
 		case DEF:System.out.println("DEF");break;
