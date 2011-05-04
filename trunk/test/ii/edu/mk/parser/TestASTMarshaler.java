@@ -3,7 +3,6 @@ package ii.edu.mk.parser;
 import static org.hamcrest.number.OrderingComparison.comparesEqualTo;
 import static org.junit.Assert.assertThat;
 import ii.edu.mk.ccs.domain.base.CcsOperation;
-import ii.edu.mk.utils.ASTMarshaler;
 
 import org.junit.Test;
 

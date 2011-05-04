@@ -11,10 +11,10 @@ public class TestSosTranformer extends BaseParserTest {
 	@Test
 	public void test1() throws Exception {
 		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.B"))));
-//		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.A+b.B"))));
-//		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.A|_a.B"))));
-//		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.A|_a.B+c.C"))));
-//		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.A|_a.B+c.C+d.D"))));
+		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.A+b.B"))));
+		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.A|_a.B"))));
+		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.A|_a.B+c.C"))));
+		print(new SosTransformer().buildSosGraph(new SosGraphNode("A", new ASTDomainBuilder().getRoot("a.A|_a.B+c.C+d.D"))));
 	}
 
 	private void print(SosGraphNode graph) {

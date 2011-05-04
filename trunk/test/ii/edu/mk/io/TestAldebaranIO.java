@@ -7,7 +7,7 @@ import ii.edu.mk.ccs.SosRule;
 import ii.edu.mk.ccs.SosRuleType;
 import ii.edu.mk.ccs.domain.CcsAction;
 import ii.edu.mk.core.BaseTest;
-import ii.edu.mk.utils.ASTMarshaler;
+import ii.edu.mk.parser.ASTMarshaler;
 
 import java.io.File;
 import java.io.IOException;

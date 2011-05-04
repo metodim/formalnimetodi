@@ -1,4 +1,4 @@
-package ii.edu.mk.utils;
+package ii.edu.mk.parser;
 
 import ii.edu.mk.ccs.domain.CcsAction;
 import ii.edu.mk.ccs.domain.CcsAdd;

@@ -10,7 +10,9 @@ import ii.edu.mk.ccs.domain.base.CcsOperation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,6 +20,18 @@ import org.apache.log4j.Logger;
 public class SosTransformer {
 
 	private static final Logger LOG = LogManager.getLogger(SosTransformer.class);
+	
+	public static SosTransformer getInstance(){return new SosTransformer();}
+	
+	private Map<CcsProcess, CcsOperation> processDefinitions; 
+	
+	public SosTransformer() {
+		processDefinitions = new HashMap<CcsProcess, CcsOperation>();
+	}
+	
+	public SosGraphNode generateLtsGraph(List<CcsOperation> ccsOperations) throws SosTransformerException{
+		return null;
+	}
 	
 	/**
 	 * Returns an {@link SosGraphNode} oriented graph, from a
