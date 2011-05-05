@@ -12,8 +12,11 @@ import ii.edu.mk.parser.ASTDomainBuilder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +51,7 @@ public class CcsToLtsPanel extends JPanel {
 	
 	SosGraphNode rootNode;
 	AldebaranFile aldebaranFile;
+	File ccsFile;
 	
 	public CcsToLtsPanel() {
 		setLayout(new MigLayout("fill", "[20%]3px[80%]","[40%]3px[10%]3px[40%]3px[10%]"));
@@ -57,7 +61,7 @@ public class CcsToLtsPanel extends JPanel {
 		JLabel expressionTokensLabel = new JLabel("LTS (Aldebaran format):");
 		
 		expressionArea = new JTextArea();
-		JScrollPane testExpressionScrollPane = new JScrollPane(expressionArea, 20, 30);
+		JScrollPane testExpressionScrollPane = new JScrollPane(expressionArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		testExpressionScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		expressionArea.setEnabled(true);
 		expressionArea.setEditable(true);
@@ -65,12 +69,18 @@ public class CcsToLtsPanel extends JPanel {
 		clearExpressionArea.addActionListener(new ClearExpressionAreaAction());
 		
 		ltsArea = new JTextArea();
-		JScrollPane ltsAreaScrollPane = new JScrollPane(ltsArea, 20, 30);
+		JScrollPane ltsAreaScrollPane = new JScrollPane(ltsArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		ltsAreaScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		ltsArea.setEnabled(true);
 		ltsArea.setEditable(false);
 		JButton clearLtsAreaButton = new JButton("Clear");
 		clearExpressionArea.addActionListener(new ClearLtsAreaAction());
+		
+		JButton openCcsExprsButton = new JButton("Open");
+		openCcsExprsButton.addActionListener(new OpenCcsAction(this));
+		
+		JButton saveCcsExprsButton = new JButton("Save");
+		saveCcsExprsButton.addActionListener(new SaveCcsAction(this));
 		
 		JButton saveLtsButton = new JButton("Save");
 		saveLtsButton.addActionListener(new SaveLtsAction(this));
@@ -81,9 +91,13 @@ public class CcsToLtsPanel extends JPanel {
 		add(testExpresionLabel);
 		add(testExpressionScrollPane, "grow, wrap");
 		add(parseStatusLabel);
-		add(parserButton, "split 3, al l");
+		
+		add(openCcsExprsButton, "split 5, al l");
+		add(saveCcsExprsButton, "al l");
 		add(clearExpressionArea, "al r");
+		add(parserButton, "al l");
 		add(parseStatusMessageLabel, "al l, wrap");
+		
 		add(expressionTokensLabel);
 		add(ltsAreaScrollPane, "grow, wrap");
 		add(Box.createVerticalGlue());
@@ -103,6 +117,7 @@ public class CcsToLtsPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				List<String> expressions = getExpressionsStrings(expressionArea.getText());
+				if(expressions.size() == 0) return;
 				List<CcsOperation> ccsOperations = new ArrayList<CcsOperation>();
 				for(String expression : expressions){
 					ccsOperations.add(ASTDomainBuilder.INSTANCE.getRootNoRecursion(expression));
@@ -152,6 +167,7 @@ public class CcsToLtsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			expressionArea.setText("");
+			ccsFile = null;
 			clearLtsGraph();
 		}
 	}
@@ -167,6 +183,7 @@ public class CcsToLtsPanel extends JPanel {
 		rootNode = null;
 		aldebaranFile = null;
 		ltsArea.setText("");
+		parseStatusMessageLabel.setText("");
 	}
 	
 	class SaveLtsAction implements ActionListener {
@@ -185,6 +202,65 @@ public class CcsToLtsPanel extends JPanel {
 					File fileOut = fileChooser.getSelectedFile();
 					try {
 						AldebaranUtils.writeFile(aldebaranFile, fileOut);
+					} catch (IOException e1) {
+						LOG.debug("error writing file:" + e1.getLocalizedMessage());
+						parseStatusMessageLabel.setText("Error while trying to write LTS to file");
+					}
+				}
+			}
+		}
+	}
+	
+	class OpenCcsAction implements ActionListener {
+		JComponent parent = null;
+		public OpenCcsAction(JComponent parentComponent) {
+			parent = parentComponent;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Open CCS expressions from file...");
+			fileChooser.showOpenDialog(parent);
+			if(fileChooser.getSelectedFile() != null){
+				ccsFile = fileChooser.getSelectedFile();
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(ccsFile));
+					StringBuilder stringBuilder = new StringBuilder();
+					String line = null;
+					while( (line = reader.readLine()) != null)
+						stringBuilder.append(line).append("\n");
+					expressionArea.setText(stringBuilder.toString());
+					parseStatusMessageLabel.setText("Opened file: " + ccsFile.getName());
+				} catch (IOException e1) {
+					LOG.debug("error reading file:" + e1.getLocalizedMessage());
+					parseStatusMessageLabel.setText("Error while trying to read CCS expressions from file");
+				}
+			}
+		}
+	}
+	
+	class SaveCcsAction implements ActionListener {
+		JComponent parent = null;
+		public SaveCcsAction(JComponent parentComponent) {
+			parent = parentComponent;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String ccsText = expressionArea.getText().trim();
+			if(ccsText != null && !ccsText.isEmpty() ){
+				if(ccsFile == null){
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Save CCS expressions in file...");
+					fileChooser.showSaveDialog(parent);
+					ccsFile = fileChooser.getSelectedFile();
+				}
+				if(ccsFile != null){
+					try {
+						PrintWriter writer = new PrintWriter(ccsFile);
+						writer.print(ccsText);
+						writer.flush();
+						writer.close();
+						parseStatusMessageLabel.setText("Saved in file: " + ccsFile.getName());
 					} catch (IOException e1) {
 						LOG.debug("error writing file:" + e1.getLocalizedMessage());
 						parseStatusMessageLabel.setText("Error while trying to write LTS to file");
