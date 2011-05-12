@@ -467,7 +467,7 @@ public class Graph {
 		} else {
 			LinkedList<PostTransition> ob1 = n1.getPostTransitions();
 			for (int i = 0; i < ob1.size(); i++) {
-				boolean zname = false;
+				boolean flag = false;
 				boolean isLoop = false;
 				LinkedList<PostTransition> ob2 = n2.getPostTransitionsByAction(ob1.get(i).getAction());
 
@@ -479,12 +479,12 @@ public class Graph {
 						ob1.get(i).setColor("black");
 						ob2.get(j).setColor("black");
 
-						zname = zname || equalGraph(n11, g, n22);
+						flag = flag || equalGraph(n11, g, n22);
 					} else {
 						isLoop = true;
 					}
 
-					if (zname == false && !isLoop) {
+					if (flag == false && !isLoop) {
 						return false;
 					}
 
