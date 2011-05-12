@@ -2,8 +2,10 @@
 
 Given a set of action names, the set of CCS processes is defined by the following BNF grammar:
 
-\[P ::= \emptyset \hspace{1 mm} | \hspace{1 mm} a.P_{1} \hspace{1 mm} | \hspace{1 mm} A \hspace{1 mm} | \hspace{1 mm}P_{1}+P_{2} \hspace{1 mm} |
-\hspace{1 mm} P_{1} | P_{2} \hspace{1 mm} | \hspace{1 mm} P_{1}[b/a] \hspace{1 mm} | \hspace{1 mm} P_{1} \backslash a\]
+\begin{equation}\label{eq:ccs_bnf}
+P ::= \emptyset \hspace{1 mm} | \hspace{1 mm} a.P_{1} \hspace{1 mm} | \hspace{1 mm} A \hspace{1 mm} | \hspace{1 mm}P_{1}+P_{2} \hspace{1 mm} |
+\hspace{1 mm} P_{1} | P_{2} \hspace{1 mm} | \hspace{1 mm} P_{1}[b/a] \hspace{1 mm} | \hspace{1 mm} P_{1} \backslash a
+\end{equation}
 
 Two choices were considered for the problem of building a parser. The first choice is to build
 a new parser which requires much more resources and the second choice is to define a grammar
@@ -30,8 +32,31 @@ top-down parser which parses the input from left to right and constructs a Leftm
 of the sentence. An LL parser is called an LL(*) parser if it is not restricted to a finite k 
 tokens of lookahead, but can make parsing decisions by recognizing whether the following tokens
 belong to a regular language. This is achieved by building temporary deterministic finite
-automaton, which are maintained and used until the parser makes a decision. This feature and
+automaton, which are maintained and used until the parser makes a decision \cite{ANTLRRef}. This feature and
 some more optimization for the LL parser were published in recent years which made this kind 
-of parser generators popular and favorable.
+of parser generators popular and favorable \cite{NiklausWirth}.
 
-ANTLR was used to generate lexer, parser and well defined abstract syntax trees. 
+ANTLR was used to generate lexer, parser and well defined abstract syntax trees (AST). The AST
+is a tree representation of the abstract syntactic structure of the parsed sentence. The term
+abstract is used in a sense that the tree does not represent every single detail that exists 
+in the language syntax. For example, parentheses are implicit in the tree structure. From a 
+development point of view it is much easier to work with trees that with a list of recognized
+tokens. One example of an AST is shown in  Fig \ref{fig:ast_example}. The tree in the figure 
+is a result of parsing the expression: 
+
+\begin{equation}\label{eq:ccs_example}
+ A=( b.B \hspace{1 mm} | \hspace{1 mm} c.D \hspace{1 mm} + \hspace{1 mm} d.D )
+\backslash \left\lbrace b, \hspace{1 mm} c \right\rbrace 
+\end{equation}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=2.5in]{ast_example}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+\caption{AST Example}
+\label{fig:ast_example}
+\end{figure}
+
+No tralalal \ref{eq:ccs_example}..
