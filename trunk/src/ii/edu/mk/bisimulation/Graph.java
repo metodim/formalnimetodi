@@ -95,7 +95,7 @@ public class Graph {
 		return this.graph.size();
 	}
 
-	public ListPairProcess findMaximumBisimulationStandard() {
+	public ListPairProcess findMaximumBisimulationNaive() {
 		ListPairProcess list0 = new ListPairProcess();
 
 		for (int i = 0; i < graph.size(); i++) {
