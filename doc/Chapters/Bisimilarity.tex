@@ -1,1 +1,18 @@
-\section{Bisimilarity}
+\section{Bisimulation minimization and equivalence}
+% no \IEEEPARstart
+In theoretical computer science a bisimulation is a binary relation between labeled transition systems, 
+associating systems which behave in the same way in the sense that one system simulates the other and
+vice-versa. The bisimulation equivalence finds its extensive application in the area of formal
+verification of concurrent systems, for example to check the equivalence of an implementation of a
+certain system with respect to its specification model. 
+
+The process of finding a bisimulation equivalence between two labeled transition systems includes 
+two main steps:
+\begin{itemize}
+\item minimizing each of the two LTSs to its canonical form
+\item performing a comparison between the two canonical forms obtained in the first step
+\end{itemize}
+
+This chapter is concerned with both of these steps. The reduction of a labeled transition system
+to a canonical form was implemented with two different methods: the so called naive method, and
+advanced method according to Fernandez [Fer89].
