@@ -34,14 +34,14 @@ public class MainClass {
 
 		System.out.println("\n1) Minimisation using standard bisimulation algorithm\n");
 
-		ListPairProcess L1 = graph11.findMaximumBisimulationStandard();
+		ListPairProcess L1 = graph11.findMaximumBisimulationNaive();
 		System.out.println("Pairs of bisimilar states in Graph1: " + L1);
 		System.out.println();
 		graph11.minimizationGraph(L1);
 		System.out.println("Minimised Graph1:");
 		System.out.println(graph11);
 
-		ListPairProcess L2 = graph21.findMaximumBisimulationStandard();
+		ListPairProcess L2 = graph21.findMaximumBisimulationNaive();
 		System.out.println("Pairs of bisimilar states in Graph2: " + L2);
 		System.out.println();
 		graph21.minimizationGraph(L2);
@@ -90,14 +90,14 @@ public class MainClass {
 
 		System.out.println("\n1) Minimisation using standard bisimulation algorithm\n");
 
-		ListPairProcess L3 = graph31.findMaximumBisimulationStandard();
+		ListPairProcess L3 = graph31.findMaximumBisimulationNaive();
 		System.out.println("Pairs of bisimilar states in Graph3: " + L3);
 		System.out.println();
 		graph31.minimizationGraph(L3);
 		System.out.println("Minimised Graph3:");
 		System.out.println(graph31);
 
-		ListPairProcess L4 = graph41.findMaximumBisimulationStandard();
+		ListPairProcess L4 = graph41.findMaximumBisimulationNaive();
 		System.out.println("Pairs of bisimilar states in Graph4: " + L4);
 		System.out.println();
 		graph41.minimizationGraph(L4);
