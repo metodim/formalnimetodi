@@ -35,6 +35,7 @@ import net.miginfocom.swing.MigLayout;
 import org.antlr.runtime.RecognitionException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.jdesktop.swingx.JXFrame;
 
 /**
  * 
@@ -45,6 +46,9 @@ public class CcsToLtsPanel extends JPanel {
 
 	private final static Logger LOG = LogManager.getLogger(CcsToLtsPanel.class);
 	
+	@SuppressWarnings("unused")
+	private final JXFrame frame;
+	
 	JTextArea expressionArea;
 	JTextArea ltsArea;
 	JLabel parseStatusMessageLabel;
@@ -53,7 +57,9 @@ public class CcsToLtsPanel extends JPanel {
 	AldebaranFile aldebaranFile;
 	File ccsFile;
 	
-	public CcsToLtsPanel() {
+	public CcsToLtsPanel(final JXFrame frameOwner) {
+		this.frame = frameOwner;
+		
 		setLayout(new MigLayout("fill", "[20%]3px[80%]","[40%]3px[10%]3px[40%]3px[10%]"));
 		JLabel testExpresionLabel = new JLabel("CCS Expression:");
 		JLabel parseStatusLabel = new JLabel("LTS Status:");

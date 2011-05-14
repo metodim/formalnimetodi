@@ -63,7 +63,7 @@ public class MainFrame extends JXFrame {
 //		setToolBar(toolBar);
 		add(statusBar, BorderLayout.SOUTH);
 		
-		add(new MainPanel());
+		add(new MainPanel(this));
 		setIconImage(Images.APP_ICON_32.loadImageIcon().getImage());
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 		setVisible(true);
