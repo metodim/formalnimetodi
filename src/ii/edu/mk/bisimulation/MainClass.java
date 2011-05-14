@@ -32,16 +32,16 @@ public class MainClass {
 		Graph graph21 = new Graph(graph2);
 		Graph graph22 = new Graph(graph2);
 
-		System.out.println("\n1) Minimisation using standard bisimulation algorithm\n");
+		System.out.println("\n1) Minimisation using naive bisimulation algorithm\n");
 
-		ListPairProcess L1 = graph11.findMaximumBisimulationNaive();
+		ListPairProcess L1 = graph11.findStrongBisimulationNaive();
 		System.out.println("Pairs of bisimilar states in Graph1: " + L1);
 		System.out.println();
 		graph11.minimizationGraph(L1);
 		System.out.println("Minimised Graph1:");
 		System.out.println(graph11);
 
-		ListPairProcess L2 = graph21.findMaximumBisimulationNaive();
+		ListPairProcess L2 = graph21.findStrongBisimulationNaive();
 		System.out.println("Pairs of bisimilar states in Graph2: " + L2);
 		System.out.println();
 		graph21.minimizationGraph(L2);
@@ -53,14 +53,14 @@ public class MainClass {
 
 		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");
 
-		Partition P1 = graph12.findMaximumBisimulationFernandez();
+		Partition P1 = graph12.findStrongBisimulationFernandez();
 		System.out.println("Sets of mutually bisimilar states in Graph1: " + P1);
 		System.out.println();
 		graph12.minimizationGraph(P1);
 		System.out.println("Minimised Graph1:");
 		System.out.println(graph12);
 
-		Partition P2 = graph22.findMaximumBisimulationFernandez();
+		Partition P2 = graph22.findStrongBisimulationFernandez();
 		System.out.println("Sets of mutually bisimilar states in Graph2: " + P2);
 		System.out.println();
 		graph22.minimizationGraph(P2);
@@ -88,16 +88,16 @@ public class MainClass {
 		Graph graph41 = new Graph(graph4);
 		Graph graph42 = new Graph(graph4);
 
-		System.out.println("\n1) Minimisation using standard bisimulation algorithm\n");
+		System.out.println("\n1) Minimisation using naive bisimulation algorithm\n");
 
-		ListPairProcess L3 = graph31.findMaximumBisimulationNaive();
+		ListPairProcess L3 = graph31.findStrongBisimulationNaive();
 		System.out.println("Pairs of bisimilar states in Graph3: " + L3);
 		System.out.println();
 		graph31.minimizationGraph(L3);
 		System.out.println("Minimised Graph3:");
 		System.out.println(graph31);
 
-		ListPairProcess L4 = graph41.findMaximumBisimulationNaive();
+		ListPairProcess L4 = graph41.findStrongBisimulationNaive();
 		System.out.println("Pairs of bisimilar states in Graph4: " + L4);
 		System.out.println();
 		graph41.minimizationGraph(L4);
@@ -109,14 +109,14 @@ public class MainClass {
 
 		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");
 
-		Partition P3 = graph32.findMaximumBisimulationFernandez();
+		Partition P3 = graph32.findStrongBisimulationFernandez();
 		System.out.println("Sets of mutually bisimilar states in Graph3: " + P3);
 		System.out.println();
 		graph32.minimizationGraph(P3);
 		System.out.println("Minimised Graph3:");
 		System.out.println(graph32);
 
-		Partition P4 = graph42.findMaximumBisimulationFernandez();
+		Partition P4 = graph42.findStrongBisimulationFernandez();
 		System.out.println("Sets of mutually bisimilar states in Graph4: " + P4);
 		System.out.println();
 		graph42.minimizationGraph(P4);
