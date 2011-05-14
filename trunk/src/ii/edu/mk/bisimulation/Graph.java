@@ -2,6 +2,12 @@ package ii.edu.mk.bisimulation;
 
 import java.util.LinkedList;
 
+/**
+ * 
+ * @author Jane Jovanovski
+ * @author Maja Siljanoska
+ */
+
 public class Graph {
 
 	private LinkedList<Node> graph;
@@ -95,7 +101,7 @@ public class Graph {
 		return this.graph.size();
 	}
 
-	public ListPairProcess findMaximumBisimulationNaive() {
+	public ListPairProcess findStrongBisimulationNaive() {
 		ListPairProcess list0 = new ListPairProcess();
 
 		for (int i = 0; i < graph.size(); i++) {
@@ -161,7 +167,7 @@ public class Graph {
 		return tmp;
 	}
 
-	public Partition findMaximumBisimulationFernandez() {
+	public Partition findStrongBisimulationFernandez() {
 		LinkedList<String> A = this.getActions();
 		Block C = new Block();
 		C.setStates(this.getStates());
