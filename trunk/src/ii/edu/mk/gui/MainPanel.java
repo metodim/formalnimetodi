@@ -4,6 +4,7 @@ import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXPanel;
 
 /**
@@ -13,9 +14,11 @@ import org.jdesktop.swingx.JXPanel;
 @SuppressWarnings("serial")
 public class MainPanel extends JXPanel{
 
+	private JXFrame owner;
 	private JTabbedPane tabbedPane;
 	
-	public MainPanel() {
+	public MainPanel(MainFrame owner) {
+		this.owner = owner;
 		initComponents();
 		this.setLayout(new MigLayout("fill"));
 		drawLayout();
@@ -23,8 +26,8 @@ public class MainPanel extends JXPanel{
 	
 	private void initComponents(){
 		tabbedPane = new JTabbedPane();
-		tabbedPane.addTab("CCS to LTS", new CcsToLtsPanel());
-		tabbedPane.addTab("Bisimulation", new BisimulationPanel());
+		tabbedPane.addTab("CCS to LTS", new CcsToLtsPanel(owner));
+		tabbedPane.addTab("Bisimulation", new BisimulationPanel(owner));
 	}
 	
 	private void drawLayout(){
