@@ -17,7 +17,7 @@ public class TestSosTranformer extends BaseParserTest {
 
 	@Test
 	public void test2() throws Exception {
-		print(new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("B = a.B")));
+		print(new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("B = a.b.B")));
 	}
 
 	@Test
@@ -45,6 +45,29 @@ public class TestSosTranformer extends BaseParserTest {
 	}
 
 	@Test
+	public void test_two_processes_that_reference_each_other1() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		ASTDomainBuilder.INSTANCE.getRoot("A = B"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("B = a.A")));
+	}
+
+	@Test
+	public void test_two_processes_that_reference_each_other2() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		ASTDomainBuilder.INSTANCE.getRoot("A = a.A"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("B = A")));
+	}
+
+	private void print(List<SosGraphNode> forrest) {
+		for (SosGraphNode graph : forrest)
+			print(graph);
+	}
+
+	@Test
 	public void test_restrict_simple() throws Exception {
 		print(new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("A = (a.B)\\{a}")));
 	}
@@ -55,7 +78,7 @@ public class TestSosTranformer extends BaseParserTest {
 	}
 
 	@Test
-	public void test_restrict_with_two_processes() throws Exception {
+	public void test_restrict_with_two_processes1() throws Exception {
 		print(new SosTransformer().generateLtsGraph(
 
 		new ASTDomainBuilder().getRoot("A = (a.B)\\{a}"),
@@ -64,17 +87,31 @@ public class TestSosTranformer extends BaseParserTest {
 	}
 
 	@Test
-	public void test_restrict_with_two_processes_infinite() throws Exception {
+	public void test_restrict_reverse1() throws Exception {
+		print(new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("A = (a.B)\\{a}")));
+	}
+
+	@Test
+	public void test_restrict_reverse2() throws Exception {
+		print(new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("A = (a.B)\\{_a}")));
+	}
+
+	@Test
+	public void test_restrict_with_two_processes_infinite1() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		new ASTDomainBuilder().getRoot("A = (B)\\{a}"),
+
+		new ASTDomainBuilder().getRoot("B = b.A")));
+	}
+
+	@Test
+	public void test_restrict_with_two_processes_infinite2() throws Exception {
 		print(new SosTransformer().generateLtsGraph(
 
 		ASTDomainBuilder.INSTANCE.getRoot("B = b.A"),
 
 		ASTDomainBuilder.INSTANCE.getRoot("A = (a.B+b.A)\\{c}")));
-	}
-
-	private void print(List<SosGraphNode> forrest) {
-		for (SosGraphNode graph : forrest)
-			print(graph);
 	}
 
 	private void print(SosGraphNode graph) {

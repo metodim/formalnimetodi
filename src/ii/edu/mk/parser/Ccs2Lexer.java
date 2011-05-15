@@ -1,6 +1,5 @@
+// $ANTLR 3.3 Nov 30, 2010 12:45:30 /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g 2011-05-15 18:51:18
 package ii.edu.mk.parser;
-// $ANTLR 3.3 Nov 30, 2010 12:45:30 /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g 2011-03-28 14:56:18
-
 import org.antlr.runtime.*;
 import java.util.Stack;
 import java.util.List;
@@ -298,20 +297,20 @@ public class Ccs2Lexer extends Lexer {
         try {
             int _type = LABEL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:101:2: ( ( ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* ) )
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:101:5: ( ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:2: ( ( ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* ) )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:5: ( ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* )
             {
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:101:5: ( ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* )
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:101:6: ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )*
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:5: ( ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )* )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:6: ( 'a' .. 'z' ) ( 'a' .. 'z' | '0' .. '9' | '_' )*
             {
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:101:6: ( 'a' .. 'z' )
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:101:7: 'a' .. 'z'
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:6: ( 'a' .. 'z' )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:7: 'a' .. 'z'
             {
             matchRange('a','z'); 
 
             }
 
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:101:16: ( 'a' .. 'z' | '0' .. '9' | '_' )*
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:16: ( 'a' .. 'z' | '0' .. '9' | '_' )*
             loop1:
             do {
                 int alt1=2;
@@ -363,8 +362,8 @@ public class Ccs2Lexer extends Lexer {
         try {
             int _type = CO_LABEL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:2: ( '_' LABEL )
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:105:5: '_' LABEL
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:109:2: ( '_' LABEL )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:109:5: '_' LABEL
             {
             match('_'); 
             mLABEL(); 
@@ -384,8 +383,8 @@ public class Ccs2Lexer extends Lexer {
         try {
             int _type = TAU;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:109:2: ( '#' )
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:109:4: '#'
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:2: ( '#' )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:4: '#'
             {
             match('#'); 
 
@@ -404,7 +403,7 @@ public class Ccs2Lexer extends Lexer {
         try {
             int _type = PROCESS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:2: ( '0' | ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* ) )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:2: ( '0' | ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* ) )
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -422,26 +421,26 @@ public class Ccs2Lexer extends Lexer {
             }
             switch (alt3) {
                 case 1 :
-                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:5: '0'
+                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:5: '0'
                     {
                     match('0'); 
 
                     }
                     break;
                 case 2 :
-                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:11: ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* )
+                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:11: ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* )
                     {
-                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:11: ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* )
-                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:12: ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )*
+                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:11: ( ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )* )
+                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:12: ( 'A' .. 'Z' ) ( 'A' .. 'Z' | '0' .. '9' | '_' )*
                     {
-                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:12: ( 'A' .. 'Z' )
-                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:13: 'A' .. 'Z'
+                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:12: ( 'A' .. 'Z' )
+                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:13: 'A' .. 'Z'
                     {
                     matchRange('A','Z'); 
 
                     }
 
-                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:113:22: ( 'A' .. 'Z' | '0' .. '9' | '_' )*
+                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:22: ( 'A' .. 'Z' | '0' .. '9' | '_' )*
                     loop2:
                     do {
                         int alt2=2;
@@ -495,10 +494,10 @@ public class Ccs2Lexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:6: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:121:6: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:121:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:117:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:121:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt4=0;
             loop4:
             do {

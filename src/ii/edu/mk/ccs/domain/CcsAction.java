@@ -9,23 +9,25 @@ public class CcsAction extends CcsOperator {
 
 	private final boolean tau;
 
-	private final boolean coLabel;
+	private final boolean isReverseAction;
 
 	public static final CcsAction TAU = new CcsAction("tau", true, false);
+
+	public static final String REVERSE_ACTION_PREFIX = "_";
 
 	public CcsAction(String name) {
 		this(name, false);
 	}
 
-	public CcsAction(String name, boolean coLabel) {
-		this(name, false, coLabel);
+	public CcsAction(String name, boolean isReverseAction) {
+		this(name, false, isReverseAction);
 	}
 
-	private CcsAction(String name, boolean tau, boolean coLabel) {
+	private CcsAction(String name, boolean tau, boolean isReverseAction) {
 		super();
 		this.name = name;
 		this.tau = tau;
-		this.coLabel = coLabel;
+		this.isReverseAction = isReverseAction;
 	}
 
 	@Override
@@ -42,8 +44,15 @@ public class CcsAction extends CcsOperator {
 		return tau;
 	}
 
-	public boolean isCoLabel() {
-		return coLabel;
+	public boolean isReverseAction() {
+		return isReverseAction;
+	}
+
+	public CcsAction getReverseAction() {
+		if (!isReverseAction)
+			return new CcsAction(REVERSE_ACTION_PREFIX + name, false);
+
+		return new CcsAction(name.substring(REVERSE_ACTION_PREFIX.length()), false);
 	}
 
 	@Override
@@ -52,7 +61,13 @@ public class CcsAction extends CcsOperator {
 	}
 
 	public boolean canSynchWith(CcsAction action) {
-		return this.coLabel == !action.coLabel && this.name.equals(action.name.substring(1));
+		if (this.isReverseAction != !action.isReverseAction)
+			return false;
+
+		if (!this.isReverseAction)
+			return this.name.equals(action.name.substring(REVERSE_ACTION_PREFIX.length()));
+
+		return action.equals(this.name.substring(REVERSE_ACTION_PREFIX.length()));
 	}
 
 	@Override

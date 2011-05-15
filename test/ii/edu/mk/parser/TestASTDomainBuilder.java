@@ -52,7 +52,35 @@ public class TestASTDomainBuilder extends BaseParserTest {
 		assertEquals("C", right.getRight().getName());
 		assertTrue(right.getRight() instanceof CcsProcess);
 	}
-	
+
+	@Test
+	public void testRecursiveDomainBuilder3() throws Exception {
+
+		CcsOperation root = ASTDomainBuilder.INSTANCE.getRoot("a.b.A");
+		
+		// TODO implement the tests they are copied from the prev test
+		assertEquals(root.getType(), OperatorType.RESTRICTION);
+
+		assertTrue(root instanceof CcsRestrict);
+		assertEquals(1, ((CcsRestrict) root).getRestrictedActions().size());
+		assertEquals("a", ((CcsRestrict) root).getRestrictedActions().get(0).getName());
+
+		assertTrue(((CcsRestrict) root).getOperand() instanceof CcsAdd);
+		CcsAdd add = (CcsAdd) ((CcsRestrict) root).getOperand();
+		assertTrue(add.getLeft() instanceof CcsTrans);
+		assertTrue(add.getRight() instanceof CcsTrans);
+		CcsTrans left = (CcsTrans) add.getLeft();
+		CcsTrans right = (CcsTrans) add.getRight();
+
+		assertEquals("a", left.getAction().getName());
+		assertEquals("B", left.getRight().getName());
+		assertTrue(left.getRight() instanceof CcsProcess);
+
+		assertEquals("b", right.getAction().getName());
+		assertEquals("C", right.getRight().getName());
+		assertTrue(right.getRight() instanceof CcsProcess);
+	}
+
 	@Test
 	public void testNonRecursiveDomainBuilder1() throws Exception {
 
@@ -66,7 +94,7 @@ public class TestASTDomainBuilder extends BaseParserTest {
 		assertTrue(((CcsTrans) root).getRight() instanceof CcsProcess);
 		assertEquals("B", ((CcsTrans) root).getRight().getName());
 	}
-	
+
 	@Test
 	public void testNonRecursiveDomainBuilder2() throws Exception {
 
