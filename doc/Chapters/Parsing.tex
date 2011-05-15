@@ -62,8 +62,13 @@ tokens. One example of an AST is shown in  Fig \ref{fig:ast_example} which is th
 
 Although working directly with ASTs and performing all algorithms on them is possible, it causes 
 a limitation in future changes. Even a small change in the grammar and/or on the structure of the
-generated abstract syntax trees causes a change in the implemented algorithms. Beacause of this,
+generated abstract syntax trees causes a change in the implemented algorithms. Because of this,
 a specific domain model is built along with a domain builder algorithm. The input of the domain
 builder algorithm is a AST and the output is a fully built domain model. It is not expected for 
 the domain model to change, so all algorithms are implemented on the domain model. The domain
-model also has a tree-like structure so it is as easy to work with, as with AST.
+model also is a tree-like structure, so it is as easy to work with, as with AST. The algorithms 
+for LTS generation is built using the domain model. The LTS generation algorithm is recursive
+algorithm which traverses the tree structure and performs SOS rule every time it reaches operation.
+In this fashion all sos transformation are preformed on the domain and as result a new tree
+structure is created which represents the LTS. This tree structure can be easily exported to file
+in Aldebaran format.
