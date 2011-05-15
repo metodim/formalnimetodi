@@ -77,8 +77,11 @@ public class SosTransformer {
 
 		List<SosGraphNode> graphsToBuild = new ArrayList<SosGraphNode>();
 		graphsToBuild.addAll(graphNodeNamesToGraphNodes.values());
-		for (SosGraphNode graph : graphsToBuild)
-			buildGraph(graph);
+		for (SosGraphNode graph : graphsToBuild) {
+			// the graph may have been built in some previous builds
+			if (!graph.isBuilt)
+				buildGraph(graph);
+		}
 
 		return forrest;
 	}
