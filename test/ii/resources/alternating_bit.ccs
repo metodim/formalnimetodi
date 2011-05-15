@@ -22,7 +22,7 @@ A = reply0.A1 + reply1.A2
 A1 = _ack0.A + #.A + _ack0.A1
 A2 = _ack1.A + #.A + _ack1.A2
 
-I = (S|T|R|A)\{send0,send1,recieve0,recieve1,reply0,reply1,ack0,ack1}
+I = (S|T|R|A)\{send0,send1,receive0,receive0,reply0,reply1,ack0,ack1}
 S = send0.S + ack0.accept.S1 + ack1.S
 S1 = send1.S1 + ack1.accept.S1 + ack0.S1
 T = send0.T1 + send1.T2
