@@ -22,76 +22,75 @@ import java.util.Map;
 
 public class AldebaranUtils {
 
-	
-	public static AldebaranFile readFile(File file) throws IOException{
+	public static AldebaranFile readFile(File file) throws IOException {
 		AldebaranFile aldebaranFile = new AldebaranFile();
-		
+
 		BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		
-		String line = bufReader.readLine(); //aldebaran descriptor
+
+		String line = bufReader.readLine(); // aldebaran descriptor
 		aldebaranFile.readDescriptor(line);
-		while((line = bufReader.readLine()) != null){
+		while ((line = bufReader.readLine()) != null) {
 			aldebaranFile.parseLine(line);
 		}
-		
+
 		bufReader.close();
 		return aldebaranFile;
 	}
-	
-	public static void writeFile(AldebaranFile aldebaranFile, File file) throws IOException{
-		if(!file.canWrite())
+
+	public static void writeFile(AldebaranFile aldebaranFile, File file) throws IOException {
+		if (!file.canWrite())
 			throw new IllegalArgumentException("Can not write in this file");
-		
+
 		BufferedWriter bufWriter = new BufferedWriter(new FileWriter(file, false));
-		
+
 		bufWriter.write(aldebaranFile.getDescriptor());
-		for(AldebaranFileLine line : aldebaranFile.getLines()){
+		for (AldebaranFileLine line : aldebaranFile.getLines()) {
 			bufWriter.newLine();
 			bufWriter.write(line.toString());
 		}
 		bufWriter.flush();
 		bufWriter.close();
 	}
-	
-	public static AldebaranFile convert(SosGraphNode rootNode){
+
+	public static AldebaranFile convert(SosGraphNode rootNode) {
 		AldebaranFile aldebaranFile = new AldebaranFile();
-		
+
 		LinkedList<SosGraphNode> queue = new LinkedList<SosGraphNode>();
 		LinkedList<SosGraphNode> visitedNodes = new LinkedList<SosGraphNode>();
-//		LinkedList<SosRule> doneActions = new LinkedList<SosRule>();
-		
+		// LinkedList<SosRule> doneActions = new LinkedList<SosRule>();
+
 		int numberOfStates = 0;
 		int numberOfTransitions = 0;
 		queue.addLast(rootNode);
-		
-		while(!queue.isEmpty()){
+
+		while (!queue.isEmpty()) {
 			SosGraphNode node = queue.removeFirst();
-			if(visitedNodes.contains(node)) continue;
+			if (visitedNodes.contains(node))
+				continue;
 			numberOfStates++;
-			
-			for(Map.Entry<SosRule, SosGraphNode> entry : node.getTransitions().entrySet()){
+
+			for (Map.Entry<SosRule, SosGraphNode> entry : node.getTransitions().entrySet()) {
 				SosRule rule = entry.getKey();
 				SosGraphNode toNode = entry.getValue();
-				
-				aldebaranFile.addLine(node.getName(), rule.getAction().getName(), toNode.getName());
+
+				aldebaranFile.addLine(node.getOrderNo(), rule.getAction().getName(), toNode.getOrderNo());
 				numberOfTransitions++;
-				
-				if(!visitedNodes.contains(toNode)){
+
+				if (!visitedNodes.contains(toNode)) {
 					queue.addLast(toNode);
 				}
 			}
-			
+
 			visitedNodes.add(node);
 		}
-		aldebaranFile.setFirstState(Integer.parseInt(rootNode.getName()));
+		aldebaranFile.setFirstState(rootNode.getOrderNo());
 		aldebaranFile.setNumberOfStates(numberOfStates);
 		aldebaranFile.setNumberOfTransitions(numberOfTransitions);
 		return aldebaranFile;
-		
 	}
-	
-	public static Graph generateGraph(File file){
-		try{
+
+	public static Graph generateGraph(File file) {
+		try {
 			return generateGraphFromAldebaranFile(AldebaranUtils.readFile(file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -100,17 +99,17 @@ public class AldebaranUtils {
 		}
 		return null;
 	}
-	
-	public static Graph generateGraphFromAldebaranFile(AldebaranFile alFile){
+
+	public static Graph generateGraphFromAldebaranFile(AldebaranFile alFile) {
 		Graph graph = new Graph();
-		
+
 		String start = alFile.getFirstState().toString();
-		
+
 		Node nodes[] = new Node[alFile.getNumberOfStates()];
 		nodes[0] = new Node(start);
 		graph.addNode(nodes[0]);
 
-		for(AldebaranFileLine line : alFile.getLines()){
+		for (AldebaranFileLine line : alFile.getLines()) {
 			String node1 = line.getStartState().toString();
 			String action = line.getLabel();
 			String node2 = line.getEndState().toString();
@@ -144,18 +143,20 @@ public class AldebaranUtils {
 
 		return graph;
 	}
-	
-	//sync writeFile and toString to work with a stream ??
-	public static String toString(AldebaranFile aldebaranFile, boolean newline){
+
+	// sync writeFile and toString to work with a stream ??
+	public static String toString(AldebaranFile aldebaranFile, boolean newline) {
 		StringWriter writer = new StringWriter();
 		writer.write(aldebaranFile.getDescriptor());
-		if(newline) writer.write("\n");
-		for(AldebaranFileLine line : aldebaranFile.getLines()){
+		if (newline)
+			writer.write("\n");
+		for (AldebaranFileLine line : aldebaranFile.getLines()) {
 			writer.write(line.toString());
-			if(newline) writer.write("\n");
+			if (newline)
+				writer.write("\n");
 		}
 		writer.flush();
 		return writer.getBuffer().toString();
 	}
-	
+
 }

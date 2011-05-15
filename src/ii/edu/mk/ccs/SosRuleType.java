@@ -31,6 +31,9 @@ public enum SosRuleType {
 
 	REL,
 
+	/**
+	 * A -a-> B, if A = a.B
+	 */
 	CON
 
 }

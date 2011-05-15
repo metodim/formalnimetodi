@@ -22,10 +22,16 @@ public class SosRule {
 		return type;
 	}
 
+	/**
+	 * Returns the current CCS operation before the transition
+	 */
 	public CcsOperation getCcsOpCurrent() {
 		return ccsOpCurrent;
 	}
 
+	/**
+	 * Returns the next CCS operation produced from the transition
+	 */
 	public CcsOperation getCcsOpNext() {
 		return ccsOpNext;
 	}
