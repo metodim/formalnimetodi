@@ -308,6 +308,7 @@ public class BisimulationPanel extends JPanel{
 			this.setMaximumSize(vpDim);
 			this.setLayout(new MigLayout("fill","[100%]", "[100%]"));
 			textArea = new JTextArea();
+			textArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 			textArea.setEditable(false);
 			scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

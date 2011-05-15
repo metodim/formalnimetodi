@@ -60,4 +60,10 @@ tokens. One example of an AST is shown in  Fig \ref{fig:ast_example} which is th
 \label{fig:ast_example}
 \end{figure}
 
-No tralalal \ref{eq:ccs_example}..
+Although working directly with ASTs and performing all algorithms on them is possible, it causes 
+a limitation in future changes. Even a small change in the grammar and/or on the structure of the
+generated abstract syntax trees causes a change in the implemented algorithms. Beacause of this,
+a specific domain model is built along with a domain builder algorithm. The input of the domain
+builder algorithm is a AST and the output is a fully built domain model. It is not expected for 
+the domain model to change, so all algorithms are implemented on the domain model. The domain
+model also has a tree-like structure so it is as easy to work with, as with AST.
