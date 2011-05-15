@@ -7,7 +7,7 @@ different transition systems.
 
 An alternative perspective is to consider bisimulation equivalence as a relation between states of a single labelled 
 transition system. By considering the quotient transition system under such a relation, smaller models are obtained
-[BK08].
+\cite{ModelChecking}.
 
 The bisimulation equivalence finds its extensive application in the area of formal verification of concurrent systems,
 for example to check the equivalence of an implementation of a certain system with respect to its specification model.
@@ -25,9 +25,9 @@ in the first step;
 The first step, computing strong bisimulation equivalence, was implemented with two different methods: the so called
 naive method and a more efficient method due to Fernandez, both of which can serve as minimization procedures.
 
-The naive algorithm [AILS07a] for computing bisimulation equivalence stems from the theory underlying Tarski's fixed point
-theorem [AILS07b]. It has been proven that the strong bisimulation equivalence is the largest fixed point of the 
-monotic function $F$ as defined in [AILS07a] given by Tarsky's fixed point theorem. 
+The naive algorithm \cite{ReactiveSystems1} for computing bisimulation equivalence stems from the theory underlying 
+Tarski's fixed point theorem \cite{ReactiveSystems2}. It has been proven that the strong bisimulation equivalence is 
+the largest fixed point of the monotic function $F$ as defined in \cite{ReactiveSystems1} given by Tarsky's fixed point theorem. 
 
 This algorithm has time complexity of $O(mn)$ for a labeled transition system with
 \emph{m} transitions and \emph{n} states. 
@@ -40,7 +40,7 @@ and the relational coarsest partition problem solved by Paige and Tarjan. It rep
 Paige-Tarjan algorithm of complexity $O(m \log n)$ to minimize labeled transition systems modulo bisimulation 
 equivalence by computing the coarsest partition problem with respect to the family of binary relations 
 $\left(T_a\right)_{a\in A}$ instead of one binary relation, where $T_a=\{(p,q)|(p,a,q)\in T\}$ is a transition 
-relation for action ${a\in A}$ and $T$ is a set of all transitions [PT87, Fer89].
+relation for action ${a\in A}$ and $T$ is a set of all transitions \cite{PaigeTarjan, Fernandez}.
 
 The algorithm due to Fernandez in our implementation takes an LTS in aldebaran format as an input, generates a 
 corresponding labeled graph and then partitions the labeled graph into its coarsest blocks where each block represents 
@@ -82,16 +82,21 @@ The procedure is repeated for all pairs of bisimilar states.
 Having reduced the two labeled graphs into their minimal forms, the last step in the process of checking the equivalence
 between the two labeled transition system consists of checking whether the two minimal labeled graphs are isomorphic.
 
-Two graphs $G$ and $H$ are isomorphic if there exists a graph isomorphism between them. According to [BPS01], a graph isomorphism 
-between two graphs G and H is a bijective function $f: Nodes(G) \rightarrow Nodes(H)$ satisfying:
+Two graphs $G$ and $H$ are isomorphic if there exists a graph isomorphism between them. According to \cite{HandbookProcessAlgebra}, 
+a graph isomorphism between two graphs G and H is a bijective function $f: Nodes(G) \rightarrow Nodes(H)$ satisfying:
 \begin{itemize}
 	\item $f(initialNode(G)) = g(initialNode(H))$
 	\item $(s, a, t)$ is an edge in $G \Leftrightarrow (f(s), a, f(t))$ is an edge in $H$
 \end{itemize}
 
-The graph isomorphism check is implemented as follows:
-Starting from the initial states, the outgoing tranzitions have to be the same, 
-Povtorno pocnuvate od pocetnite sostojbi. Izleznite tranzicii mora da bidat isti, i za sekoja izlezna tranzicija so nekakva oznaka, mora da postoi druga takva so ista oznaka vo drugiot graf sto vodi povtorno do izomorfni sostojbi. Znaci treba da gi cuvate za sekoja sostojba nejzinite opcii za mozni izomorfni sostojbi. Posetenite sostojbi ne gi proveruvate (znaci ova e ednostavna rekurzija).
+The graph isomorphism check is implemented recursively as follows:
+Starting from the initial states of the minimal graphs, the outgoing labeled transitions have to be same, and for every outgoing
+transition with a certain label, there has to be another one in the other graph with the same label that leads again to isomorphic
+states. 
+
+%
+%Povtorno pocnuvate od pocetnite sostojbi. Izleznite tranzicii mora da bidat isti, i za sekoja izlezna tranzicija so nekakva oznaka, mora %da postoi druga takva so ista oznaka vo drugiot graf sto vodi povtorno do izomorfni sostojbi. Znaci treba da gi cuvate za sekoja %sostojba nejzinite opcii za mozni izomorfni sostojbi. Posetenite sostojbi ne gi proveruvate (znaci ova e ednostavna rekurzija).
+%
 
 The two graphs are bisimilar.
 
@@ -167,4 +172,3 @@ The process of reduction of the Graph 2 to its minimal form is given on Fig. 5. 
 \end{figure}
 
 % [ref6}: url za mcrl2
-% [ref7]: Model checking
