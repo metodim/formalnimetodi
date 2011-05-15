@@ -78,6 +78,15 @@ public class TestSosTranformer extends BaseParserTest {
 	}
 
 	@Test
+	public void test_restrict_tau_multiple_processes() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		new ASTDomainBuilder().getRoot("A = (a.B|_a.B)\\{a}"),
+
+		new ASTDomainBuilder().getRoot("B = b.0")));
+	}
+
+	@Test
 	public void test_restrict_with_two_processes1() throws Exception {
 		print(new SosTransformer().generateLtsGraph(
 
@@ -94,6 +103,33 @@ public class TestSosTranformer extends BaseParserTest {
 	@Test
 	public void test_restrict_reverse2() throws Exception {
 		print(new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("A = (a.B)\\{_a}")));
+	}
+
+	@Test
+	public void test_restrict_sync_add() throws Exception {
+		print(new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("A = (a.B|a.C+a.D)\\{a}")));
+	}
+
+	@Test
+	public void test_restrict_sync_multiple_processes() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		new ASTDomainBuilder().getRoot("A = (B|C)\\{b,c}"),
+
+		new ASTDomainBuilder().getRoot("B = b.B"),
+
+		new ASTDomainBuilder().getRoot("C = c.C")));
+	}
+
+	@Test
+	public void test_restrict_add_multiple_processes() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		new ASTDomainBuilder().getRoot("A = (B+C)\\{b,c}"),
+
+		new ASTDomainBuilder().getRoot("B = b.B"),
+
+		new ASTDomainBuilder().getRoot("C = c.C")));
 	}
 
 	@Test
