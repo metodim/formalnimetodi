@@ -64,9 +64,11 @@ public class CcsToLtsPanel extends JPanel {
 		JLabel testExpresionLabel = new JLabel("CCS Expression:");
 		JLabel parseStatusLabel = new JLabel("LTS Status:");
 		parseStatusMessageLabel = new JLabel("Status Message");
+		parseStatusMessageLabel.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		JLabel expressionTokensLabel = new JLabel("LTS (Aldebaran format):");
 		
 		expressionArea = new JTextArea();
+		expressionArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		JScrollPane testExpressionScrollPane = new JScrollPane(expressionArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		testExpressionScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		expressionArea.setEnabled(true);
@@ -75,6 +77,7 @@ public class CcsToLtsPanel extends JPanel {
 		clearExpressionArea.addActionListener(new ClearExpressionAreaAction());
 		
 		ltsArea = new JTextArea();
+		ltsArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		JScrollPane ltsAreaScrollPane = new JScrollPane(ltsArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		ltsAreaScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		ltsArea.setEnabled(true);

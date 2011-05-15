@@ -67,6 +67,7 @@ public class BisimulationPanel extends JPanel{
 		
 		JLabel ltsLabel1 = new JLabel("LTS 1:");
 		JTextField ltsFileField1 = new JTextField(256);
+		ltsFileField1.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		ltsFileField1.setEditable(false);
 		JButton browseLts1Button = new JButton("Browse");
 		JButton clearLts1Button = new JButton("Clear");
@@ -77,6 +78,7 @@ public class BisimulationPanel extends JPanel{
 		
 		JLabel ltsLabel2 = new JLabel("LTS 2:");
 		JTextField ltsFileField2 = new JTextField(256);
+		ltsFileField2.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		ltsFileField2.setEditable(false);
 		JButton browseLts2Button = new JButton("Browse");
 		JButton clearLts2Button = new JButton("Clear");
