@@ -1,3 +1,6 @@
+
+
+
 grammar Ccs2;
 
 options {
@@ -62,19 +65,20 @@ expr
 	| sync EOF!
 	;
 
-sync	: plus ('|'^ p=plus)*;	// TODO: we should try to produce non-binary AST tree
+sync	: plus ('|'^ p=plus)*;
 
-plus	: start ('+'^ start)*;	// TODO: we should try to produce non-binary AST tree
+plus	: start ('+'^ start)*;
  
 start 	: 	trans
- 	| 	('(' s=sync ')' | p=process)	 (	rest=restriction 	-> ^(RESTRICT $s? $p? $rest) 
- 						| 	ren=renaming 		-> ^(RENAME $s? $p? $ren)
- 						|	WS* 			-> $s? $p?)
-
+	|	('(' s=sync ')' | p=process)	(	rest=restriction 	-> ^(RESTRICT $s? $p? $rest) 
+ 						 | 	ren=renaming 		-> ^(RENAME $s? $p? $ren)
+ 						 |	WS* 			-> $s? $p?
+ 						)
 	;
 	
-trans	:	t+=trans_var ('.' (t+=trans_var | t+=process | t+=sync))+ -> ^(TRANSITION $t+);
-
+trans	:	t=trans_var '.' (p=process | s=sync)	-> ^(TRANSITION $t $p? $s?)
+	;
+	
 process	:	PROCESS;
 
 trans_var

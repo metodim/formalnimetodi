@@ -1,0 +1,35 @@
+# Specification
+ABP = deliver.accept.ABP
+
+#Implementation
+I = (S|T|R|A)\{send0,send1,recieve0,recieve1,reply0,reply1,ack0,ack1}
+
+# Sender
+S = send0.S + ack0.accept.S1 + ack1.S
+S1 = send1.S1 + ack1.accept.S1 + ack0.S1
+
+# Transport
+T = send0.T1 + send1.T2
+T1 = _receive0.T + #.T + _receive0.T1
+T2 = _receive1.T + #.T + _receive1.T2
+
+# Receiver
+R = receive0.deliver.R1 + reply1.R + receive1.R
+R1 = receive1.deliver.R + reply0.R1 + receive0.R1
+
+# Acknowledge
+A = reply0.A1 + reply1.A2
+A1 = _ack0.A + #.A + _ack0.A1
+A2 = _ack1.A + #.A + _ack1.A2
+
+I = (S|T|R|A)\{send0,send1,recieve0,recieve1,reply0,reply1,ack0,ack1}
+S = send0.S + ack0.accept.S1 + ack1.S
+S1 = send1.S1 + ack1.accept.S1 + ack0.S1
+T = send0.T1 + send1.T2
+T1 = _receive0.T + #.T + _receive0.T1
+T2 = _receive1.T + #.T + _receive1.T2
+R = receive0.deliver.R1 + reply1.R + receive1.R
+R1 = receive1.deliver.R + reply0.R1 + receive0.R1
+A = reply0.A1 + reply1.A2
+A1 = _ack0.A + #.A + _ack0.A1
+A2 = _ack1.A + #.A + _ack1.A2

@@ -32,8 +32,10 @@ public class SosGraphNode {
 	final String ccsTreeHash;
 	final String name;
 	final int orderNo;
-
 	final boolean isForestRoot;
+
+	// beware mutable state
+	boolean isBuilt;
 
 	public SosGraphNode(String name, CcsOperation ccsTree, int orderNo, boolean isForestRoot) {
 		super();
@@ -42,6 +44,7 @@ public class SosGraphNode {
 		this.name = name;
 		this.orderNo = orderNo;
 		this.isForestRoot = isForestRoot;
+		isBuilt = false;
 
 		/**
 		 * We use a linked hash map to keep the order of the keys and values in
@@ -81,5 +84,13 @@ public class SosGraphNode {
 
 	public boolean isForestRoot() {
 		return isForestRoot;
+	}
+
+	public boolean isBuilt() {
+		return isBuilt;
+	}
+
+	public void setBuilt(boolean isBuilt) {
+		this.isBuilt = isBuilt;
 	}
 }

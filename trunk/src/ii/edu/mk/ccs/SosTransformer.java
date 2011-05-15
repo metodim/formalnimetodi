@@ -110,8 +110,15 @@ public class SosTransformer {
 	 * Builds the {@link SosGraphNode}.
 	 */
 	private void buildGraph(SosGraphNode graph) {
-		int i = 1;
 
+		/**
+		 * graph.build must be set to true before the actual built of the graph
+		 * in the case the graph will reference itself in the build process,
+		 * which can lead to infinite recursion.
+		 */
+		graph.setBuilt(true);
+
+		int i = 1;
 		for (SosRule rule : applySosTransformations(graph.ccsTree)) {
 			SosGraphNode next = createNewNode(graph, i++, rule);
 			// if is already an existing SosGraphNode than don't do anything
@@ -202,7 +209,10 @@ public class SosTransformer {
 			List<SosRule> restrictRules = new ArrayList<SosRule>();
 
 			for (SosRule ruleLeft : applySosTransformations(restrict.getOperand()))
-				if (!restrict.getRestrictedActions().contains(ruleLeft.getAction()))
+				if (!restrict.getRestrictedActions().contains(ruleLeft.getAction())
+
+				&& !restrict.getRestrictedActions().contains(ruleLeft.getAction().getReverseAction()))
+
 					restrictRules.add(new SosRule(SosRuleType.RES, tree, new CcsRestrict(ruleLeft.ccsOpNext, restrict.getRestrictedActions()), ruleLeft.getAction()));
 
 			return restrictRules;
@@ -216,9 +226,12 @@ public class SosTransformer {
 
 			List<SosRule> processRules = new ArrayList<SosRule>();
 			SosGraphNode graph = graphNodeNamesToGraphNodes.get(process.getName());
-			// TODO graph can be null of it is not yet build
-			if(graph != null)
-			processRules.addAll(graph.transitions.keySet());
+
+			if (graph != null && !graph.isBuilt)
+				buildGraph(graph);
+
+			if (graph != null)
+				processRules.addAll(graph.transitions.keySet());
 
 			return processRules;
 
