@@ -31,12 +31,17 @@ public class SosGraphNode {
 	final CcsOperation ccsTree;
 	final String ccsTreeHash;
 	final String name;
+	final int orderNo;
 
-	public SosGraphNode(String name, CcsOperation ccsTree) {
+	final boolean isForestRoot;
+
+	public SosGraphNode(String name, CcsOperation ccsTree, int orderNo, boolean isForestRoot) {
 		super();
 		this.ccsTree = ccsTree;
 		this.ccsTreeHash = null; // TODO compute this
 		this.name = name;
+		this.orderNo = orderNo;
+		this.isForestRoot = isForestRoot;
 
 		/**
 		 * We use a linked hash map to keep the order of the keys and values in
@@ -62,11 +67,19 @@ public class SosGraphNode {
 		return name;
 	}
 
+	public int getOrderNo() {
+		return orderNo;
+	}
+
 	public CcsOperation getCcsTree() {
 		return ccsTree;
 	}
 
 	public String getCcsTreeHash() {
 		return ccsTreeHash;
+	}
+
+	public boolean isForestRoot() {
+		return isForestRoot;
 	}
 }

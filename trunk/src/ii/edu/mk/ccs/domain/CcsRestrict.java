@@ -23,4 +23,21 @@ public class CcsRestrict extends CcsUnaryOperation<CcsOperation> {
 	public OperatorType getType() {
 		return OperatorType.RESTRICTION;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("(");
+		sb.append(getOperand().toString());
+		sb.append(")");
+		sb.append("\\{");
+		for (CcsAction action : restrictedActions) {
+			sb.append(action.toString());
+			sb.append(",");
+		}
+		
+		sb.replace(sb.length() - 1, sb.length(), "");
+		sb.append("}");
+		return sb.toString();
+	}
 }

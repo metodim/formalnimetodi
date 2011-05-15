@@ -126,15 +126,15 @@ public class CcsToLtsPanel extends JPanel {
 				if(expressions.size() == 0) return;
 				List<CcsOperation> ccsOperations = new ArrayList<CcsOperation>();
 				for(String expression : expressions){
-					ccsOperations.add(ASTDomainBuilder.INSTANCE.getRootNoRecursion(expression));
+					ccsOperations.add(ASTDomainBuilder.INSTANCE.getRoot(expression));
 				}
 				
 				if(ccsOperations.size()>1 && !checkCcsDefinitions(ccsOperations)){
 					parseStatusMessageLabel.setText("CCS expresssion definition error");
 					return;
 				}
-				
-				rootNode = SosTransformer.getInstance().generateLtsGraph(ccsOperations);
+
+				rootNode = SosTransformer.getInstance().generateLtsGraph(ccsOperations).get(0);
 				aldebaranFile = AldebaranUtils.convert(rootNode);
 				ltsArea.setText(AldebaranUtils.toString(aldebaranFile, true));
 			} catch (SosTransformerException ste){
