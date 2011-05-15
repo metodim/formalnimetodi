@@ -59,4 +59,9 @@ is a result of parsing the expression:
 \label{fig:ast_example}
 \end{figure}
 
-No tralalal \ref{eq:ccs_example}..
+Although working directly with ASTs and performing all algorithms on them is possible, it causes 
+a limitation in future changes. Even a small change in the grammar and/or on the structure of the
+generated tree causes a change in the implemented algorithms. Beacause of this, a specific domain
+model is built and a domain builder (DB). The input of the domain builder is a AST and the output is 
+a fully built domain model objects. It is not expected for the domain model to change, so all 
+algorithms are implemented on the domain model. 
