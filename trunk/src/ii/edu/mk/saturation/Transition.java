@@ -1,4 +1,4 @@
-
+package ii.edu.mk.saturation;
 
 public class Transition {
         public int startState;
