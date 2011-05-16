@@ -23,14 +23,14 @@ A1 = _ack0.A + #.A + _ack0.A1
 A2 = _ack1.A + #.A + _ack1.A2
 
 # Version 1
-I = (S|T|R|A)\{send0,send1,receive0,receive1,reply0,reply1,ack0,ack1}
+I = (S|A|R|T)\{send0,send1,receive0,receive1,reply0,reply1,ack0,ack1}
 S = _send0.S + ack0.accept.S1 + ack1.S
 S1 = _send1.S1 + ack1.accept.S1 + ack0.S1
 T = send0.T1 + send1.T2
 T1 = _receive0.T + #.T + _receive0.T1
 T2 = _receive1.T + #.T + _receive1.T2
-R = receive0.deliver.R1 + reply1.R + receive1.R
-R1 = receive1.deliver.R + reply0.R1 + receive0.R1
+R = receive0._deliver.R1 + _reply1.R + receive1.R
+R1 = receive1._deliver.R + _reply0.R1 + receive0.R1
 A = reply0.A1 + reply1.A2
 A1 = _ack0.A + #.A + _ack0.A1
 A2 = _ack1.A + #.A + _ack1.A2

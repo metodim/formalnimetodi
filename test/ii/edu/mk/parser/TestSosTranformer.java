@@ -4,6 +4,7 @@ import ii.edu.mk.ccs.SosGraphNode;
 import ii.edu.mk.ccs.SosRule;
 import ii.edu.mk.ccs.SosTransformer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -89,6 +90,35 @@ public class TestSosTranformer extends BaseParserTest {
 	}
 
 	@Test
+	public void test_alt_bit() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		ASTDomainBuilder.INSTANCE.getRoot("I=(S|T|R|A)\\{send0,send1,receive0,receive1,reply0,reply1,ack0,ack1}"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("S=_send0.S+ack0.accept.S1+ack1.S"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("S1=_send1.S1+ack1.accept.S1+ack0.S1"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("T=send0.T1+send1.T2"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("T1=_receive0.T+#.T+_receive0.T1"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("T2=_receive1.T+#.T+_receive1.T2"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("R=receive0.deliver.R1+reply1.R+receive1.R"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("R1=receive1.deliver.R+reply0.R1+receive0.R1"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("A=reply0.A1+reply1.A2"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("A1=_ack0.A+#.A+_ack0.A1"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("A2=_ack1.A+#.A+_ack1.A2")
+
+		).get(0));
+	}
+
+	@Test
 	public void test_restrict_tau_multiple_processes1() throws Exception {
 		print(new SosTransformer().generateLtsGraph(
 
@@ -167,10 +197,16 @@ public class TestSosTranformer extends BaseParserTest {
 		System.out.println();
 	}
 
+	List<SosGraphNode> visited = new ArrayList<SosGraphNode>();
+
 	private void print(SosGraphNode graph, String prefix, int level) {
 		if (graph.getTransitions().keySet().size() == 0)
 			return;
 
+		if (visited.contains(graph))
+			return;
+
+		visited.add(graph);
 		for (SosRule sosRule : graph.getTransitions().keySet()) {
 			SosGraphNode next = graph.getTransitions().get(sosRule);
 
