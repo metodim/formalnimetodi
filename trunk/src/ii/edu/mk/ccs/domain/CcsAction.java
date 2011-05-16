@@ -61,13 +61,13 @@ public class CcsAction extends CcsOperator {
 	}
 
 	public boolean canSynchWith(CcsAction action) {
-		if (this.isReverseAction != !action.isReverseAction)
+		if (this.isReverseAction == action.isReverseAction)
 			return false;
 
 		if (!this.isReverseAction)
 			return this.name.equals(action.name.substring(REVERSE_ACTION_PREFIX.length()));
 
-		return action.equals(this.name.substring(REVERSE_ACTION_PREFIX.length()));
+		return action.name.equals(this.name.substring(REVERSE_ACTION_PREFIX.length()));
 	}
 
 	@Override
