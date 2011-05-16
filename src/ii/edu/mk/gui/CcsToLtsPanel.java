@@ -10,6 +10,8 @@ import ii.edu.mk.io.AldebaranUtils;
 import ii.edu.mk.parser.ASTDomainBuilder;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -24,6 +26,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,8 +48,8 @@ import org.jdesktop.swingx.JXFrame;
 public class CcsToLtsPanel extends JPanel {
 
 	private final static Logger LOG = LogManager.getLogger(CcsToLtsPanel.class);
+	private final static Dimension vpDim = new Dimension(500, 500);
 	
-	@SuppressWarnings("unused")
 	private final JXFrame frame;
 	
 	JTextArea expressionArea;
@@ -56,6 +59,9 @@ public class CcsToLtsPanel extends JPanel {
 	SosGraphNode rootNode;
 	AldebaranFile aldebaranFile;
 	File ccsFile;
+	
+	LtsGraphPanel graphPanel;
+	JDialog dialog;
 	
 	public CcsToLtsPanel(final JXFrame frameOwner) {
 		this.frame = frameOwner;
@@ -94,6 +100,9 @@ public class CcsToLtsPanel extends JPanel {
 		JButton saveLtsButton = new JButton("Save");
 		saveLtsButton.addActionListener(new SaveLtsAction(this));
 		
+		JButton viewLtsGraphButton = new JButton("View Graph");
+		viewLtsGraphButton.addActionListener(new ViewGraphAction());
+		
 		JButton parserButton = new JButton("Generate LTS");
 		parserButton.addActionListener(new GenerateLTSAction(expressionArea, ltsArea, parseStatusMessageLabel));
 		
@@ -110,8 +119,14 @@ public class CcsToLtsPanel extends JPanel {
 		add(expressionTokensLabel);
 		add(ltsAreaScrollPane, "grow, wrap");
 		add(Box.createVerticalGlue());
-		add(saveLtsButton, "split 2");
+		add(saveLtsButton, "split 3");
+		add(viewLtsGraphButton);
 		add(clearLtsAreaButton);
+		
+		graphPanel = new LtsGraphPanel();
+		dialog = new JDialog(this.frame, true);
+		dialog.setTitle("LTS Graph");
+		dialog.setContentPane(graphPanel);
 	}
 	
 	class GenerateLTSAction implements ActionListener{
@@ -275,6 +290,21 @@ public class CcsToLtsPanel extends JPanel {
 						parseStatusMessageLabel.setText("Error while trying to write LTS to file");
 					}
 				}
+			}
+		}
+	}
+	
+	class ViewGraphAction implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(aldebaranFile != null){
+				graphPanel.drawGraph(aldebaranFile);
+				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+				dialog.setLocation((dim.width/2)- (vpDim.width/2), (dim.height / 2)-(vpDim.height/2));
+				dialog.pack();
+				dialog.setVisible(true);
+			}else{
+				LOG.debug("aldebaran file is null.");
 			}
 		}
 	}
