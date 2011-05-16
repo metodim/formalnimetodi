@@ -78,23 +78,23 @@ public class TestSosTranformer extends BaseParserTest {
 	}
 
 	@Test
+	public void test_restrict_tau_multiple_processes() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		new ASTDomainBuilder().getRoot("I = (A|B)\\{a}"),
+
+		new ASTDomainBuilder().getRoot("A = _a.0"),
+
+		new ASTDomainBuilder().getRoot("B = a.0")));
+	}
+
+	@Test
 	public void test_restrict_tau_multiple_processes1() throws Exception {
 		print(new SosTransformer().generateLtsGraph(
 
 		new ASTDomainBuilder().getRoot("A = (a.B|_a.B)\\{a}"),
 
 		new ASTDomainBuilder().getRoot("B = b.0")));
-	}
-
-	@Test
-	public void test_restrict_tau_multiple_processes2() throws Exception {
-		print(new SosTransformer().generateLtsGraph(
-
-		new ASTDomainBuilder().getRoot("I = (A|B)\\{a}"),
-
-		new ASTDomainBuilder().getRoot("A = _a.A"),
-
-		new ASTDomainBuilder().getRoot("B = a.B")));
 	}
 
 	@Test
