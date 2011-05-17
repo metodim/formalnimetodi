@@ -1,6 +1,6 @@
 package ii.edu.mk.bisimulation;
 
-public class PostTransition {
+public class PostTransition implements Comparable<PostTransition> {
 	private String postProcess;
 	private String action;
 	private String color;
@@ -33,6 +33,11 @@ public class PostTransition {
 
 	public String getColor() {
 		return color;
+	}
+	
+	@Override
+	public int compareTo(PostTransition pt1) {
+		return this.getAction().compareTo(pt1.getAction());
 	}
 
 	public String toString() {
