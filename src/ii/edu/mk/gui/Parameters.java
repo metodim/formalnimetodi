@@ -14,7 +14,7 @@ public class Parameters<T> {
 	public static final Parameters<String> RESOURCE_PATH =  new Parameters<String>("ii"+s+"resources"+s);
 	public static final Parameters<String> APP_NAME =  new Parameters<String>("CCS");
 	public static final Parameters<Dimension> SCREEN_RESOLUTION = new Parameters<Dimension>(new Dimension(800, 600));
-	public static final Parameters<Font> DEFAULT_TEXT_FIELD_FONT = new Parameters<Font>(new Font("monospaced", 0, 12));
+	public static final Parameters<Font> DEFAULT_TEXT_FIELD_FONT = new Parameters<Font>(new Font("monospaced", 0, 14));
 	
 	private T value; 
 	private Parameters(T value) {
