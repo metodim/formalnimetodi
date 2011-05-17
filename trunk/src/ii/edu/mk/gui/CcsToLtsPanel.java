@@ -49,30 +49,33 @@ public class CcsToLtsPanel extends JPanel {
 
 	private final static Logger LOG = LogManager.getLogger(CcsToLtsPanel.class);
 	private final static Dimension vpDim = new Dimension(500, 500);
-	
+
 	private final JXFrame frame;
-	
+
 	JTextArea expressionArea;
 	JTextArea ltsArea;
 	JLabel parseStatusMessageLabel;
-	
-	SosGraphNode rootNode;
+
+	SosGraphNode ltsRootNode;
 	AldebaranFile aldebaranFile;
 	File ccsFile;
-	
-	AldebaranGraphPanel graphPanel;
-	JDialog dialog;
-	
+
+	AldebaranGraphPanel aldebaranGraphPanel;
+	LtsGraphPanel ltsGraphPanel;
+
+	JDialog aldebaranDialog;
+	JDialog ltsDialog;
+
 	public CcsToLtsPanel(final JXFrame frameOwner) {
 		this.frame = frameOwner;
-		
-		setLayout(new MigLayout("fill", "[20%]3px[80%]","[40%]3px[10%]3px[40%]3px[10%]"));
+
+		setLayout(new MigLayout("fill", "[20%]3px[80%]", "[40%]3px[10%]3px[40%]3px[10%]"));
 		JLabel testExpresionLabel = new JLabel("CCS Expression:");
 		JLabel parseStatusLabel = new JLabel("LTS Status:");
 		parseStatusMessageLabel = new JLabel("Status Message");
 		parseStatusMessageLabel.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		JLabel expressionTokensLabel = new JLabel("LTS (Aldebaran format):");
-		
+
 		expressionArea = new JTextArea();
 		expressionArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		JScrollPane testExpressionScrollPane = new JScrollPane(expressionArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -81,7 +84,7 @@ public class CcsToLtsPanel extends JPanel {
 		expressionArea.setEditable(true);
 		JButton clearExpressionArea = new JButton("Clear");
 		clearExpressionArea.addActionListener(new ClearExpressionAreaAction());
-		
+
 		ltsArea = new JTextArea();
 		ltsArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		JScrollPane ltsAreaScrollPane = new JScrollPane(ltsArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -90,75 +93,89 @@ public class CcsToLtsPanel extends JPanel {
 		ltsArea.setEditable(false);
 		JButton clearLtsAreaButton = new JButton("Clear");
 		clearExpressionArea.addActionListener(new ClearLtsAreaAction());
-		
+
 		JButton openCcsExprsButton = new JButton("Open");
 		openCcsExprsButton.addActionListener(new OpenCcsAction(this));
-		
+
 		JButton saveCcsExprsButton = new JButton("Save");
 		saveCcsExprsButton.addActionListener(new SaveCcsAction(this));
-		
+
 		JButton saveLtsButton = new JButton("Save");
 		saveLtsButton.addActionListener(new SaveLtsAction(this));
-		
-		JButton viewLtsGraphButton = new JButton("View Graph");
-		viewLtsGraphButton.addActionListener(new ViewGraphAction());
-		
+
+		JButton viewAldebaranGraphButton = new JButton("View Aldebaran Graph");
+		viewAldebaranGraphButton.addActionListener(new ViewAldebaranGraphAction());
+
+		JButton viewLtsGraphButton = new JButton("View LTS Graph");
+		viewLtsGraphButton.addActionListener(new ViewLtsGraphAction());
+
 		JButton parserButton = new JButton("Generate LTS");
 		parserButton.addActionListener(new GenerateLTSAction(expressionArea, ltsArea, parseStatusMessageLabel));
-		
+
 		add(testExpresionLabel);
 		add(testExpressionScrollPane, "grow, wrap");
 		add(parseStatusLabel);
-		
-		add(openCcsExprsButton, "split 5, al l");
+
+		add(openCcsExprsButton, "split 6, al l");
 		add(saveCcsExprsButton, "al l");
 		add(clearExpressionArea, "al r");
 		add(parserButton, "al l");
+		add(viewLtsGraphButton, "al r");
 		add(parseStatusMessageLabel, "al l, wrap");
-		
+
 		add(expressionTokensLabel);
 		add(ltsAreaScrollPane, "grow, wrap");
 		add(Box.createVerticalGlue());
 		add(saveLtsButton, "split 3");
-		add(viewLtsGraphButton);
+		add(viewAldebaranGraphButton);
 		add(clearLtsAreaButton);
+
+		aldebaranGraphPanel = new AldebaranGraphPanel();
+		aldebaranDialog = new JDialog(this.frame, true);
+		aldebaranDialog.setTitle("Aldebaran Graph");
+		aldebaranDialog.setContentPane(aldebaranGraphPanel);
 		
-		graphPanel = new AldebaranGraphPanel();
-		dialog = new JDialog(this.frame, true);
-		dialog.setTitle("LTS Graph");
-		dialog.setContentPane(graphPanel);
+
+		ltsGraphPanel = new LtsGraphPanel();
+		ltsDialog = new JDialog(this.frame, true);
+		ltsDialog.setTitle("LTS Graph");
+		ltsDialog.setContentPane(ltsGraphPanel);
 	}
-	
-	class GenerateLTSAction implements ActionListener{
+
+	class GenerateLTSAction implements ActionListener {
 		JTextArea inputField;
 		JTextArea outputField;
 		JLabel statusMessage;
+
 		public GenerateLTSAction(JTextArea inField, JTextArea outField, JLabel status) {
-			inputField = inField; outputField = outField; statusMessage = status;
+			inputField = inField;
+			outputField = outField;
+			statusMessage = status;
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
 				List<String> expressions = getExpressionsStrings(expressionArea.getText());
-				if(expressions.size() == 0) return;
+				if (expressions.size() == 0)
+					return;
 				List<CcsOperation> ccsOperations = new ArrayList<CcsOperation>();
-				for(String expression : expressions){
+				for (String expression : expressions) {
 					ccsOperations.add(ASTDomainBuilder.INSTANCE.getRoot(expression));
 				}
-				
-				if(ccsOperations.size()>1 && !checkCcsDefinitions(ccsOperations)){
+
+				if (ccsOperations.size() > 1 && !checkCcsDefinitions(ccsOperations)) {
 					parseStatusMessageLabel.setText("CCS expresssion definition error");
 					return;
 				}
 
-				rootNode = SosTransformer.getInstance().generateLtsGraph(ccsOperations).get(0);
-				aldebaranFile = AldebaranUtils.convert(rootNode);
+				ltsRootNode = SosTransformer.getInstance().generateLtsGraph(ccsOperations).get(0);
+				aldebaranFile = AldebaranUtils.convert(ltsRootNode);
 				ltsArea.setText(AldebaranUtils.toString(aldebaranFile, true));
-			} catch (SosTransformerException ste){
+			} catch (SosTransformerException ste) {
 				LOG.debug("sos transformer exception:" + ste.getLocalizedMessage());
 				parseStatusMessageLabel.setText(ste.getLocalizedMessage());
-			} catch (RecognitionException ex){
+			} catch (RecognitionException ex) {
 				LOG.debug("exception:" + ex.getLocalizedMessage());
 				parseStatusMessageLabel.setText("Error in parsing the ccs expressions");
 			} catch (Exception ex) {
@@ -167,26 +184,27 @@ public class CcsToLtsPanel extends JPanel {
 			}
 		}
 	}
-	
-	private List<String> getExpressionsStrings(String text){
+
+	private List<String> getExpressionsStrings(String text) {
 		List<String> expressionsList = new ArrayList<String>();
 		String[] expressions = text.split("\n+");
-		for(String expr : expressions){
+		for (String expr : expressions) {
 			String expr1 = expr.trim();
-			if(expr1 != null && !expr.isEmpty()){
+			if (expr1 != null && !expr.isEmpty()) {
 				expressionsList.add(expr1);
 			}
 		}
 		return expressionsList;
 	}
-	
-	private boolean checkCcsDefinitions(List<CcsOperation> ccsOperations){
-		for(CcsOperation rootOperation : ccsOperations){
-			if(!(rootOperation instanceof CcsDefinition)) return false;
+
+	private boolean checkCcsDefinitions(List<CcsOperation> ccsOperations) {
+		for (CcsOperation rootOperation : ccsOperations) {
+			if (!(rootOperation instanceof CcsDefinition))
+				return false;
 		}
 		return true;
 	}
-	
+
 	class ClearExpressionAreaAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -195,34 +213,36 @@ public class CcsToLtsPanel extends JPanel {
 			clearLtsGraph();
 		}
 	}
-	
+
 	class ClearLtsAreaAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			clearLtsGraph();
 		}
 	}
-	
-	private void clearLtsGraph(){
-		rootNode = null;
+
+	private void clearLtsGraph() {
+		ltsRootNode = null;
 		aldebaranFile = null;
 		ltsArea.setText("");
 		parseStatusMessageLabel.setText("");
 	}
-	
+
 	class SaveLtsAction implements ActionListener {
 		JComponent parent = null;
+
 		public SaveLtsAction(JComponent parentComponent) {
 			parent = parentComponent;
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String ltsText = ltsArea.getText().trim();
-			if(ltsText != null && !ltsText.isEmpty() ){
+			if (ltsText != null && !ltsText.isEmpty()) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setDialogTitle("Save LTS in file...");
 				fileChooser.showSaveDialog(parent);
-				if(fileChooser.getSelectedFile() != null){
+				if (fileChooser.getSelectedFile() != null) {
 					File fileOut = fileChooser.getSelectedFile();
 					try {
 						AldebaranUtils.writeFile(aldebaranFile, fileOut);
@@ -234,24 +254,26 @@ public class CcsToLtsPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	class OpenCcsAction implements ActionListener {
 		JComponent parent = null;
+
 		public OpenCcsAction(JComponent parentComponent) {
 			parent = parentComponent;
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle("Open CCS expressions from file...");
 			fileChooser.showOpenDialog(parent);
-			if(fileChooser.getSelectedFile() != null){
+			if (fileChooser.getSelectedFile() != null) {
 				ccsFile = fileChooser.getSelectedFile();
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(ccsFile));
 					StringBuilder stringBuilder = new StringBuilder();
 					String line = null;
-					while( (line = reader.readLine()) != null)
+					while ((line = reader.readLine()) != null)
 						stringBuilder.append(line).append("\n");
 					expressionArea.setText(stringBuilder.toString());
 					parseStatusMessageLabel.setText("Opened file: " + ccsFile.getName());
@@ -262,23 +284,25 @@ public class CcsToLtsPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	class SaveCcsAction implements ActionListener {
 		JComponent parent = null;
+
 		public SaveCcsAction(JComponent parentComponent) {
 			parent = parentComponent;
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String ccsText = expressionArea.getText().trim();
-			if(ccsText != null && !ccsText.isEmpty() ){
-				if(ccsFile == null){
+			if (ccsText != null && !ccsText.isEmpty()) {
+				if (ccsFile == null) {
 					JFileChooser fileChooser = new JFileChooser();
 					fileChooser.setDialogTitle("Save CCS expressions in file...");
 					fileChooser.showSaveDialog(parent);
 					ccsFile = fileChooser.getSelectedFile();
 				}
-				if(ccsFile != null){
+				if (ccsFile != null) {
 					try {
 						PrintWriter writer = new PrintWriter(ccsFile);
 						writer.print(ccsText);
@@ -293,18 +317,33 @@ public class CcsToLtsPanel extends JPanel {
 			}
 		}
 	}
-	
-	class ViewGraphAction implements ActionListener{
+
+	class ViewAldebaranGraphAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(aldebaranFile != null){
-				graphPanel.drawGraph(aldebaranFile);
+			if (aldebaranFile != null) {
+				aldebaranGraphPanel.drawGraph(aldebaranFile);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-				dialog.setLocation((dim.width/2)- (vpDim.width/2), (dim.height / 2)-(vpDim.height/2));
-				dialog.pack();
-				dialog.setVisible(true);
-			}else{
+				aldebaranDialog.setLocation((dim.width / 2) - (vpDim.width / 2), (dim.height / 2) - (vpDim.height / 2));
+				aldebaranDialog.pack();
+				aldebaranDialog.setVisible(true);
+			} else {
 				LOG.debug("aldebaran file is null.");
+			}
+		}
+	}
+
+	class ViewLtsGraphAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (ltsRootNode != null) {
+				ltsGraphPanel.drawGraph(ltsRootNode);
+				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+				ltsDialog.setLocation((dim.width / 2) - (vpDim.width / 2), (dim.height / 2) - (vpDim.height / 2));
+				ltsDialog.pack();
+				ltsDialog.setVisible(true);
+			} else {
+				LOG.debug("lts root node is null.");
 			}
 		}
 	}

@@ -1,7 +1,11 @@
 package ii.edu.mk.parser;
 
 import ii.edu.mk.ccs.SosGraphNode;
+import static org.hamcrest.number.OrderingComparison.comparesEqualTo;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 import ii.edu.mk.ccs.SosRule;
+import ii.edu.mk.ccs.SosRuleType;
 import ii.edu.mk.ccs.SosTransformer;
 
 import java.util.ArrayList;
@@ -10,6 +14,19 @@ import java.util.List;
 import org.junit.Test;
 
 public class TestSosTranformer extends BaseParserTest {
+
+	@Test
+	public void test_simple() throws Exception {
+
+		SosGraphNode graph = new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("A = a.A"));
+		assertThat(graph.getTransitions().size(), comparesEqualTo(1));
+
+		SosRule r = graph.getTransitions().keySet().iterator().next();
+		assertThat(r.getType(), comparesEqualTo(SosRuleType.ACT));
+
+		SosGraphNode next = graph.getTransitions().values().iterator().next();
+		assertEquals(next, graph);
+	}
 
 	@Test
 	public void test1() throws Exception {
