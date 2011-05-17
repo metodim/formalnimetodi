@@ -156,16 +156,16 @@ public class Node {
 
 	public boolean equalEdge(Node n2) {
 		LinkedList<PostTransition> p = this.getPostTransitions();
-		Collections.sort(p, new SortPostTransition());
+		Collections.sort(p);
 
 		if (this.getPostTransitions().size() != n2.getPostTransitions().size()) {
 			return false;
 		} else {
 			LinkedList<PostTransition> p1 = this.getPostTransitions();
-			Collections.sort(p1, new SortPostTransition());
+			Collections.sort(p1);
 
 			LinkedList<PostTransition> p2 = n2.getPostTransitions();
-			Collections.sort(p2, new SortPostTransition());
+			Collections.sort(p2);
 
 			for (int i = 0; i < p1.size(); i++) {
 				if (!(p1.get(i).getAction().equals(p2.get(i).getAction()))) {
