@@ -48,12 +48,12 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 @SuppressWarnings("serial")
 public class LtsGraphPanel extends JPanel {
 
-	private final static Dimension vpDim = new Dimension(500, 500);
+	public final static Dimension VP_DIM = new Dimension(800, 600);
 
 	public LtsGraphPanel() {
-		this.setMinimumSize(vpDim);
-		this.setPreferredSize(vpDim);
-		this.setMaximumSize(vpDim);
+		this.setMinimumSize(VP_DIM);
+		this.setPreferredSize(VP_DIM);
+		this.setMaximumSize(VP_DIM);
 		this.setLayout(new MigLayout("fill", "[100%]", "[100%]"));
 	}
 
@@ -105,7 +105,7 @@ public class LtsGraphPanel extends JPanel {
 		}
 
 		Layout<Vertice, Edge> layout = new CircleLayout<Vertice, Edge>(graph);
-		layout.setSize(vpDim);
+		layout.setSize(VP_DIM);
 		final VisualizationViewer<Vertice, Edge> vv = new VisualizationViewer<Vertice, Edge>(layout);
 
 		final Dimension d = vv.getSize();
@@ -116,7 +116,7 @@ public class LtsGraphPanel extends JPanel {
 			FontMetrics metrics;
 			int swidth;
 			int sheight;
-			String str = "GraphZoomScrollPane Demo";
+			String str = "LTS Graph";
 
 			public void paint(Graphics g) {
 
@@ -161,7 +161,7 @@ public class LtsGraphPanel extends JPanel {
 		// vv.getRenderer().getEdgeLabelRenderer().labelEdge(arg0, arg1, arg2,
 		// arg3)
 
-		vv.setPreferredSize(vpDim); // Sets the viewing area size
+		vv.setPreferredSize(VP_DIM); // Sets the viewing area size
 
 		final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);
 		this.add(panel);
