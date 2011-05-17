@@ -48,7 +48,6 @@ import org.jdesktop.swingx.JXFrame;
 public class CcsToLtsPanel extends JPanel {
 
 	private final static Logger LOG = LogManager.getLogger(CcsToLtsPanel.class);
-	private final static Dimension vpDim = new Dimension(500, 500);
 
 	private final JXFrame frame;
 
@@ -134,7 +133,6 @@ public class CcsToLtsPanel extends JPanel {
 		aldebaranDialog = new JDialog(this.frame, true);
 		aldebaranDialog.setTitle("Aldebaran Graph");
 		aldebaranDialog.setContentPane(aldebaranGraphPanel);
-		
 
 		ltsGraphPanel = new LtsGraphPanel();
 		ltsDialog = new JDialog(this.frame, true);
@@ -324,7 +322,7 @@ public class CcsToLtsPanel extends JPanel {
 			if (aldebaranFile != null) {
 				aldebaranGraphPanel.drawGraph(aldebaranFile);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-				aldebaranDialog.setLocation((dim.width / 2) - (vpDim.width / 2), (dim.height / 2) - (vpDim.height / 2));
+				aldebaranDialog.setLocation((dim.width / 2) - (AldebaranGraphPanel.VP_DIM.width / 2), (dim.height / 2) - (AldebaranGraphPanel.VP_DIM.height / 2));
 				aldebaranDialog.pack();
 				aldebaranDialog.setVisible(true);
 			} else {
@@ -339,7 +337,7 @@ public class CcsToLtsPanel extends JPanel {
 			if (ltsRootNode != null) {
 				ltsGraphPanel.drawGraph(ltsRootNode);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-				ltsDialog.setLocation((dim.width / 2) - (vpDim.width / 2), (dim.height / 2) - (vpDim.height / 2));
+				ltsDialog.setLocation((dim.width / 2) - (LtsGraphPanel.VP_DIM.width / 2), (dim.height / 2) - (LtsGraphPanel.VP_DIM.height / 2));
 				ltsDialog.pack();
 				ltsDialog.setVisible(true);
 			} else {
