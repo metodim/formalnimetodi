@@ -60,7 +60,7 @@ public class CcsToLtsPanel extends JPanel {
 	AldebaranFile aldebaranFile;
 	File ccsFile;
 	
-	LtsGraphPanel graphPanel;
+	AldebaranGraphPanel graphPanel;
 	JDialog dialog;
 	
 	public CcsToLtsPanel(final JXFrame frameOwner) {
@@ -123,7 +123,7 @@ public class CcsToLtsPanel extends JPanel {
 		add(viewLtsGraphButton);
 		add(clearLtsAreaButton);
 		
-		graphPanel = new LtsGraphPanel();
+		graphPanel = new AldebaranGraphPanel();
 		dialog = new JDialog(this.frame, true);
 		dialog.setTitle("LTS Graph");
 		dialog.setContentPane(graphPanel);
