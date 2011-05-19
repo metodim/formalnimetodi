@@ -1,6 +1,7 @@
 package ii.edu.mk.gui;
 
 import ii.edu.mk.ccs.SosGraphNode;
+import ii.edu.mk.ccs.SosRule;
 import ii.edu.mk.ccs.SosTransformer;
 import ii.edu.mk.ccs.SosTransformerException;
 import ii.edu.mk.ccs.domain.CcsDefinition;
@@ -53,6 +54,7 @@ public class CcsToLtsPanel extends JPanel {
 
 	JTextArea expressionArea;
 	JTextArea ltsArea;
+	JTextArea aldebaranArea;
 	JLabel parseStatusMessageLabel;
 
 	SosGraphNode ltsRootNode;
@@ -84,12 +86,22 @@ public class CcsToLtsPanel extends JPanel {
 		JButton clearExpressionArea = new JButton("Clear");
 		clearExpressionArea.addActionListener(new ClearExpressionAreaAction());
 
+		aldebaranArea = new JTextArea();
+		aldebaranArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
+
 		ltsArea = new JTextArea();
 		ltsArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
-		JScrollPane ltsAreaScrollPane = new JScrollPane(ltsArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		ltsAreaScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+		JScrollPane aldebaranScrollPane = new JScrollPane(aldebaranArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		aldebaranScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JScrollPane ltsScrollPane = new JScrollPane(ltsArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		ltsScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+		aldebaranArea.setEnabled(true);
+		aldebaranArea.setEditable(false);
 		ltsArea.setEnabled(true);
 		ltsArea.setEditable(false);
+
 		JButton clearLtsAreaButton = new JButton("Clear");
 		clearExpressionArea.addActionListener(new ClearLtsAreaAction());
 
@@ -123,9 +135,10 @@ public class CcsToLtsPanel extends JPanel {
 		add(parseStatusMessageLabel, "al l, wrap");
 
 		add(expressionTokensLabel);
-		add(ltsAreaScrollPane, "grow, wrap");
+		add(aldebaranScrollPane, "split 3, al l, grow");
+		add(ltsScrollPane, "al r, grow, wrap");
 		add(Box.createVerticalGlue());
-		add(saveLtsButton, "split 3");
+		add(saveLtsButton, "split 4");
 		add(viewAldebaranGraphButton);
 		add(clearLtsAreaButton);
 
@@ -169,7 +182,8 @@ public class CcsToLtsPanel extends JPanel {
 
 				ltsRootNode = SosTransformer.getInstance().generateLtsGraph(ccsOperations).get(0);
 				aldebaranFile = AldebaranUtils.convert(ltsRootNode);
-				ltsArea.setText(AldebaranUtils.toString(aldebaranFile, true));
+				aldebaranArea.setText(AldebaranUtils.toString(aldebaranFile, true));
+				ltsArea.setText(print(ltsRootNode));
 			} catch (SosTransformerException ste) {
 				LOG.debug("sos transformer exception:" + ste.getLocalizedMessage());
 				parseStatusMessageLabel.setText(ste.getLocalizedMessage());
@@ -181,6 +195,36 @@ public class CcsToLtsPanel extends JPanel {
 				parseStatusMessageLabel.setText("Error in generation");
 			}
 		}
+	}
+
+	private String print(SosGraphNode graph) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(graph.getName()).append(": ").append(graph.getCcsTree()).append("\n");
+		print(graph, "", 1, sb);
+		return sb.toString();
+	}
+
+	List<SosGraphNode> visited = new ArrayList<SosGraphNode>();
+
+	private String print(SosGraphNode graph, String prefix, int level, StringBuilder sb) {
+		if (graph.getTransitions().keySet().size() == 0)
+			return sb.toString();
+
+		if (visited.contains(graph))
+			return sb.toString();
+
+		visited.add(graph);
+		for (SosRule sosRule : graph.getTransitions().keySet()) {
+			SosGraphNode next = graph.getTransitions().get(sosRule);
+
+			sb.append(prefix).append("\t").append(sosRule.getSymbol()).append("\t").append(next.getName()).append(": ").append(next.getCcsTree());
+			sb.append("\n");
+
+			if (!next.isForestRoot())
+				print(next, prefix + "\t\t\t", level + 1, sb);
+		}
+
+		return sb.toString();
 	}
 
 	private List<String> getExpressionsStrings(String text) {
@@ -222,6 +266,7 @@ public class CcsToLtsPanel extends JPanel {
 	private void clearLtsGraph() {
 		ltsRootNode = null;
 		aldebaranFile = null;
+		aldebaranArea.setText("");
 		ltsArea.setText("");
 		parseStatusMessageLabel.setText("");
 	}
