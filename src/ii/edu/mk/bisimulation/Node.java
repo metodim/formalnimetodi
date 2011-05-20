@@ -191,19 +191,19 @@ public class Node {
 	private boolean equalSpecificString(String s1, String s2) {
 		boolean flag = false;
 
-		String[] s1A = s1.split("\\|");
-		String[] s2A = s2.split("\\|");
+		String[] s1A = s1.split("\\$");
+		String[] s2A = s2.split("\\$");
 
-		if (!s1.contains("|")) {
+		if (!s1.contains("$")) {
 			s1A[0] = s1;
 		} else {
-			s1A = s1.split("\\|");
+			s1A = s1.split("\\$");
 		}
 
-		if (!s2.contains("|")) {
+		if (!s2.contains("$")) {
 			s2A[0] = s2;
 		} else {
-			s2A = s2.split("\\|");
+			s2A = s2.split("\\$");
 		}
 
 		for (int i = 0; i < s1A.length; i++) {

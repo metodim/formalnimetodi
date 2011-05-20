@@ -326,7 +326,7 @@ public class Graph {
 			for (int j = 0; j < transitions.size(); j++) {
 				if (equalSpecificString(transitions.get(j).getPostProcess(), process1)) {
 					if (!process1.equals(process2)) {
-						transitions.get(j).setPostProcess(process2 + "|" + process1);
+						transitions.get(j).setPostProcess(process2 + "$" + process1);
 					} else {
 						transitions.get(j).setPostProcess(process2);
 					}
@@ -334,7 +334,7 @@ public class Graph {
 
 				if (equalSpecificString(transitions.get(j).getPostProcess(), process2)) {
 					if (!process1.equals(process2)) {
-						transitions.get(j).setPostProcess(process2 + "|" + process1);
+						transitions.get(j).setPostProcess(process2 + "$" + process1);
 					} else {
 						transitions.get(j).setPostProcess(process2);
 					}
@@ -374,13 +374,13 @@ public class Graph {
 		}
 
 		if (!process1.equals(process2)) {
-			nodeProcess2.setNode(process2 + "|" + process1);
+			nodeProcess2.setNode(process2 + "$" + process1);
 		} else {
 			nodeProcess2.setNode(process2);
 		}
 
 		if (!process1.equals(process2)) {
-			nodeProcess1.setNode(process2 + "|" + process1);
+			nodeProcess1.setNode(process2 + "$" + process1);
 		} else {
 			nodeProcess1.setNode(process2);
 		}
@@ -413,25 +413,25 @@ public class Graph {
 
 				if (equalSpecificString(ob1.getNode1().getNodeName(), process1)) {
 					if (!process1.equals(process2)) {
-						ob1.setNode1(new Node(process2 + "|" + process1));
+						ob1.setNode1(new Node(process2 + "$" + process1));
 					}
 				}
 
 				if (equalSpecificString(ob1.getNode2().getNodeName(), process1)) {
 					if (!process1.equals(process2)) {
-						ob1.setNode2(new Node(process2 + "|" + process1));
+						ob1.setNode2(new Node(process2 + "$" + process1));
 					}
 				}
 
 				if (equalSpecificString(ob1.getNode1().getNodeName(), process2)) {
 					if (!process1.equals(process2)) {
-						ob1.setNode1(new Node(process2 + "|" + process1));
+						ob1.setNode1(new Node(process2 + "$" + process1));
 					}
 				}
 
 				if (equalSpecificString(ob1.getNode2().getNodeName(), process2)) {
 					if (!process1.equals(process2)) {
-						ob1.setNode2(new Node(process2 + "|" + process1));
+						ob1.setNode2(new Node(process2 + "$" + process1));
 					}
 				}
 			}
@@ -506,19 +506,19 @@ public class Graph {
 	private boolean equalSpecificString(String s1, String s2) {
 		boolean flag = false;
 
-		String[] s1A = s1.split("\\|");
-		String[] s2A = s2.split("\\|");
+		String[] s1A = s1.split("\\$");
+		String[] s2A = s2.split("\\$");
 
-		if (!s1.contains("|")) {
+		if (!s1.contains("$")) {
 			s1A[0] = s1;
 		} else {
-			s1A = s1.split("\\|");
+			s1A = s1.split("\\$");
 		}
 
-		if (!s2.contains("|")) {
+		if (!s2.contains("$")) {
 			s2A[0] = s2;
 		} else {
-			s2A = s2.split("\\|");
+			s2A = s2.split("\\$");
 		}
 
 		for (int i = 0; i < s1A.length; i++) {
