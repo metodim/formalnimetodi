@@ -310,11 +310,11 @@ public class Graph {
 		String process1 = ob.getNode1().getNodeName();
 		String process2 = ob.getNode2().getNodeName();
 
-		if (process1.compareTo(process2) > 0) {
+		/*if (process1.compareTo(process2) > 0) {
 			String temp = process2;
 			process2 = process1;
 			process1 = temp;
-		}
+		}*/
 
 		Node nodeProcess1 = null;
 		Node nodeProcess2 = null;
@@ -325,19 +325,19 @@ public class Graph {
 			LinkedList<PostTransition> transitions = node.getPostTransitions();
 			for (int j = 0; j < transitions.size(); j++) {
 				if (equalSpecificString(transitions.get(j).getPostProcess(), process1)) {
-					if (!process1.equals(process2)) {
-						transitions.get(j).setPostProcess(process2 + "$" + process1);
-					} else {
-						transitions.get(j).setPostProcess(process2);
-					}
+					//if (!process1.equals(process2)) {
+						transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" + process2 + "$" + process1);
+					//} else {
+					//	transitions.get(j).setPostProcess(process2);
+					//}
 				}
 
 				if (equalSpecificString(transitions.get(j).getPostProcess(), process2)) {
-					if (!process1.equals(process2)) {
-						transitions.get(j).setPostProcess(process2 + "$" + process1);
-					} else {
-						transitions.get(j).setPostProcess(process2);
-					}
+					//if (!process1.equals(process2)) {
+						transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" +process2 + "$" + process1);
+					//} else {
+					//	transitions.get(j).setPostProcess(process2);
+					//}
 				}
 			}
 
@@ -402,39 +402,43 @@ public class Graph {
 			String process1 = ob.getNode1().getNodeName();
 			String process2 = ob.getNode2().getNodeName();
 
-			if (process1.compareTo(process2) > 0) {
+			/*if (process1.compareTo(process2) > 0) {
 				String temp = process2;
 				process2 = process1;
 				process1 = temp;
-			}
+			}*/
 
-			for (int j = i + 1; j < list1.size(); j++) {
+			/*for (int j = i + 1; j < list1.size(); j++) {
 				PairProcess ob1 = list1.getPairProcess(j);
 
 				if (equalSpecificString(ob1.getNode1().getNodeName(), process1)) {
 					if (!process1.equals(process2)) {
-						ob1.setNode1(new Node(process2 + "$" + process1));
+						ob1.getNode1().getNodeName().replace(process1, process2 + "$" + process1);
+						//ob1.setNode1(new Node(process2 + "$" + process1));
 					}
 				}
 
 				if (equalSpecificString(ob1.getNode2().getNodeName(), process1)) {
 					if (!process1.equals(process2)) {
-						ob1.setNode2(new Node(process2 + "$" + process1));
+						ob1.getNode2().getNodeName().replace(process1, process2 + "$" + process1);
+						//ob1.setNode2(new Node(process2 + "$" + process1));
 					}
 				}
 
 				if (equalSpecificString(ob1.getNode1().getNodeName(), process2)) {
 					if (!process1.equals(process2)) {
-						ob1.setNode1(new Node(process2 + "$" + process1));
+						ob1.getNode1().getNodeName().replace(process2, process2 + "$" + process1);
+						//ob1.setNode1(new Node(process2 + "$" + process1));
 					}
 				}
 
 				if (equalSpecificString(ob1.getNode2().getNodeName(), process2)) {
 					if (!process1.equals(process2)) {
-						ob1.setNode2(new Node(process2 + "$" + process1));
+						ob1.getNode2().getNodeName().replace(process2, process2 + "$" + process1);
+						//ob1.setNode2(new Node(process2 + "$" + process1));
 					}
 				}
-			}
+			}*/
 
 			minimizationGraphForBisimulationPair(ob);
 		}
@@ -531,6 +535,37 @@ public class Graph {
 		}
 
 		return flag;
+	}
+	
+	
+	private String posicionSpecificString(String s1, String s2) {		
+
+		String[] s1A = s1.split("\\$");
+		String[] s2A = s2.split("\\$");
+
+		if (!s1.contains("$")) {
+			s1A[0] = s1;
+		} else {
+			s1A = s1.split("\\$");
+		}
+
+		if (!s2.contains("$")) {
+			s2A[0] = s2;
+		} else {
+			s2A = s2.split("\\$");
+		}
+
+		for (int i = 0; i < s1A.length; i++) {
+			for (int j = 0; j < s2A.length; j++) {
+				if (s1A[i].equals(s2A[j])) {
+
+				}
+			}
+		}
+
+		
+
+		return "";
 	}
 
 	public String toString() {
