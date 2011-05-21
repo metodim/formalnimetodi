@@ -119,7 +119,9 @@ public class ListPairProcess {
 				
 				LinkedList<String> node1Processes = new LinkedList<String>();
 				LinkedList<String> node2Processes = new LinkedList<String>();
-
+				
+				boolean znameGlavno = true;
+				
 				PostTransition tmp1;
 				while (it1.hasNext())
 				{
@@ -136,7 +138,7 @@ public class ListPairProcess {
 						node2Processes.add(tmp2.getPostProcess());
 				}
 				
-				ListIterator<String> iterator1 = node1Processes.listIterator();
+				/*ListIterator<String> iterator1 = node1Processes.listIterator();
 				ListIterator<String> iterator2;
 				String process1, process2;
 				PairProcess pairs;
@@ -152,8 +154,64 @@ public class ListPairProcess {
 							return false;
 						}
 					}
+				}*/
+				
+				boolean prvaProverkaPom = false;
+				boolean prvaProverka = true;
+				
+				ListIterator<String> iterator1 = node1Processes.listIterator();
+				ListIterator<String> iterator2;
+				String process1, process2;
+				PairProcess pairs;
+				
+				while (iterator1.hasNext())
+				{
+					process1 = iterator1.next();
+					iterator2 = node2Processes.listIterator();
+					prvaProverkaPom = false;
+					while (iterator2.hasNext()) {
+						process2 = iterator2.next();
+						pairs = new PairProcess(g.getNodeFromGraph(process1), g.getNodeFromGraph(process2));
+						if (containsPair(pairs)) {
+							prvaProverkaPom = true;
+							break;							
+						}					
+					}
+					
+					prvaProverka = prvaProverka && prvaProverkaPom;					
 				}
+				
+				boolean vtoraProverkaPom = false;
+				boolean vtoraProverka = true;
+				
+				ListIterator<String> iterator3 = node2Processes.listIterator();
+				ListIterator<String> iterator4;
+				String process3, process4;
+				PairProcess pairs1;				
+				
+				while (iterator3.hasNext())				
+				{	
+					process3 = iterator3.next();
+					iterator4 = node1Processes.listIterator();
+					vtoraProverkaPom = false;					
+					while (iterator4.hasNext()) {
+						process4 = iterator4.next();
+						pairs1 = new PairProcess(g.getNodeFromGraph(process4), g.getNodeFromGraph(process3));
+						if (containsPair(pairs1)) {
+							vtoraProverkaPom = true;
+							break;	
+						}					
+					}
+					
+					vtoraProverka = vtoraProverka && vtoraProverkaPom;					
+				}
+				
+				znameGlavno = znameGlavno && (prvaProverka && vtoraProverka);			
+				
+				if(!znameGlavno) return false;
 			}
+			
+			
 		}
 
 		return true;
