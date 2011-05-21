@@ -102,16 +102,18 @@ public class ListPairProcess {
 	}
 
 	public boolean containsPairProcessInGraph(PairProcess pair, Graph g) {
-		/*if (!pair.doSameActions()) {
+		if (!pair.doSameActions()) {
 			return false;
 		} else {
 			LinkedList<String> transitions = pair.getNode1().getActions();
 			LinkedList<PostTransition> node1Transitions = g.getNodeFromGraph(pair.getNode1().getNodeName()).getPostTransitions();
 			LinkedList<PostTransition> node2Transitions = g.getNodeFromGraph(pair.getNode2().getNodeName()).getPostTransitions();
-
+			boolean znameGlavno = true;
+			
 			ListIterator<String> it = transitions.listIterator();
 			ListIterator<PostTransition> it1 = node1Transitions.listIterator();
 			ListIterator<PostTransition> it2 = node2Transitions.listIterator();
+			
 			String tmp;
 			while (it.hasNext())
 			{
@@ -120,23 +122,36 @@ public class ListPairProcess {
 				LinkedList<String> node1Processes = new LinkedList<String>();
 				LinkedList<String> node2Processes = new LinkedList<String>();
 				
-				boolean znameGlavno = true;
 				
-				PostTransition tmp1;
+				
+				/*PostTransition tmp1;
 				while (it1.hasNext())
 				{
 					tmp1 = it1.next();
 					if (tmp1.getAction().equals(tmp))
 						node1Processes.add(tmp1.getPostProcess());
+				}*/				
+				
+				for (int j = 0; j < node1Transitions.size(); j++) {
+					if (node1Transitions.get(j).getAction().equals(tmp)) {
+						node1Processes.add(node1Transitions.get(j).getPostProcess());
+					}
 				}
-			
-				PostTransition tmp2;
+				
+				/*PostTransition tmp2;
 				while (it2.hasNext())
 				{
 					tmp2 = it2.next();
 					if (tmp2.getAction().equals(tmp))
 						node2Processes.add(tmp2.getPostProcess());
-				}				
+				}*/
+				
+
+				for (int j = 0; j < node2Transitions.size(); j++) {
+					if (node2Transitions.get(j).getAction().equals(tmp)) {
+						node2Processes.add(node2Transitions.get(j).getPostProcess());
+					}
+				}	
 				
 				boolean prvaProverkaPom = false;
 				boolean prvaProverka = true;
@@ -166,11 +181,7 @@ public class ListPairProcess {
 				boolean vtoraProverkaPom = false;
 				boolean vtoraProverka = true;
 				
-				iterator1 = node2Processes.listIterator();
-				//ListIterator<String> iterator2;
-				//String process3, process4;
-				//PairProcess pairs1;				
-				
+				iterator1 = node2Processes.listIterator();				
 				while (iterator1.hasNext())				
 				{	
 					process1 = iterator1.next();
@@ -194,90 +205,7 @@ public class ListPairProcess {
 			}			
 		}
 
-		return true;*/
-		
-		if (!pair.doSameActions()) {
-			return false;
-		} else {
-			LinkedList<String> transitions = pair.getNode1().getActions();
-			LinkedList<PostTransition> node1Transitions = g.getNodeFromGraph(pair.getNode1().getNodeName()).getPostTransitions();
-			LinkedList<PostTransition> node2Transitions = g.getNodeFromGraph(pair.getNode2().getNodeName()).getPostTransitions();
-			boolean znameGlavno = true;	
-			
-			
-			for (int i = 0; i < transitions.size(); i++) {
-				LinkedList<String> node1Processes = new LinkedList<String>();
-				LinkedList<String> node2Processes = new LinkedList<String>();
-
-				for (int j = 0; j < node1Transitions.size(); j++) {
-					if (node1Transitions.get(j).getAction().equals(transitions.get(i))) {
-						node1Processes.add(node1Transitions.get(j).getPostProcess());
-					}
-				}
-
-				for (int j = 0; j < node2Transitions.size(); j++) {
-					if (node2Transitions.get(j).getAction().equals(transitions.get(i))) {
-						node2Processes.add(node2Transitions.get(j).getPostProcess());
-					}
-				}				
-				
-				boolean prvaProverkaPom = false;
-				boolean prvaProverka = true;
-				
-				ListIterator<String> iterator1 = node1Processes.listIterator();
-				ListIterator<String> iterator2;
-				String process1, process2;
-				PairProcess pairs;
-				
-				while (iterator1.hasNext())
-				{
-					process1 = iterator1.next();
-					iterator2 = node2Processes.listIterator();
-					prvaProverkaPom = false;
-					while (iterator2.hasNext()) {
-						process2 = iterator2.next();
-						pairs = new PairProcess(g.getNodeFromGraph(process1), g.getNodeFromGraph(process2));
-						if (containsPair(pairs)) {
-							prvaProverkaPom = true;
-							break;							
-						}					
-					}
-					
-					prvaProverka = prvaProverka && prvaProverkaPom;					
-				}
-				
-				boolean vtoraProverkaPom = false;
-				boolean vtoraProverka = true;
-				
-				iterator1 = node2Processes.listIterator();
-				//ListIterator<String> iterator2;
-				//String process3, process4;
-				//PairProcess pairs1;				
-				
-				while (iterator1.hasNext())				
-				{	
-					process1 = iterator1.next();
-					iterator2 = node1Processes.listIterator();
-					vtoraProverkaPom = false;					
-					while (iterator2.hasNext()) {
-						process2 = iterator2.next();
-						pairs = new PairProcess(g.getNodeFromGraph(process2), g.getNodeFromGraph(process1));
-						if (containsPair(pairs)) {
-							vtoraProverkaPom = true;
-							break;	
-						}					
-					}
-					
-					vtoraProverka = vtoraProverka && vtoraProverkaPom;					
-				}
-				
-				znameGlavno = znameGlavno && (prvaProverka && vtoraProverka);			
-				
-				if(!znameGlavno) return false;
-			}
-		}
-		
-		return true;
+		return true;	
 	}
 
 	public void setListPairProcess(LinkedList<PairProcess> listPairs) {
