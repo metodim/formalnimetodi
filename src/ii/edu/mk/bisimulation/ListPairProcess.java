@@ -1,6 +1,7 @@
 package ii.edu.mk.bisimulation;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * This class keeps the array (the list) of pairs of processes which needs to be
@@ -12,14 +13,17 @@ import java.util.LinkedList;
  */
 public class ListPairProcess {
 	private LinkedList<PairProcess> listPairProcess;
+	private int listPairProcessSize;
 
 	public ListPairProcess() {
-		setListPairProcess(new LinkedList<PairProcess>());
+		listPairProcess = new LinkedList<PairProcess>();
+		listPairProcessSize = 0;
 	}
 
 	public void resetList(ListPairProcess l) {
 		listPairProcess = new LinkedList<PairProcess>();
 		listPairProcess = l.getListPairProcess();
+		listPairProcessSize = listPairProcess.size();
 	}
 
 	/**
@@ -32,22 +36,19 @@ public class ListPairProcess {
 	 */
 	public boolean equalsListPairProcess(ListPairProcess l) {
 		LinkedList<PairProcess> l2 = l.getListPairProcess();
-		if (listPairProcess.size() != l2.size()) {
+		if (this.size() != l2.size()) {
 			return false;
 		}
 		return true;
 	}
 
 	public void addPairProcess(PairProcess pair) {
-		getListPairProcess().add(pair);
+		listPairProcess.add(pair);
+		listPairProcessSize++;
 	}
 
 	public PairProcess getPairProcess(int i) {
-		return getListPairProcess().get(i);
-	}
-
-	public void setPairProcess(PairProcess pair) {
-		getListPairProcess().add(pair);
+		return listPairProcess.get(i);
 	}
 
 	/**
@@ -69,24 +70,35 @@ public class ListPairProcess {
 	 * given in the function containsPairProcessInGraph(PairProcess pair, Graph g)
 	 */
 	public boolean containsPair(PairProcess pair) {
-		if (pair.getNode1().getNodeName() == pair.getNode2().getNodeName()) {
+		if((pair.getNode2().getNodeName()).equals(pair.getNode1().getNodeName()))
+		{
 			return true;
 		}
-
-		for (int i = 0; i < getListPairProcess().size(); i++) {
-			if ((getListPairProcess().get(i).getNode1().getNodeName() == pair.getNode1().getNodeName() && 
-					getListPairProcess().get(i).getNode2().getNodeName() == pair.getNode2().getNodeName()) || 
-					(getListPairProcess().get(i).getNode1().getNodeName() == pair.getNode2().getNodeName() && 
-							getListPairProcess().get(i).getNode2().getNodeName() == pair.getNode1().getNodeName())) {
+		
+		LinkedList<PairProcess> listaPairProces = getListPairProcess();
+		String node11, node12, node21, node22;
+				
+		node21 = pair.getNode1().getNodeName();
+		node22 = pair.getNode2().getNodeName();
+		
+		ListIterator<PairProcess> itr = listaPairProces.listIterator();	
+		while (itr.hasNext())
+		{
+			PairProcess pairProcesTekovna = itr.next();
+			node11 = pairProcesTekovna.getNode1().getNodeName();
+			node12 = pairProcesTekovna.getNode2().getNodeName();
+		
+			if ((node11.equals(node21) && node12.equals(node22)) || (node11.equals(node22) && node12.equals(node21)))			
+			{
 				return true;
 			}
 		}
-
+		
 		return false;
 	}
 
 	public int size() {
-		return getListPairProcess().size();
+		return listPairProcessSize;
 	}
 
 	public boolean containsPairProcessInGraph(PairProcess pair, Graph g) {
@@ -97,26 +109,46 @@ public class ListPairProcess {
 			LinkedList<PostTransition> node1Transitions = g.getNodeFromGraph(pair.getNode1().getNodeName()).getPostTransitions();
 			LinkedList<PostTransition> node2Transitions = g.getNodeFromGraph(pair.getNode2().getNodeName()).getPostTransitions();
 
-			for (int i = 0; i < transitions.size(); i++) {
+			ListIterator<String> it = transitions.listIterator();
+			ListIterator<PostTransition> it1 = node1Transitions.listIterator();
+			ListIterator<PostTransition> it2 = node2Transitions.listIterator();
+			String tmp;
+			while (it.hasNext())
+			{
+				tmp = it.next();
+				
 				LinkedList<String> node1Processes = new LinkedList<String>();
 				LinkedList<String> node2Processes = new LinkedList<String>();
 
-				for (int j = 0; j < node1Transitions.size(); j++) {
-					if (node1Transitions.get(j).getAction().equals(transitions.get(i))) {
-						node1Processes.add(node1Transitions.get(j).getPostProcess());
-					}
+				PostTransition tmp1;
+				while (it1.hasNext())
+				{
+					tmp1 = it1.next();
+					if (tmp1.getAction().equals(tmp))
+						node1Processes.add(tmp1.getPostProcess());
 				}
-
-				for (int j = 0; j < node2Transitions.size(); j++) {
-					if (node2Transitions.get(j).getAction().equals(transitions.get(i))) {
-						node2Processes.add(node2Transitions.get(j).getPostProcess());
-					}
+			
+				PostTransition tmp2;
+				while (it2.hasNext())
+				{
+					tmp2 = it2.next();
+					if (tmp2.getAction().equals(tmp))
+						node2Processes.add(tmp2.getPostProcess());
 				}
-
-				for (int j = 0; j < node1Processes.size(); j++) {
-					for (int k = 0; k < node2Processes.size(); k++) {
-						PairProcess pairs = new PairProcess(g.getNodeFromGraph(node1Processes.get(j)), g.getNodeFromGraph(node2Processes.get(k)));
-						if (!containsPair(pairs)) {
+				
+				ListIterator<String> iterator1 = node1Processes.listIterator();
+				ListIterator<String> iterator2;
+				String process1, process2;
+				PairProcess pairs;
+				while (iterator1.hasNext())
+				{
+					process1 = iterator1.next();
+					iterator2 = node2Processes.listIterator();
+					while (iterator2.hasNext())
+					{
+						process2 = iterator2.next();
+						pairs = new PairProcess(g.getNodeFromGraph(process1), g.getNodeFromGraph(process2));
+						if (!containsPair(pairs)){
 							return false;
 						}
 					}
@@ -127,21 +159,27 @@ public class ListPairProcess {
 		return true;
 	}
 
-	void setListPairProcess(LinkedList<PairProcess> listPairs) {
+	public void setListPairProcess(LinkedList<PairProcess> listPairs) {
 		this.listPairProcess = listPairs;
+		listPairProcessSize = listPairs.size();
 	}
 
-	LinkedList<PairProcess> getListPairProcess() {
+	public LinkedList<PairProcess> getListPairProcess() {
 		return listPairProcess;
 	}
 
 	public String toString() {
-		String s = "";
-		for (int i = 0; i < getListPairProcess().size(); i++) {
-			s += "(" + getListPairProcess().get(i).getNode1().getNodeName() + ", " + getListPairProcess().get(i).getNode2().getNodeName() + ")";
-			if (i != getListPairProcess().size() - 1)
-				s += ", ";
+		StringBuilder sb = new StringBuilder("{");
+		ListIterator<PairProcess> it = listPairProcess.listIterator();
+		PairProcess tmp;
+		while (it.hasNext())
+		{
+			tmp = it.next();
+			sb.append(tmp.toString());
+			if (it.hasNext())
+				sb.append(", ");
 		}
-		return s;
+		sb.append("}");
+		return sb.toString();
 	}
 }

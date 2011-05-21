@@ -4,6 +4,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+/**
+ * 
+ * @author Jane Jovanovski
+ * @author Maja Siljanoska
+ */
+
 public class Node {
 	public String process;
 	private LinkedList<PostTransition> postTransitions;
@@ -24,7 +30,7 @@ public class Node {
 		postTransitions = n.getPostTransitions();
 		coupleTransitions = n.getCoupleTransitions();
 		coupleInverseTransitions = n.getCoupleInverseTransitions();
-		postTransitionsSize = 0;
+		postTransitionsSize = n.size();
 	}
 
 	public String getNodeName() {
@@ -102,22 +108,6 @@ public class Node {
 		return coupleTransitions;
 	}
 
-	public void printCoupleTransitions() {
-		String s = process + ":   ";
-		for (int i = 0; i < coupleTransitions.size(); i++) {
-			s += coupleTransitions.get(i) + "   ";
-		}
-		System.out.println(s);
-	}
-
-	public void printCoupleInverseTransitions() {
-		String s = process + ":   ";
-		for (int i = 0; i < coupleInverseTransitions.size(); i++) {
-			s += coupleInverseTransitions.get(i) + "   ";
-		}
-		System.out.println(s);
-	}
-
 	public LinkedList<String> getActions() {
 		LinkedList<String> array = new LinkedList<String>();
 		
@@ -135,20 +125,6 @@ public class Node {
 	public void setProcess(String process) {
 		this.process = process;
 	}
-
-	public String toString() {
-		String s = "";
-		s = process + "->";
-		//int n = postTransitions.size();
-		for (int i = 0; i < postTransitionsSize; i++) {
-			s += postTransitions.get(i).toString();
-			if (i + 1 != postTransitionsSize) {
-				s += ", ";
-			}
-		}
-		return s;
-	}
-
 
 	public boolean containsPostTransition(PostTransition postTransition) {
 		boolean con = false;
@@ -195,10 +171,14 @@ public class Node {
 
 	public LinkedList<PostTransition> getPostTransitionsByAction(String action) {
 		LinkedList<PostTransition> ob = new LinkedList<PostTransition>();
-
-		for (int i = 0; i < this.getPostTransitions().size(); i++) {
-			if (this.getPostTransitions().get(i).getAction().equals(action)) {
-				ob.add(this.getPostTransitions().get(i));
+		
+		ListIterator<PostTransition> it = postTransitions.listIterator();
+		PostTransition tmp;
+		while (it.hasNext())
+		{
+			tmp = it.next();
+			if (tmp.getAction().equals(action)){
+				ob.add(tmp);
 			}
 		}
 
@@ -208,6 +188,21 @@ public class Node {
 	public int size()
 	{
 		return postTransitionsSize;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder(process);
+		sb.append("->");
+		ListIterator<PostTransition> it = postTransitions.listIterator();
+		PostTransition tmp;
+		while (it.hasNext()){
+			tmp = it.next();
+			sb.append(tmp);
+			if (it.hasNext()) {
+				sb.append(", ");
+			}
+		}
+		return sb.toString();
 	}
 
 	private boolean equalSpecificString(String s1, String s2) {

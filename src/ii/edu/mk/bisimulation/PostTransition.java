@@ -1,5 +1,11 @@
 package ii.edu.mk.bisimulation;
 
+/**
+ * 
+ * @author Jane Jovanovski
+ * @author Maja Siljanoska
+ */
+
 public class PostTransition implements Comparable<PostTransition> {
 	private String postProcess;
 	private String action;
@@ -41,6 +47,11 @@ public class PostTransition implements Comparable<PostTransition> {
 	}
 
 	public String toString() {
-		return "(" + action + ", " + postProcess + ")";
+		StringBuilder sb = new StringBuilder("(");
+		sb.append(action);
+		sb.append(", ");
+		sb.append(postProcess);
+		sb.append(")");
+		return sb.toString();
 	}
 }

@@ -1,16 +1,25 @@
 package ii.edu.mk.bisimulation;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
+
+/**
+ * 
+ * @author Maja Siljanoska
+ */
 
 public class Partition {
 	private LinkedList<Block> partition;
+	private int partitionSize;
 
 	public Partition() {
 		partition = new LinkedList<Block>();
+		partitionSize = 0;
 	}
 
 	public void setPartition(LinkedList<Block> blocks) {
 		partition = blocks;
+		partitionSize = blocks.size();
 	}
 
 	public LinkedList<Block> getPartition() {
@@ -19,21 +28,25 @@ public class Partition {
 
 	public void addBlock(Block block) {
 		partition.add(block);
+		partitionSize++;
 	}
 
 	public Partition constructI(Block B) {
 		Partition tmp = new Partition();
-		for (int i = 0; i < this.partition.size(); i++) {
-			Block X = this.partition.get(i);
+		ListIterator<Block> it = partition.listIterator();
+		Block X;
+		while (it.hasNext())
+		{
+			X = it.next();
 			boolean found = false;
-			int j = 0;
-			// presek pomegju block i inverseT
-			while (!found && j < X.getStates().size()) {
-				String s = X.getStates().get(j);
-				if (B.getStates().contains(s)) {
+			ListIterator<String> it1 = X.listIterator();
+			String s;
+			while (it1.hasNext() && !found)
+			{
+				s = it1.next();
+				if (B.contains(s)){
 					found = true;
 				}
-				j++;
 			}
 			if (found)
 				tmp.addBlock(X);
@@ -43,11 +56,18 @@ public class Partition {
 
 	public Partition constructI2(Block B) {
 		Partition tmp = new Partition();
-		for (int i = 0; i < this.partition.size(); i++) {
-			Block X = this.partition.get(i);
+		ListIterator<Block> it = partition.listIterator();
+		Block X;
+		while (it.hasNext())
+		{
+			X = it.next();
 			boolean subset = true;
-			for (int j = 0; j < X.getStates().size(); j++) {
-				if (!B.getStates().contains(X.getStates().get(j))) {
+			ListIterator<String> it1 = X.listIterator();
+			String s;
+			while (it1.hasNext())
+			{
+				s = it1.next();
+				if (!B.contains(s)){
 					subset = false;
 					break;
 				}
@@ -71,12 +91,19 @@ public class Partition {
 	}
 
 	public String toString() {
-		String s = "";
-		for (int i = 0; i < partition.size(); i++) {
-			s += partition.get(i);
-			if (i != partition.size() - 1)
-				s += ", ";
+		StringBuilder sb = new StringBuilder("{");
+		ListIterator<Block> it = partition.listIterator();
+		Block tmp;
+		while (it.hasNext())
+		{
+			tmp = it.next();
+			//if (tmp.size()>1){
+			sb.append(tmp);
+			//}
+			if (it.hasNext())
+				sb.append(", ");
 		}
-		return s;
+		sb.append("}");
+		return sb.toString();
 	}
 }
