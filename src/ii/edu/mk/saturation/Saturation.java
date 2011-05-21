@@ -22,7 +22,7 @@ public class Saturation {
 		String tau = "#";       
 		// Ja citame datotekata, pocnuvajci od headerot
 
-		BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream("Aldebaran_Graf.txt")));
+		BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream("test/ii/resources/Aldebaran_Graf.txt")));
 		String line = bufReader.readLine();
 		if(line == null || !line.startsWith("des") || line.isEmpty())
 			throw new IllegalArgumentException("Illegal argument for aldebaran descriptor");
@@ -190,7 +190,7 @@ public class Saturation {
 			numberOfTransitions = numberOfTransitions + trStartOthers.get(i).size() + trStartTau.get(i).size();
 		}
 
-		BufferedWriter bufWriter = new BufferedWriter(new FileWriter("Aldebaran_Graf_saturated.txt"));
+		BufferedWriter bufWriter = new BufferedWriter(new FileWriter("test/ii/resources/Aldebaran_Graf_saturated.txt"));
 		bufWriter.write(String.format("des (0, %s, %s)", numberOfTransitions,numberOfStates));
 		bufWriter.newLine();
 
