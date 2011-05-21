@@ -91,8 +91,9 @@ public class Partition {
 	}
 	
 	public static Partition createPartitionFromList(ListPairProcess list)
-	{
+	{		
 		Partition partition = new Partition();
+		if(list.size() == 0) {return partition;}
 		Block startBlock = new Block();
 		String state1 = list.getPairProcess(0).getNode1().getNodeName();
 		String state2 = list.getPairProcess(0).getNode2().getNodeName();

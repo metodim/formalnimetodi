@@ -13,8 +13,8 @@ public class MainClass {
 
 		System.out.println("=====/ EXAMPLE 1 /=====\n");
 
-		System.out.println("Graph1:");
-		Graph graph1 = generateGraph("trains.aut");
+		System.out.println("abp.aut");
+		Graph graph1 = generateGraph("abp_bw.aut");
 
 		Graph graph11 = new Graph(graph1);
 		Graph graph12 = new Graph(graph1);
@@ -28,19 +28,12 @@ public class MainClass {
 		System.out.println("Pairs of bisimilar states in Graph1: " + L1);
 		System.out.println();
 		
-		graph11.minimizationGraph(L1);
+		graph11.minimizationGraph(Partition.createPartitionFromList(L1));
 		System.out.println("Minimal graph has " + graph11.getNumberOfStates() + " states");
 		System.out.println("Minimal graph has " + graph11.getNumberOfTransitions() + " transitions");
-	
-		//System.out.println("Minimised Graph1:");
-		//System.out.println(graph11);
-
-		//System.out.println("Are the two graphs strongly bisimilar?");
-		//System.out.println(graph11.equalGraph(graph11.getInitialNode(), graph21, graph21.getInitialNode()));
-
-		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");
 		
-		//System.out.println(graph12);
+		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");		
+		
 		long start2 = System.currentTimeMillis();
 		Partition P1 = graph12.findStrongBisimulationFernandez();
 		long end2 = System.currentTimeMillis();
