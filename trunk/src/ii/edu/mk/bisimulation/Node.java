@@ -2,18 +2,21 @@ package ii.edu.mk.bisimulation;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Node {
 	public String process;
 	private LinkedList<PostTransition> postTransitions;
 	private LinkedList<CoupleTransition> coupleTransitions;
 	private LinkedList<CoupleTransition> coupleInverseTransitions;
+	private int postTransitionsSize;
 
-	public Node(String node) {
-		process = node;
+	public Node(String process) {
+		this.process = process;
 		postTransitions = new LinkedList<PostTransition>();
 		coupleTransitions = new LinkedList<CoupleTransition>();
 		coupleInverseTransitions = new LinkedList<CoupleTransition>();
+		postTransitionsSize = 0;
 	}
 
 	public Node(Node n) {
@@ -21,6 +24,7 @@ public class Node {
 		postTransitions = n.getPostTransitions();
 		coupleTransitions = n.getCoupleTransitions();
 		coupleInverseTransitions = n.getCoupleInverseTransitions();
+		postTransitionsSize = 0;
 	}
 
 	public String getNodeName() {
@@ -28,6 +32,7 @@ public class Node {
 	}
 
 	public void addPostTransition(PostTransition postTransition) {
+		postTransitionsSize++;
 		postTransitions.add(postTransition);
 		String act = postTransition.getAction();
 		int i = coupleTransitionsForAction(act);
@@ -43,10 +48,7 @@ public class Node {
 
 	public void setPostTransitions(LinkedList<PostTransition> listPostTransitions) {
 		postTransitions = listPostTransitions;
-	}
-
-	public void setNode(String node) {
-		process = node;
+		postTransitionsSize = listPostTransitions.size();
 	}
 
 	public LinkedList<PostTransition> getPostTransitions() {
@@ -118,10 +120,14 @@ public class Node {
 
 	public LinkedList<String> getActions() {
 		LinkedList<String> array = new LinkedList<String>();
-		for (int i = 0; i < postTransitions.size(); i++) {
-			if (!array.contains(postTransitions.get(i).getAction())) {
-				array.add(postTransitions.get(i).getAction());
-			}
+		
+		ListIterator<PostTransition> it = postTransitions.listIterator();
+		String action;
+		while (it.hasNext())
+		{
+			action = it.next().getAction();
+			if (!array.contains(action))
+				array.add(action);
 		}
 		return array;
 	}
@@ -133,20 +139,31 @@ public class Node {
 	public String toString() {
 		String s = "";
 		s = process + "->";
-		int n = postTransitions.size();
-		for (int i = 0; i < n; i++) {
+		//int n = postTransitions.size();
+		for (int i = 0; i < postTransitionsSize; i++) {
 			s += postTransitions.get(i).toString();
-			if (i + 1 != n) {
+			if (i + 1 != postTransitionsSize) {
 				s += ", ";
 			}
 		}
 		return s;
 	}
 
+
 	public boolean containsPostTransition(PostTransition postTransition) {
 		boolean con = false;
-		for (int i = 0; i < postTransitions.size(); i++) {
-			if (equalSpecificString(postTransitions.get(i).getPostProcess(), postTransition.getPostProcess()) && equalSpecificString(postTransitions.get(i).getAction(), postTransition.getAction())) {
+		String process1 = postTransition.getPostProcess();
+		String action1 = postTransition.getAction();
+		
+		ListIterator<PostTransition> it = postTransitions.listIterator();
+		String process2, action2;
+		PostTransition tmp;
+		while(it.hasNext())
+		{
+			tmp = it.next();
+			process2 = tmp.getPostProcess();
+			action2 = tmp.getAction();
+			if (equalSpecificString(process2, process1) && equalSpecificString(action2, action1)) {
 				con = true;
 				break;
 			}
@@ -186,6 +203,11 @@ public class Node {
 		}
 
 		return ob;
+	}
+	
+	public int size()
+	{
+		return postTransitionsSize;
 	}
 
 	private boolean equalSpecificString(String s1, String s2) {
