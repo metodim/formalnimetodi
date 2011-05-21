@@ -204,5 +204,6 @@ public class Saturation {
 		
 		bufWriter.flush();
 		bufWriter.close();
+		System.out.println("Datotekata test/ii/resources/Aldebaran_Graf_saturated.aut e uspesno snimena.");
 	}
 }

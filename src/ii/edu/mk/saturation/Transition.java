@@ -14,7 +14,6 @@ public class Transition {
 		edge.endState = Integer.parseInt(comps[2].split("\\)")[0].replaceAll(" +", ""));
 		edge.label = comps[1].replaceAll(" +", "");
 		return edge;
-		///return new AldebaranFileLine(start, comps[1].replaceAll(" +", ""), end);
 	}
 	public static Transition FromTriple(int ss, String l, int es)
 	{ 
@@ -27,7 +26,6 @@ public class Transition {
 	
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
 		if ( this == obj)
 		{
 			return true;
@@ -42,7 +40,6 @@ public class Transition {
 	
 	@Override 
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		final int multiplier=23;
 		if (hashCode == 0)
 		{
