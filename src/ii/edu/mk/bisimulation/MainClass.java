@@ -28,11 +28,13 @@ public class MainClass {
 		System.out.println("Pairs of bisimilar states in Graph1: " + L1);
 		System.out.println();
 		
+		System.out.println(Partition.createPartitionFromList(L1));
 		graph11.minimizationGraph(Partition.createPartitionFromList(L1));
+		
 		System.out.println("Minimal graph has " + graph11.getNumberOfStates() + " states");
 		System.out.println("Minimal graph has " + graph11.getNumberOfTransitions() + " transitions");
 		
-		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");		
+		/*System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");		
 		
 		long start2 = System.currentTimeMillis();
 		Partition P1 = graph12.findStrongBisimulationFernandez();
@@ -45,7 +47,7 @@ public class MainClass {
 		System.out.println("Minimal graph has " + graph12.getNumberOfStates() + " states");
 		System.out.println("Minimal graph has " + graph12.getNumberOfTransitions() + " transitions");
 	
-		System.out.println();
+		System.out.println();*/
 
 	}
 
