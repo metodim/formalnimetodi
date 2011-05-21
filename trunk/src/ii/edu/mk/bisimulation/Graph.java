@@ -378,16 +378,10 @@ public class Graph {
 		}
 		return null;
 	}
-
+	
 	public void minimizationGraphForBisimulationPair(PairProcess ob) {
 		String process1 = ob.getNode1().getNodeName();
 		String process2 = ob.getNode2().getNodeName();
-
-		/*if (process1.compareTo(process2) > 0) {
-			String temp = process2;
-			process2 = process1;
-			process1 = temp;
-		}*/
 
 		Node nodeProcess1 = null;
 		Node nodeProcess2 = null;
@@ -398,19 +392,11 @@ public class Graph {
 			LinkedList<PostTransition> transitions = node.getPostTransitions();
 			for (int j = 0; j < transitions.size(); j++) {
 				if (equalSpecificString(transitions.get(j).getPostProcess(), process1)) {
-					//if (!process1.equals(process2)) {
 					transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" + process2 + "$" + process1);
-					//} else {
-					//	transitions.get(j).setPostProcess(process2);
-					//}
 				}
 
 				if (equalSpecificString(transitions.get(j).getPostProcess(), process2)) {
-					//if (!process1.equals(process2)) {
 					transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" +process2 + "$" + process1);
-					//} else {
-					//	transitions.get(j).setPostProcess(process2);
-					//}
 				}
 			}
 
@@ -472,47 +458,6 @@ public class Graph {
 	public void minimizationGraph(ListPairProcess list1) {
 		for (int i = 0; i < list1.size(); i++) {
 			PairProcess ob = list1.getPairProcess(i);
-			//String process1 = ob.getNode1().getNodeName();
-			//String process2 = ob.getNode2().getNodeName();
-
-			/*if (process1.compareTo(process2) > 0) {
-				String temp = process2;
-				process2 = process1;
-				process1 = temp;
-			}*/
-
-			/*for (int j = i + 1; j < list1.size(); j++) {
-				PairProcess ob1 = list1.getPairProcess(j);
-
-				if (equalSpecificString(ob1.getNode1().getNodeName(), process1)) {
-					if (!process1.equals(process2)) {
-						ob1.getNode1().getNodeName().replace(process1, process2 + "$" + process1);
-						//ob1.setNode1(new Node(process2 + "$" + process1));
-					}
-				}
-
-				if (equalSpecificString(ob1.getNode2().getNodeName(), process1)) {
-					if (!process1.equals(process2)) {
-						ob1.getNode2().getNodeName().replace(process1, process2 + "$" + process1);
-						//ob1.setNode2(new Node(process2 + "$" + process1));
-					}
-				}
-
-				if (equalSpecificString(ob1.getNode1().getNodeName(), process2)) {
-					if (!process1.equals(process2)) {
-						ob1.getNode1().getNodeName().replace(process2, process2 + "$" + process1);
-						//ob1.setNode1(new Node(process2 + "$" + process1));
-					}
-				}
-
-				if (equalSpecificString(ob1.getNode2().getNodeName(), process2)) {
-					if (!process1.equals(process2)) {
-						ob1.getNode2().getNodeName().replace(process2, process2 + "$" + process1);
-						//ob1.setNode2(new Node(process2 + "$" + process1));
-					}
-				}
-			}*/
-
 			minimizationGraphForBisimulationPair(ob);
 		}
 	}
@@ -609,13 +554,34 @@ public class Graph {
 
 		return flag;
 	}
+	
+	public int getNumberOfStates()
+	{
+		return this.size();
+	}
 
+	public int getNumberOfTransitions()
+	{
+		int cnt = 0;
+		ListIterator<Node> it = graph.listIterator();
+		while (it.hasNext())
+		{
+			Node tmp = it.next();
+			cnt += tmp.size();
+		}
+		return cnt;
+	}
 
 	public String toString() {
-		String s = "";
-		for (int i = 0; i < graph.size(); i++) {
-			s += graph.get(i) + "\n";
+		StringBuilder sb = new StringBuilder();
+		ListIterator<Node> it = graph.listIterator();
+		Node tmp;
+		while (it.hasNext())
+		{
+			tmp = it.next();
+			sb.append(tmp);
+			sb.append("\n");
 		}
-		return s;
+		return sb.toString();
 	}
 }
