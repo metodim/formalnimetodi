@@ -1,6 +1,7 @@
 package ii.edu.mk.bisimulation;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * 
@@ -122,9 +123,14 @@ public class Graph {
 			k++;
 			list1 = new ListPairProcess();
 
-			for (int i = 0; i < list0.size(); i++) {
-				if (list0.containsPairProcessInGraph(list0.getPairProcess(i), this)) {
-					list1.addPairProcess(list0.getPairProcess(i));
+			ListIterator<PairProcess> itr = list0.getListPairProcess().listIterator();
+			PairProcess tmp;
+			while (itr.hasNext())
+			{
+				tmp = itr.next();
+				if(list0.containsPairProcessInGraph(tmp, this))
+				{
+					list1.addPairProcess(tmp);
 				}
 			}
 		} while (!list0.equalsListPairProcess(list1));
@@ -181,10 +187,10 @@ public class Graph {
 
 		while (W.size() > 0) {
 			Partition S = W.get(0);
-			W.remove(0);
 
 			// if S is a simple splitter, composed only of B
 			if (S.size() == 1) {
+				W.remove(S);
 				for (int i = 0; i < A.size(); i++) {
 					String a = A.get(i);
 					Block pomB = new Block();
@@ -218,7 +224,8 @@ public class Graph {
 			}
 			// if S is a compound splitter composed of (B, Bi, Bii), B = Bi
 			// unija Bii
-			else if (S.size() == 3) {
+			else if (S.size() > 1) {
+				W.remove(S);
 				for (int i = 0; i < A.size(); i++) {
 					String a = A.get(i);
 					Block pomB = new Block();
@@ -248,18 +255,26 @@ public class Graph {
 						}
 
 						if (!X.equals(X1) && !X.equals(X2) && !X.equals(X3)) {
-							P.removeBlock(X);
 							if (X1.size() != 0 && X2.size() != 0 && X3.size() != 0) {
 								Partition xtmp = new Partition();
 								Partition xtmp1 = new Partition();
 								Block X23 = new Block();
+								Block X123 = new Block();
+
 								X23.addAllStates(X2);
 								for (int m = 0; m < X3.size(); m++) {
 									if (!X23.getStates().contains(X3.get(m)))
 										X23.addState(X3.get(m));
 								}
-								xtmp.addBlock(X);
-								if (X1.size() < X23.size()) {
+
+								X123.addAllStates(X23);
+								for (int m = 0; m < X1.size(); m++) {
+									if (!X123.getStates().contains(X1.get(m)))
+										X123.addState(X1.get(m));
+								}
+
+								xtmp.addBlock(X123);
+								if (X1.size() <= X23.size()) {
 									xtmp.addBlock(X1);
 									xtmp.addBlock(X23);
 								} else {
@@ -277,7 +292,7 @@ public class Graph {
 									xtmp1.addBlock(X2);
 								}
 								W.add(xtmp1);
-							} else if (X1.size() != 0 || X2.size() != 0 || X3.size() != 0) {
+								
 								P.removeBlock(X);
 								if (X1.size() != 0) {
 									P.addBlock(X1);
@@ -288,6 +303,64 @@ public class Graph {
 								if (X3.size() != 0) {
 									P.addBlock(X3);
 								}
+							}
+							else if (X1.size() != 0 || X2.size() != 0 || X3.size() != 0) {
+								P.removeBlock(X);
+								if (X1.size() != 0) {
+									P.addBlock(X1);
+								}
+								if (X2.size() != 0) {
+									P.addBlock(X2);
+								}
+								if (X3.size() != 0) {
+									P.addBlock(X3);
+								}
+								
+								Partition xtmp = new Partition();
+								if (X1.size() != 0 && (X2.size() != 0 || X3.size() != 0) || X2.size() != 0 && (X1.size() != 0 || X3.size() != 0) || X3.size() != 0 && (X1.size() != 0 || X2.size() != 0))
+								{
+									xtmp.addBlock(X);
+									if (X1.size() != 0 && X2.size() != 0) {
+										if (X1.size() <= X2.size()) {
+											xtmp.addBlock(X1);
+											xtmp.addBlock(X2);
+										} else {
+											xtmp.addBlock(X2);
+											xtmp.addBlock(X1);
+										}
+									}
+									if (X1.size() != 0 && X3.size() != 0) {
+										if (X1.size() <= X3.size()) {
+											xtmp.addBlock(X1);
+											xtmp.addBlock(X3);
+										} else {
+											xtmp.addBlock(X3);
+											xtmp.addBlock(X1);
+										}
+									}
+									if (X2.size() != 0 && X3.size() != 0) {
+										if (X2.size() <= X3.size()) {
+											xtmp.addBlock(X2);
+											xtmp.addBlock(X3);
+										} else {
+											xtmp.addBlock(X3);
+											xtmp.addBlock(X2);
+										}
+									}
+								}
+								else if (X1.size() != 0)
+								{
+									xtmp.addBlock(X1);
+								}
+								else if (X2.size() != 0)
+								{
+									xtmp.addBlock(X2);
+								}
+								else if (X3.size() != 0)
+								{
+									xtmp.addBlock(X3);
+								}
+								W.add(xtmp);
 							}
 						}
 					}
@@ -326,7 +399,7 @@ public class Graph {
 			for (int j = 0; j < transitions.size(); j++) {
 				if (equalSpecificString(transitions.get(j).getPostProcess(), process1)) {
 					//if (!process1.equals(process2)) {
-						transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" + process2 + "$" + process1);
+					transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" + process2 + "$" + process1);
 					//} else {
 					//	transitions.get(j).setPostProcess(process2);
 					//}
@@ -334,7 +407,7 @@ public class Graph {
 
 				if (equalSpecificString(transitions.get(j).getPostProcess(), process2)) {
 					//if (!process1.equals(process2)) {
-						transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" +process2 + "$" + process1);
+					transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" +process2 + "$" + process1);
 					//} else {
 					//	transitions.get(j).setPostProcess(process2);
 					//}
@@ -374,15 +447,15 @@ public class Graph {
 		}
 
 		if (!process1.equals(process2)) {
-			nodeProcess2.setNode(process2 + "$" + process1);
+			nodeProcess2.setProcess(process2 + "$" + process1);
 		} else {
-			nodeProcess2.setNode(process2);
+			nodeProcess2.setProcess(process2);
 		}
 
 		if (!process1.equals(process2)) {
-			nodeProcess1.setNode(process2 + "$" + process1);
+			nodeProcess1.setProcess(process2 + "$" + process1);
 		} else {
-			nodeProcess1.setNode(process2);
+			nodeProcess1.setProcess(process2);
 		}
 
 		for (int i = 0; i < nodeProcess2.getPostTransitions().size(); i++) {
@@ -399,8 +472,8 @@ public class Graph {
 	public void minimizationGraph(ListPairProcess list1) {
 		for (int i = 0; i < list1.size(); i++) {
 			PairProcess ob = list1.getPairProcess(i);
-			String process1 = ob.getNode1().getNodeName();
-			String process2 = ob.getNode2().getNodeName();
+			//String process1 = ob.getNode1().getNodeName();
+			//String process2 = ob.getNode2().getNodeName();
 
 			/*if (process1.compareTo(process2) > 0) {
 				String temp = process2;
@@ -536,37 +609,7 @@ public class Graph {
 
 		return flag;
 	}
-	
-	
-	private String posicionSpecificString(String s1, String s2) {		
 
-		String[] s1A = s1.split("\\$");
-		String[] s2A = s2.split("\\$");
-
-		if (!s1.contains("$")) {
-			s1A[0] = s1;
-		} else {
-			s1A = s1.split("\\$");
-		}
-
-		if (!s2.contains("$")) {
-			s2A[0] = s2;
-		} else {
-			s2A = s2.split("\\$");
-		}
-
-		for (int i = 0; i < s1A.length; i++) {
-			for (int j = 0; j < s2A.length; j++) {
-				if (s1A[i].equals(s2A[j])) {
-
-				}
-			}
-		}
-
-		
-
-		return "";
-	}
 
 	public String toString() {
 		String s = "";
