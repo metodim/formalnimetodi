@@ -67,7 +67,7 @@ public class Block {
 			state = it.next();
 			states.add(state);
 		}
-	}
+	}	
 	
 	public ListIterator<String> listIterator()
 	{
