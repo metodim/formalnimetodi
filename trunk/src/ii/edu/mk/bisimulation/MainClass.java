@@ -58,7 +58,7 @@ public class MainClass {
 
 	//should only be used for testing purposes
 	public static Graph generateGraph(String filename) {
-		return generateGraphFromFile(new File("test/ii/resources/analysis/"+filename));
+		return generateGraphFromFile(new File("test/ii/resources/"+filename));
 	}
 	
 	public static Graph generateGraphFromFile(File file){
