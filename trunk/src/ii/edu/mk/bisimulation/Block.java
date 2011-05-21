@@ -1,20 +1,30 @@
 package ii.edu.mk.bisimulation;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
+
+/**
+ * 
+ * @author Maja Siljanoska
+ */
 
 public class Block {
 	private LinkedList<String> states;
+	private int statesSize;
 
 	public Block() {
 		states = new LinkedList<String>();
+		statesSize = 0;
 	}
 
 	public void addState(String st) {
 		states.add(st);
+		statesSize++;
 	}
 
 	public void setStates(LinkedList<String> B) {
 		states = B;
+		statesSize = B.size();
 	}
 
 	public LinkedList<String> getStates() {
@@ -23,11 +33,15 @@ public class Block {
 
 	public Partition partitionate(Block B) {
 		Partition tmp = new Partition();
-		Block tmp1 = new Block(); // presek
-		Block tmp2 = new Block(); // razlika
-		for (int i = 0; i < this.states.size(); i++) {
-			String s = this.states.get(i);
-			if (B.getStates().contains(s))
+		Block tmp1 = new Block(); // intersection
+		Block tmp2 = new Block(); // complement
+		
+		ListIterator<String> it = states.listIterator();
+		String s;
+		while(it.hasNext())
+		{
+			s = it.next();
+			if (B.contains(s))
 				tmp1.addState(s);
 			else
 				tmp2.addState(s);
@@ -38,7 +52,7 @@ public class Block {
 	}
 
 	public int size() {
-		return states.size();
+		return statesSize;
 	}
 
 	public String get(int i) {
@@ -46,11 +60,37 @@ public class Block {
 	}
 
 	public void addAllStates(Block B) {
-		for (int i = 0; i < B.size(); i++)
-			states.add(B.get(i));
+		ListIterator<String> it = B.listIterator();
+		String state;
+		while (it.hasNext())
+		{
+			state = it.next();
+			states.add(state);
+		}
+	}
+	
+	public ListIterator<String> listIterator()
+	{
+		return states.listIterator();
+	}
+	
+	public boolean contains(String action)
+	{
+		return states.contains(action);
 	}
 
 	public String toString() {
-		return states.toString();
+		StringBuilder sb = new StringBuilder("{");
+		ListIterator<String> it = states.listIterator();
+		String tmp;
+		while (it.hasNext())
+		{
+			tmp = it.next();
+			sb.append(tmp);
+			if (it.hasNext())
+				sb.append(", ");
+		}
+		sb.append("}");
+		return sb.toString();
 	}
 }
