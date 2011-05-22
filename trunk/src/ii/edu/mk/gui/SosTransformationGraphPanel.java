@@ -1,7 +1,8 @@
 package ii.edu.mk.gui;
 
+import ii.edu.mk.ccs.SosGraphNode;
+import ii.edu.mk.ccs.SosRule;
 import ii.edu.mk.io.AldebaranFile;
-import ii.edu.mk.io.AldebaranFile.AldebaranFileLine;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,7 +16,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.util.Stack;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -46,12 +47,12 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
  * Panel for and LTS Graph generated from an {@link AldebaranFile}
  */
 @SuppressWarnings("serial")
-public class LtsGraphPanel extends JPanel {
+public class SosTransformationGraphPanel extends JPanel {
 
-	private final static Logger LOG = LogManager.getLogger(LtsGraphPanel.class);
+	private final static Logger LOG = LogManager.getLogger(SosTransformationGraphPanel.class);
 	public final static Dimension VP_DIM = new Dimension(800, 600);
 
-	public LtsGraphPanel() {
+	public SosTransformationGraphPanel() {
 		this.setMinimumSize(VP_DIM);
 		this.setPreferredSize(VP_DIM);
 		this.setMaximumSize(VP_DIM);
@@ -59,47 +60,50 @@ public class LtsGraphPanel extends JPanel {
 	}
 
 	/**
-	 * Draws a graph from an {@link AldebaranFile}
+	 * Draws a graph from an {@link SosGraphNode}
 	 */
-	public void drawGraph(AldebaranFile aldebaranFile) {
+	public void drawGraph(SosGraphNode graph) {
 		this.setVisible(false);
 		this.removeAll();
-		createGraph(aldebaranFile);
+		createGraph(graph);
+//		this.add(createGraph(graph), "grow");
 		this.setVisible(true);
 	}
 
-	private void createGraph(AldebaranFile aldebaranFile) {
-
-		// find all distinct vertices that are used
-		Set<Integer> vertices = new HashSet<Integer>();
-		for (AldebaranFileLine line : aldebaranFile.getLines()) {
-			vertices.add(line.getStartState());
-			vertices.add(line.getEndState());
-		}
+	/**
+	 * The zoom and scroll pane is taken from
+	 * {@link edu.uci.ics.jung.samples.GraphZoomScrollPaneDemo}
+	 */
+	private void createGraph(SosGraphNode ltsGraph) {
 
 		Graph<Vertice, Edge> graph = new DirectedSparseMultigraph<Vertice, Edge>();
-		Map<Integer, Vertice> verticeMap = new HashMap<Integer, Vertice>();
+		Map<String, Vertice> verticeMap = new HashMap<String, Vertice>();
 
 		// 1. add root node and set it as initial node
-		Vertice rootNode = Vertice.createVertice(aldebaranFile.getFirstState());
-		rootNode.setStartNode(true);
-		verticeMap.put(aldebaranFile.getFirstState(), rootNode);
-		graph.addVertex(rootNode);
-		vertices.remove(aldebaranFile.getFirstState());
+		Vertice rootNode = Vertice.createVertice(ltsGraph.getName());
+		rootNode.startNode = true;
+		verticeMap.put(rootNode.label, rootNode);
 
-		// 2. add the rest of the nodes
-		for (Integer verticeNum : vertices) {
-			Vertice node = Vertice.createVertice(verticeNum);
-			verticeMap.put(verticeNum, node);
-			graph.addVertex(node);
-		}
+		HashSet<SosGraphNode> visited = new HashSet<SosGraphNode>();
+		Stack<SosGraphNode> stack = new Stack<SosGraphNode>();
+		stack.push(ltsGraph);
+		while (!stack.empty()) {
+			SosGraphNode currentNode = stack.pop();
+			if (!verticeMap.containsKey(currentNode.getName()))
+				verticeMap.put(currentNode.getName(), Vertice.createVertice(currentNode.getName()));
 
-		// 3. connect the edges to the vertices
-		for (AldebaranFileLine line : aldebaranFile.getLines()) {
-			Edge edge = Edge.createEdge(line.getLabel());
-			Vertice fromVertice = verticeMap.get(line.getStartState());
-			Vertice toVertice = verticeMap.get(line.getEndState());
-			graph.addEdge(edge, fromVertice, toVertice);
+			for (SosRule rule : currentNode.getTransitions().keySet()) {
+				SosGraphNode nextNode = currentNode.getTransitions().get(rule);
+				if (!verticeMap.containsKey(nextNode.getName()))
+					verticeMap.put(nextNode.getName(), Vertice.createVertice(nextNode.getName()));
+
+				if (!visited.contains(nextNode)) {
+					stack.push(nextNode);
+					visited.add(nextNode);
+				}
+
+				graph.addEdge(Edge.createEdge(rule.toString()), verticeMap.get(currentNode.getName()), verticeMap.get(nextNode.getName()));
+			}
 		}
 
 		Layout<Vertice, Edge> layout = new CircleLayout<Vertice, Edge>(graph);
@@ -114,7 +118,7 @@ public class LtsGraphPanel extends JPanel {
 			FontMetrics metrics;
 			int swidth;
 			int sheight;
-			String str = "LTS Graph";
+			String str = "SOS Transformation Graph";
 
 			public void paint(Graphics g) {
 
@@ -137,10 +141,10 @@ public class LtsGraphPanel extends JPanel {
 				return false;
 			}
 		});
-		
+
 		Transformer<Vertice, Paint> vertexPaint = new Transformer<Vertice, Paint>() {
-			public Paint transform(Vertice i) {
-				if (i.getStartNode()) {
+			public Paint transform(Vertice v) {
+				if (v.startNode) {
 					return Color.GREEN;
 				} else {
 					return Color.YELLOW;
@@ -150,16 +154,17 @@ public class LtsGraphPanel extends JPanel {
 
 		vv.addGraphMouseListener(new TestGraphMouseListener<Vertice>());
 //		vv.getRenderer().setVertexRenderer(new GradientVertexRenderer<Vertice, Edge>(Color.white, Color.red, Color.white, Color.blue, vv.getPickedVertexState(), false));
-		
+
 		vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
 		// vv.getRenderContext().setEdgeStrokeTransformer(edgeStrokeTransformer);
 		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Vertice>());
 		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Edge>());
 		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-		// vv.getRenderer().getEdgeLabelRenderer().labelEdge(arg0, arg1, arg2, arg3)
+		// vv.getRenderer().getEdgeLabelRenderer().labelEdge(arg0, arg1, arg2,
+		// arg3)
 
 		vv.setPreferredSize(VP_DIM); // Sets the viewing area size
-		
+
 		final GraphZoomScrollPane panel = new GraphZoomScrollPane(vv);
 		final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse<String, Number>();
 		vv.setGraphMouse(graphMouse);
@@ -193,8 +198,7 @@ public class LtsGraphPanel extends JPanel {
 				vv.getRenderContext().getMultiLayerTransformer().getTransformer(Layer.VIEW).setToIdentity();
 			}
 		});
-		
-		
+
 		JPanel controls = new JPanel();
 		controls.add(plus);
 		controls.add(minus);
@@ -223,40 +227,28 @@ public class LtsGraphPanel extends JPanel {
 			LOG.debug("Vertex " + v + " was released at (" + me.getX() + "," + me.getY() + ")");
 		}
 	}
-	
+
 	private static class Vertice {
 		boolean startNode;
-		Integer integer;
+		String label;
 
-		private Vertice(Integer number) {
-			this.integer = number;
+		private Vertice(String number) {
+			this.label = number;
 			this.startNode = false;
 		}
 
-		public static final Vertice createVertice(Integer number) {
+		public static final Vertice createVertice(String number) {
 			return new Vertice(number);
-		}
-
-		public Integer getInteger() {
-			return integer;
-		}
-
-		public void setStartNode(boolean value) {
-			this.startNode = value;
-		}
-
-		public boolean getStartNode() {
-			return startNode;
 		}
 
 		@Override
 		public String toString() {
-			return integer.toString();
+			return label.toString();
 		}
 
 		@Override
 		public boolean equals(Object obj) {
-			return integer.equals(((Vertice) obj).getInteger());
+			return label.equals(((Vertice) obj).label);
 		}
 	}
 
@@ -271,10 +263,6 @@ public class LtsGraphPanel extends JPanel {
 			return new Edge(label);
 		}
 
-		public String getLabel() {
-			return label;
-		}
-
 		@Override
 		public String toString() {
 			return label;
@@ -282,7 +270,7 @@ public class LtsGraphPanel extends JPanel {
 
 		@Override
 		public boolean equals(Object obj) {
-			return label.equals(((Edge) obj).getLabel());
+			return label.equals(((Edge) obj).label);
 		}
 	}
 
