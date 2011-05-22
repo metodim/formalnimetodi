@@ -476,51 +476,7 @@ public class Graph {
 		initialNode = getNodeFromGraph(initialNode.getNodeName());
 
 	}
-
-	/*public boolean equalGraph(Node n1, Graph g, Node n2) {
-		// checks whether the two nodes have same edges, if not, false is returned
-		if (!(n1.equalEdge(n2))) {
-			return false;
-		} else {
-			// all posttransitions from the first node are taken and explored edge by edge 
-			LinkedList<PostTransition> ob1 = n1.getPostTransitions();
-
-			// for every outgoing edge of the first node
-			for (int i = 0; i < ob1.size(); i++) {
-				boolean flag = false;
-				boolean isLoop = false;
-
-				// the corresponding processes from the second edge which make the same action are taken
-				LinkedList<PostTransition> ob2 = n2.getPostTransitionsByAction(ob1.get(i).getAction());
-
-				// we traverse through them until the process corresponding to the next one is found
-				for (int j = 0; j < ob2.size(); j++) {
-					if (!ob1.get(i).getColor().equals("black") && !ob2.get(j).getColor().equals("black")) {
-						Node n11 = this.getNodeFromGraph(ob1.get(i).getPostProcess());
-						Node n22 = g.getNodeFromGraph(ob2.get(j).getPostProcess());
-
-						ob1.get(i).setColor("black");
-					    ob2.get(j).setColor("black");
-
-						flag = flag || equalGraph(n11, g, n22);						
-
-					} else {
-						isLoop = true;
-					}
-
-					if (flag == false && !isLoop) {
-						return false;
-					}
-
-					ob1.get(i).setColor("black");
-					ob2.get(j).setColor("black");
-				}
-			}
-		}
-
-		return true;
-	}*/
-
+	
 	public boolean equalGraph(Node n1, Graph g, Node n2) {
 		if (!(n1.equalEdge(n2))) {
 			return false;
