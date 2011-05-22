@@ -292,7 +292,7 @@ public class Graph {
 									xtmp1.addBlock(X2);
 								}
 								W.add(xtmp1);
-								
+
 								P.removeBlock(X);
 								if (X1.size() != 0) {
 									P.addBlock(X1);
@@ -315,7 +315,7 @@ public class Graph {
 								if (X3.size() != 0) {
 									P.addBlock(X3);
 								}
-								
+
 								Partition xtmp = new Partition();
 								if (X1.size() != 0 && (X2.size() != 0 || X3.size() != 0) || X2.size() != 0 && (X1.size() != 0 || X3.size() != 0) || X3.size() != 0 && (X1.size() != 0 || X2.size() != 0))
 								{
@@ -378,104 +378,72 @@ public class Graph {
 		}
 		return null;
 	}
-	
-	public void minimizationGraphForBisimulationPair(PairProcess ob) {
-		String process1 = ob.getNode1().getNodeName();
-		String process2 = ob.getNode2().getNodeName();
 
-		Node nodeProcess1 = null;
-		Node nodeProcess2 = null;
-		int indexProcess2 = 0;
+	public void minimizationGraphForBisimilarClass(Block B)
+	{
+		ListIterator<String> it = B.listIterator();
+		String process = it.next();
+		Node node = this.getNodeByProcess(process);
+		LinkedList<PostTransition> pt = node.getPostTransitions();
+		StringBuilder sb = new StringBuilder(process);
+		while (it.hasNext())
+		{
+			String pr = it.next();
+			sb.append("$");
+			sb.append(pr);
+		}
+		node.setProcess(sb.toString());
 
-		for (int i = 0; i < this.size(); i++) {
-			Node node = this.getNode(i);
-			LinkedList<PostTransition> transitions = node.getPostTransitions();
-			for (int j = 0; j < transitions.size(); j++) {
-				if (equalSpecificString(transitions.get(j).getPostProcess(), process1)) {
-					transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" + process2 + "$" + process1);
-				}
-
-				if (equalSpecificString(transitions.get(j).getPostProcess(), process2)) {
-					transitions.get(j).setPostProcess(transitions.get(j).getPostProcess() + "$" +process2 + "$" + process1);
-				}
-			}
-
-			LinkedList<PostTransition> transitionsReduce = new LinkedList<PostTransition>();
-
-			for (int k = 0; k < transitions.size(); k++) {
-				PostTransition o2 = transitions.get(k);
-				boolean exists = false;
-
-				for (int kk = 0; kk < transitionsReduce.size(); kk++) {
-					PostTransition o1 = transitionsReduce.get(kk);
-
-					if (equalSpecificString(o1.getAction(), o2.getAction()) && equalSpecificString(o1.getPostProcess(), o2.getPostProcess())) {
-						exists = true;
-						break;
-					}
-				}
-
-				if (!exists) {
-					transitionsReduce.add(o2);
+		ListIterator<Node> it1 = graph.listIterator();
+		while (it1.hasNext())
+		{
+			Node node2 = it1.next();
+			ListIterator<PostTransition> it2 = node2.getPostTransitions().listIterator();
+			while (it2.hasNext())
+			{
+				PostTransition pp = it2.next();
+				if(B.contains(pp.getPostProcess()))
+				{
+					pp.setPostProcess(node.getNodeName());
 				}
 			}
+		}
 
-			node.setPostTransitions(transitionsReduce);
+		it = B.listIterator();
+		process = it.next();
 
-			if (equalSpecificString(node.getNodeName(), process1)) {
-				nodeProcess1 = node;
+		LinkedList<PostTransition> nodePostTransitions = new LinkedList<PostTransition>();
+		for (int i=0; i<pt.size(); i++)
+		{
+			if (!nodePostTransitions.contains(pt.get(i)))
+				nodePostTransitions.add(pt.get(i));
+		}
+
+		while (it.hasNext())
+		{
+			String process1 = it.next();
+			Node node1 = this.getNodeByProcess(process1);
+			ListIterator<PostTransition> it2 = node1.getPostTransitions().listIterator();
+			while (it2.hasNext())
+			{
+				PostTransition pt2 = it2.next();
+				if(!nodePostTransitions.contains(pt2))
+					nodePostTransitions.add(pt2);
 			}
-
-			if (equalSpecificString(node.getNodeName(), process2)) {
-				indexProcess2 = i;
-				nodeProcess2 = node;
-			}
+			graph.remove(node1);
 		}
 
-		if (!process1.equals(process2)) {
-			nodeProcess2.setProcess(process2 + "$" + process1);
-		} else {
-			nodeProcess2.setProcess(process2);
-		}
-
-		if (!process1.equals(process2)) {
-			nodeProcess1.setProcess(process2 + "$" + process1);
-		} else {
-			nodeProcess1.setProcess(process2);
-		}
-
-		for (int i = 0; i < nodeProcess2.getPostTransitions().size(); i++) {
-			if (!nodeProcess1.containsPostTransition(nodeProcess2.getPostTransitions().get(i))) {
-				nodeProcess1.addPostTransition(nodeProcess2.getPostTransitions().get(i));
-			}
-		}
-
-		if (!process1.equals(process2)) {
-			this.graph.remove(indexProcess2);
-		}
+		node.setPostTransitions(nodePostTransitions);
 	}
 
-	public void minimizationGraph(ListPairProcess list1) {
-		for (int i = 0; i < list1.size(); i++) {
-			PairProcess ob = list1.getPairProcess(i);
-			minimizationGraphForBisimulationPair(ob);
-		}
-	}
-
-	public void minimizationGraph(Partition P) {
-		for (int i = 0; i < P.size(); i++) {
-			Block block = P.get(i);
-			if (block.size() > 1) {
-				for (int j = 0; j < block.size() - 1; j++) {
-					String process1 = block.get(j);
-					Node tmp1 = this.getNodeFromGraph(process1);
-					for (int k = j + 1; k < block.size(); k++) {
-						String process2 = block.get(k);
-						Node tmp2 = this.getNodeFromGraph(process2);
-						minimizationGraphForBisimulationPair(new PairProcess(tmp1, tmp2));
-					}
-				}
-			}
+	public void minimizationGraph(Partition P)
+	{
+		ListIterator<Block> it = P.listIterator();
+		Block B;
+		while (it.hasNext())
+		{
+			B = it.next();
+			minimizationGraphForBisimilarClass(B);
 		}
 	}
 
@@ -554,7 +522,7 @@ public class Graph {
 
 		return flag;
 	}
-	
+
 	public int getNumberOfStates()
 	{
 		return this.size();

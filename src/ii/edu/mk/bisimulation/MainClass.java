@@ -2,7 +2,6 @@ package ii.edu.mk.bisimulation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ListIterator;
 import java.util.Scanner;
 
 
@@ -14,7 +13,7 @@ public class MainClass {
 		System.out.println("=====/ EXAMPLE 1 /=====\n");
 
 		System.out.println("abp.aut");
-		Graph graph1 = generateGraph("dining3.aut");
+		Graph graph1 = generateGraph("abp.aut");
 
 		Graph graph11 = new Graph(graph1);
 		Graph graph12 = new Graph(graph1);
@@ -28,9 +27,8 @@ public class MainClass {
 		System.out.println("Pairs of bisimilar states in Graph1: " + L1);
 		System.out.println();
 		
-		System.out.println(Partition.createPartitionFromList(L1));
-		graph11.minimizationGraph(Partition.createPartitionFromList(L1));
-		
+		Partition P = L1.createPartition();
+		graph11.minimizationGraph(P);
 		System.out.println("Minimal graph has " + graph11.getNumberOfStates() + " states");
 		System.out.println("Minimal graph has " + graph11.getNumberOfTransitions() + " transitions");
 		
