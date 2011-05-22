@@ -248,9 +248,10 @@ public class BisimulationPanel extends JPanel{
 			if(isNaiveMetodChosen){
 				ListPairProcess lpp1 = graph1.findStrongBisimulationNaive();
 				ListPairProcess lpp2 = graph2.findStrongBisimulationNaive();
-				
-				graph1.minimizationGraph(lpp1);
-				graph2.minimizationGraph(lpp2);
+				Partition par1 = lpp1.createPartition();
+				Partition par2 = lpp2.createPartition();
+				graph1.minimizationGraph(par1);
+				graph2.minimizationGraph(par2);
 				
 				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph1, graph2.getInitialNode());
 			}else{

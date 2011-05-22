@@ -45,6 +45,15 @@ public class PostTransition implements Comparable<PostTransition> {
 	public int compareTo(PostTransition pt1) {
 		return this.getAction().compareTo(pt1.getAction());
 	}
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof PostTransition))
+			return false;
+		PostTransition pt = (PostTransition)obj;
+		return this.getAction().equals(pt.getAction()) && this.getPostProcess().equals(pt.getPostProcess());
+	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder("(");

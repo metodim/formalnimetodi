@@ -48,6 +48,7 @@ public class AldebaranUtils {
 			bufWriter.newLine();
 			bufWriter.write(line.toString());
 		}
+		bufWriter.write("\n");
 		bufWriter.flush();
 		bufWriter.close();
 	}

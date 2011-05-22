@@ -90,76 +90,39 @@ public class Partition {
 		partition.remove(x);
 	}
 	
-	public static Partition createPartitionFromList(ListPairProcess list)
-	{		
-		Partition partition = new Partition();
-		if(list.size() == 0) {return partition;}
-		Block startBlock = new Block();
-		String state1 = list.getPairProcess(0).getNode1().getNodeName();
-		String state2 = list.getPairProcess(0).getNode2().getNodeName();
-		startBlock.addState(state1);
-		startBlock.addState(state2);
-		partition.addBlock(startBlock);
-		
-		ListIterator<PairProcess> itr = list.getListPairProcess().listIterator();
-		PairProcess tmp;
-		
-		while (itr.hasNext())
+	public boolean contains(String st){
+		ListIterator<Block> it = partition.listIterator();
+		Block B;
+		while (it.hasNext())
 		{
-			tmp = itr.next();
-			state1 = tmp.getNode1().getNodeName();
-			state2 = tmp.getNode2().getNodeName();
-			
-			for(int j = 0; j < partition.size(); j++)
-			{
-				boolean flag1 = partition.getPartition().get(j).contains(state1);
-				boolean flag2 = partition.getPartition().get(j).contains(state2);
-				if(flag1 && flag2)
-					break;
-				if(flag1 && flag2 == false)
-				{
-					partition.getPartition().get(j).addState(state2);
-					break;
-				}
-				
-				if(flag1 == false && flag2)
-				{
-					partition.getPartition().get(j).addState(state1);
-					break;
-				}
-				
-				if(j + 1 == partition.size())
-				{
-					if(flag1 == false && flag2 == false)
-					{
-						state1 = tmp.getNode1().getNodeName();
-						state2 = tmp.getNode2().getNodeName();
-						startBlock = new Block();
-						startBlock.addState(state1);
-						startBlock.addState(state2);
-						partition.addBlock(startBlock);
-						
-						break;
-					}
-				}
-			}
+			B = it.next();
+			if (B.contains(st))
+				return true;
 		}
-		
-		return partition;
+		return false;
+	}
+
+	public ListIterator<Block> listIterator()
+	{
+		return partition.listIterator();
 	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{");
 		ListIterator<Block> it = partition.listIterator();
-		Block tmp;
+		Block tmp = new Block();
+		while (tmp.size()<2 && it.hasNext())
+		{
+			tmp = it.next();
+		}
+		sb.append(tmp);
 		while (it.hasNext())
 		{
 			tmp = it.next();
-			//if (tmp.size()>1){
-			sb.append(tmp);
-			//}
-			if (it.hasNext())
+			if (tmp.size()>1){
 				sb.append(", ");
+				sb.append(tmp);
+			}
 		}
 		sb.append("}");
 		return sb.toString();

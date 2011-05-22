@@ -108,11 +108,9 @@ public class ListPairProcess {
 			LinkedList<String> transitions = pair.getNode1().getActions();
 			LinkedList<PostTransition> node1Transitions = g.getNodeFromGraph(pair.getNode1().getNodeName()).getPostTransitions();
 			LinkedList<PostTransition> node2Transitions = g.getNodeFromGraph(pair.getNode2().getNodeName()).getPostTransitions();
-			boolean znameGlavno = true;
+			boolean flagMain = true;
 			
 			ListIterator<String> it = transitions.listIterator();
-			ListIterator<PostTransition> it1 = node1Transitions.listIterator();
-			ListIterator<PostTransition> it2 = node2Transitions.listIterator();
 			
 			String tmp;
 			while (it.hasNext())
@@ -120,32 +118,13 @@ public class ListPairProcess {
 				tmp = it.next();
 				
 				LinkedList<String> node1Processes = new LinkedList<String>();
-				LinkedList<String> node2Processes = new LinkedList<String>();
-				
-				
-				
-				/*PostTransition tmp1;
-				while (it1.hasNext())
-				{
-					tmp1 = it1.next();
-					if (tmp1.getAction().equals(tmp))
-						node1Processes.add(tmp1.getPostProcess());
-				}*/				
+				LinkedList<String> node2Processes = new LinkedList<String>();		
 				
 				for (int j = 0; j < node1Transitions.size(); j++) {
 					if (node1Transitions.get(j).getAction().equals(tmp)) {
 						node1Processes.add(node1Transitions.get(j).getPostProcess());
 					}
 				}
-				
-				/*PostTransition tmp2;
-				while (it2.hasNext())
-				{
-					tmp2 = it2.next();
-					if (tmp2.getAction().equals(tmp))
-						node2Processes.add(tmp2.getPostProcess());
-				}*/
-				
 
 				for (int j = 0; j < node2Transitions.size(); j++) {
 					if (node2Transitions.get(j).getAction().equals(tmp)) {
@@ -153,55 +132,53 @@ public class ListPairProcess {
 					}
 				}	
 				
-				boolean prvaProverkaPom = false;
-				boolean prvaProverka = true;
+				boolean firstCheckTmp = false;
+				boolean firstCheck = true;
 				
 				ListIterator<String> iterator1 = node1Processes.listIterator();
 				ListIterator<String> iterator2;
 				String process1, process2;
 				PairProcess pairs;
-				
 				while (iterator1.hasNext())
 				{
 					process1 = iterator1.next();
 					iterator2 = node2Processes.listIterator();
-					prvaProverkaPom = false;
+					firstCheckTmp = false;
 					while (iterator2.hasNext()) {
 						process2 = iterator2.next();
 						pairs = new PairProcess(g.getNodeFromGraph(process1), g.getNodeFromGraph(process2));
 						if (containsPair(pairs)) {
-							prvaProverkaPom = true;
+							firstCheckTmp = true;
 							break;							
 						}					
 					}
-					
-					prvaProverka = prvaProverka && prvaProverkaPom;					
+					firstCheck = firstCheck && firstCheckTmp;					
 				}
 				
-				boolean vtoraProverkaPom = false;
-				boolean vtoraProverka = true;
+				boolean secondCheckTmp = false;
+				boolean secondCheck = true;
 				
 				iterator1 = node2Processes.listIterator();				
 				while (iterator1.hasNext())				
 				{	
 					process1 = iterator1.next();
 					iterator2 = node1Processes.listIterator();
-					vtoraProverkaPom = false;					
+					secondCheckTmp = false;					
 					while (iterator2.hasNext()) {
 						process2 = iterator2.next();
 						pairs = new PairProcess(g.getNodeFromGraph(process2), g.getNodeFromGraph(process1));
 						if (containsPair(pairs)) {
-							vtoraProverkaPom = true;
+							secondCheckTmp = true;
 							break;	
 						}					
 					}
-					
-					vtoraProverka = vtoraProverka && vtoraProverkaPom;					
+					secondCheck = secondCheck && secondCheckTmp;					
 				}
 				
-				znameGlavno = znameGlavno && (prvaProverka && vtoraProverka);			
+				flagMain = flagMain && firstCheck && secondCheck;			
 				
-				if(!znameGlavno) return false;
+				if(!flagMain) 
+					return false;
 			}			
 		}
 
@@ -215,6 +192,66 @@ public class ListPairProcess {
 
 	public LinkedList<PairProcess> getListPairProcess() {
 		return listPairProcess;
+	}
+	
+	public Partition createPartition()
+	{		
+		Partition partition = new Partition();
+		if(this.size() == 0) 
+		{
+			return partition;
+		}
+		Block startBlock = new Block();
+		String state1 = this.getPairProcess(0).getNode1().getNodeName();
+		String state2 = this.getPairProcess(0).getNode2().getNodeName();
+		startBlock.addState(state1);
+		startBlock.addState(state2);
+		partition.addBlock(startBlock);
+		
+		ListIterator<PairProcess> itr = this.getListPairProcess().listIterator();
+		PairProcess tmp;
+		
+		while (itr.hasNext())
+		{
+			tmp = itr.next();
+			state1 = tmp.getNode1().getNodeName();
+			state2 = tmp.getNode2().getNodeName();
+			
+			for(int j = 0; j < partition.size(); j++)
+			{
+				boolean flag1 = partition.get(j).contains(state1);
+				boolean flag2 = partition.get(j).contains(state2);
+				if(flag1 && flag2)
+					break;
+				if(flag1 && flag2 == false)
+				{
+					partition.get(j).addState(state2);
+					break;
+				}
+				
+				if(flag1 == false && flag2)
+				{
+					partition.get(j).addState(state1);
+					break;
+				}
+				
+				if(j+1 == partition.size())
+				{
+					if(flag1 == false && flag2 == false)
+					{
+						state1 = tmp.getNode1().getNodeName();
+						state2 = tmp.getNode2().getNodeName();
+						startBlock = new Block();
+						startBlock.addState(state1);
+						startBlock.addState(state2);
+						partition.addBlock(startBlock);
+						break;
+					}
+				}
+			}
+		}
+		
+		return partition;
 	}
 
 	public String toString() {
