@@ -5,6 +5,7 @@ import ii.edu.mk.bisimulation.ListPairProcess;
 import ii.edu.mk.bisimulation.Partition;
 import ii.edu.mk.io.AldebaranFile;
 import ii.edu.mk.io.AldebaranUtils;
+import ii.edu.mk.saturation.Saturator;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -38,33 +39,31 @@ import org.jdesktop.swingx.JXFrame;
  * @author Vladimir Carevski
  */
 @SuppressWarnings("serial")
-public class BisimulationPanel extends JPanel{
+public class BisimulationPanel extends JPanel {
 
 	private final static Logger LOG = LogManager.getLogger(BisimulationPanel.class);
-	
+
 	private final JXFrame frameOwner;
-	
+
 	private File lts1File;
 	private File lts2File;
 	private JLabel calculationStatusLabel;
-	
+
 	JRadioButton weakBisim;
 	JRadioButton strongBisim;
-	
+
 	JRadioButton naiveMethod;
 	JRadioButton fernandezMethod;
-	
+
 	Dimension vpDim = new Dimension(400, 400);
 	JDialog dialog;
 	ViewPanel viewPanel;
-	
+
 	public BisimulationPanel(final JXFrame frameOwner) {
 		this.frameOwner = frameOwner;
-		
-		setLayout(new MigLayout("fill", 
-				"[10%]3px[90%]",
-				"[30!]3px![30!]3px![30!]3px![30!]3px![30!]"));
-		
+
+		setLayout(new MigLayout("fill", "[10%]3px[90%]", "[30!]3px![30!]3px![30!]3px![30!]3px![30!]"));
+
 		JLabel ltsLabel1 = new JLabel("LTS 1:");
 		JTextField ltsFileField1 = new JTextField(256);
 		ltsFileField1.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
@@ -72,10 +71,10 @@ public class BisimulationPanel extends JPanel{
 		JButton browseLts1Button = new JButton("Browse");
 		JButton clearLts1Button = new JButton("Clear");
 		JButton viewLts1Button = new JButton("View");
-		browseLts1Button.addActionListener(new ChooseFile1Action(ltsFileField1,  this));
+		browseLts1Button.addActionListener(new ChooseFile1Action(ltsFileField1, this));
 		clearLts1Button.addActionListener(new ClearFile1Action(ltsFileField1));
 		viewLts1Button.addActionListener(new ViewFile1Action());
-		
+
 		JLabel ltsLabel2 = new JLabel("LTS 2:");
 		JTextField ltsFileField2 = new JTextField(256);
 		ltsFileField2.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
@@ -86,239 +85,294 @@ public class BisimulationPanel extends JPanel{
 		browseLts2Button.addActionListener(new ChooseFile2Action(ltsFileField2, this));
 		clearLts2Button.addActionListener(new ClearFile2Action(ltsFileField2));
 		viewLts2Button.addActionListener(new ViewFile2Action());
-		
+
 		add(ltsLabel1);
 		add(ltsFileField1, "split 4, spanx");
 		add(browseLts1Button);
 		add(clearLts1Button);
 		add(viewLts1Button, "wrap");
-		
+
 		add(ltsLabel2);
 		add(ltsFileField2, "split 4, spanx");
 		add(browseLts2Button);
 		add(clearLts2Button);
 		add(viewLts2Button, "wrap");
-		
+
+		JLabel bisimulationLabel = new JLabel("Bisimulation:");
+		weakBisim = new JRadioButton("Weak");
+		strongBisim = new JRadioButton("Strong");
+		ButtonGroup bisimGroup = new ButtonGroup();
+		bisimGroup.add(weakBisim);
+		bisimGroup.add(strongBisim);
+
+		add(bisimulationLabel);
+		add(weakBisim, "split 2, al l");
+		add(strongBisim, "al l, wrap");
+
 		JLabel methodLabel = new JLabel("Method:");
 		naiveMethod = new JRadioButton("Naive");
 		fernandezMethod = new JRadioButton("Fernandez");
 		ButtonGroup methodGroup = new ButtonGroup();
 		methodGroup.add(naiveMethod);
 		methodGroup.add(fernandezMethod);
-		
+
 		add(methodLabel);
 		add(naiveMethod, "split 2, al l");
 		add(fernandezMethod, "al l, wrap");
-		
+
 		JButton calculate = new JButton("Calculate");
 		calculate.addActionListener(new CalculateAction());
 		calculationStatusLabel = new JLabel("results");
-		
+
 		add(calculate);
 		add(calculationStatusLabel);
-		
+
 		viewPanel = new ViewPanel();
 		dialog = new JDialog(this.frameOwner, true);
 		dialog.setContentPane(viewPanel);
 	}
-	
-	class ChooseFile1Action implements ActionListener{
+
+	class ChooseFile1Action implements ActionListener {
 		private JTextField textField;
 		private Component parent;
 		private JFileChooser fileChooser;
-		
+
 		public ChooseFile1Action(JTextField field, Component parent) {
-			this.parent = parent; this.textField = field;
+			this.parent = parent;
+			this.textField = field;
 			fileChooser = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("LTS (Aldebaran)", "aut");
 			fileChooser.setFileFilter(filter);
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			fileChooser.showOpenDialog(parent);
-			if(fileChooser.getSelectedFile()!=null){
+			if (fileChooser.getSelectedFile() != null) {
 				lts1File = fileChooser.getSelectedFile();
 				textField.setText(lts1File.getAbsolutePath());
 			}
 		}
 	}
-	
-	class ChooseFile2Action implements ActionListener{
+
+	class ChooseFile2Action implements ActionListener {
 		private JTextField textField;
 		private Component parent;
 		private JFileChooser fileChooser;
-		
+
 		public ChooseFile2Action(JTextField field, Component parent) {
-			this.parent = parent; this.textField = field;
+			this.parent = parent;
+			this.textField = field;
 			fileChooser = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("LTS (Aldebaran)", "aut");
 			fileChooser.setFileFilter(filter);
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			fileChooser.showOpenDialog(parent);
-			if(fileChooser.getSelectedFile()!=null){
+			if (fileChooser.getSelectedFile() != null) {
 				lts2File = fileChooser.getSelectedFile();
 				textField.setText(lts2File.getAbsolutePath());
 			}
 		}
 	}
-	
-	class ClearFile1Action implements ActionListener{
+
+	class ClearFile1Action implements ActionListener {
 		private JTextField textField;
+
 		public ClearFile1Action(JTextField textField) {
 			this.textField = textField;
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			lts1File = null;
 			textField.setText("");
 		}
 	}
-	
+
 	class ClearFile2Action implements ActionListener {
 		private JTextField textField;
+
 		public ClearFile2Action(JTextField textField) {
-			this.textField = textField;}
+			this.textField = textField;
+		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			lts2File = null;textField.setText("");
+			lts2File = null;
+			textField.setText("");
 		}
 	}
-	
+
 	class ViewFile1Action implements ActionListener {
-		@Override public void actionPerformed(ActionEvent arg0) { viewFile(lts1File); }
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			viewFile(lts1File);
+		}
 	}
-	
+
 	class ViewFile2Action implements ActionListener {
-		@Override public void actionPerformed(ActionEvent arg0) { viewFile(lts2File); }
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			viewFile(lts2File);
+		}
 	}
-	
-	private void viewFile(File file){
-		if(file != null){
-			try{
+
+	private void viewFile(File file) {
+		if (file != null) {
+			try {
 				viewPanel.showFile(file);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-				dialog.setLocation((dim.width/2)- (vpDim.width/2), (dim.height / 2)-(vpDim.height/2));
+				dialog.setLocation((dim.width / 2) - (vpDim.width / 2), (dim.height / 2) - (vpDim.height / 2));
 				dialog.pack();
 				dialog.setVisible(true);
-			}catch (IOException e) {
+			} catch (IOException e) {
 				showMessageInPopUp("Can not load the file.");
 			}
 		}
 	}
-	
-	class CalculateAction implements ActionListener{
+
+	class CalculateAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			setCalculationStatusMessage("");//clear
-			
-			//check to see if all needed data are submitted, before doing any processing
-			if(lts1File == null || lts2File == null){
-				if(lts1File == null) LOG.debug("First LTS file is null");
-				if(lts2File == null) LOG.debug("Second LTS file is null");
+			setCalculationStatusMessage("");// clear
+
+			// check to see if all needed data are submitted, before doing any
+			// processing
+			if (lts1File == null || lts2File == null) {
+				if (lts1File == null)
+					LOG.debug("First LTS file is null");
+				if (lts2File == null)
+					LOG.debug("Second LTS file is null");
 				showMessageInPopUp("Must select two files with defined LTS in Aldebaran format.");
 				return;
 			}
-			Boolean isNaiveMetodChosen = isNaiveMethodChosen();
-			if(isNaiveMetodChosen == null){
-				showMessageInPopUp("Must select a bisimilarity calculation method");
+
+			Boolean isStrongBisimChosen = isStrongBisimChosen();
+			if (isStrongBisimChosen == null) {
+				showMessageInPopUp("Must select a bisimilarity type.");
 				return;
 			}
-			
-			//try reading aldebaran files
+
+			Boolean isNaiveMetodChosen = isNaiveMethodChosen();
+			if (isNaiveMetodChosen == null) {
+				showMessageInPopUp("Must select a calculation method.");
+				return;
+			}
+
+			// try reading aldebaran files
 			AldebaranFile file1 = null;
 			AldebaranFile file2 = null;
-			try{
+			try {
 				file1 = AldebaranUtils.readFile(lts1File);
 				file2 = AldebaranUtils.readFile(lts2File);
 			} catch (IOException ioe) {
 				showMessageInPopUp("Selected files are not comp");
 				return;
 			}
-			
-			
+
+			if (!isStrongBisimChosen) {
+				file1 = Saturator.getInstance().saturate(file1);
+//				System.out.println(AldebaranUtils.toString(file1, true));
+				file2 = Saturator.getInstance().saturate(file2);
+//				System.out.println(AldebaranUtils.toString(file2, true));
+			}
+
 			Graph graph1 = AldebaranUtils.generateGraphFromAldebaranFile(file1);
 			Graph graph2 = AldebaranUtils.generateGraphFromAldebaranFile(file2);
-			
+
 			boolean bisimilar = false;
 			long time = System.currentTimeMillis();
-			if(isNaiveMetodChosen){
+			if (isNaiveMetodChosen) {
 				ListPairProcess lpp1 = graph1.findStrongBisimulationNaive();
 				ListPairProcess lpp2 = graph2.findStrongBisimulationNaive();
 				Partition par1 = lpp1.createPartition();
 				Partition par2 = lpp2.createPartition();
 				graph1.minimizationGraph(par1);
 				graph2.minimizationGraph(par2);
-				
+
 				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph1, graph2.getInitialNode());
-			}else{
+			} else {
 				Partition par1 = graph1.findStrongBisimulationFernandez();
 				Partition par2 = graph2.findStrongBisimulationFernandez();
-				
 				graph1.minimizationGraph(par1);
 				graph2.minimizationGraph(par2);
-				
+
 				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph1, graph2.getInitialNode());
 			}
 			time = System.currentTimeMillis() - time;
-			
+
 			StringBuilder builder = new StringBuilder();
-			builder.append("Bisimilar: ");
-			builder.append(bisimilar ? "true" : "false");
-			builder.append(" -- ");
+			builder.append("LTSs are ");
+			builder.append(bisimilar ? "" : "not ");
+			builder.append(isStrongBisimChosen ? "strongly " : "weakly ");
+			builder.append("bisimilar -- ");
 			builder.append("Lasted: ");
-			builder.append(String.format("%d sec.", (time / 1000) ));
-			
+			builder.append(String.format("%d sec.", (time / 1000)));
+
 			setCalculationStatusMessage(builder.toString());
 		}
 	}
-	
+
 	/**
-	 * @return null - nothing is chosen, do not calculate anything,
-	 * 		   true - naive method is choosen
-	 * 		   false- fernandez method is choosen
+	 * @return null - nothing is chosen, do not calculate anything, true - naive
+	 *         method is choosen false- fernandez method is choosen
 	 */
-	private Boolean isNaiveMethodChosen(){
-		if(!naiveMethod.isSelected() && !fernandezMethod.isSelected()){
+	private Boolean isNaiveMethodChosen() {
+		if (!naiveMethod.isSelected() && !fernandezMethod.isSelected()) {
 			return null;
 		}
-		if(naiveMethod.isSelected()){
+		if (naiveMethod.isSelected()) {
 			return Boolean.TRUE;
-		}else{
+		} else {
 			return Boolean.FALSE;
 		}
 	}
-	
-	private void setCalculationStatusMessage(String message){
+
+	/**
+	 * @return null - nothing is chosen, do not calculate anything, true -
+	 *         strong method is choosen false- weak method is choosen
+	 */
+	private Boolean isStrongBisimChosen() {
+		if (!strongBisim.isSelected() && !weakBisim.isSelected()) {
+			return null;
+		}
+		if (strongBisim.isSelected()) {
+			return Boolean.TRUE;
+		} else {
+			return Boolean.FALSE;
+		}
+	}
+
+	private void setCalculationStatusMessage(String message) {
 		calculationStatusLabel.setText(message);
 	}
-	
-	private void showMessageInPopUp(final String message){
+
+	private void showMessageInPopUp(final String message) {
 		JOptionPane.showMessageDialog(this, message);
 	}
-	
-	private class ViewPanel extends JPanel{
+
+	private class ViewPanel extends JPanel {
 		private JTextArea textArea;
 		private JScrollPane scroll;
+
 		public ViewPanel() {
 			this.setMinimumSize(vpDim);
 			this.setPreferredSize(vpDim);
 			this.setMaximumSize(vpDim);
-			this.setLayout(new MigLayout("fill","[100%]", "[100%]"));
+			this.setLayout(new MigLayout("fill", "[100%]", "[100%]"));
 			textArea = new JTextArea();
 			textArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 			textArea.setEditable(false);
-			scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			this.add(scroll, "grow");
 		}
-		
-		public void showFile(File file) throws IOException{
+
+		public void showFile(File file) throws IOException {
 			textArea.setText(AldebaranUtils.toString(AldebaranUtils.readFile(file), true));
 		}
 	}
-	
+
 }
