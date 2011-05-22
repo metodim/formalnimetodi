@@ -293,14 +293,14 @@ public class BisimulationPanel extends JPanel {
 				graph1.minimizationGraph(par1);
 				graph2.minimizationGraph(par2);
 
-				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph1, graph2.getInitialNode());
+				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph2, graph2.getInitialNode());
 			} else {
 				Partition par1 = graph1.findStrongBisimulationFernandez();
 				Partition par2 = graph2.findStrongBisimulationFernandez();
 				graph1.minimizationGraph(par1);
 				graph2.minimizationGraph(par2);
 
-				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph1, graph2.getInitialNode());
+				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph2, graph2.getInitialNode());
 			}
 			time = System.currentTimeMillis() - time;
 
