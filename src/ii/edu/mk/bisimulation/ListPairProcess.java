@@ -118,13 +118,13 @@ public class ListPairProcess {
 				tmp = it.next();
 				
 				LinkedList<String> node1Processes = new LinkedList<String>();
-				LinkedList<String> node2Processes = new LinkedList<String>();		
+				LinkedList<String> node2Processes = new LinkedList<String>();			
 				
 				for (int j = 0; j < node1Transitions.size(); j++) {
 					if (node1Transitions.get(j).getAction().equals(tmp)) {
 						node1Processes.add(node1Transitions.get(j).getPostProcess());
 					}
-				}
+				}				
 
 				for (int j = 0; j < node2Transitions.size(); j++) {
 					if (node2Transitions.get(j).getAction().equals(tmp)) {
@@ -152,7 +152,9 @@ public class ListPairProcess {
 							break;							
 						}					
 					}
-					firstCheck = firstCheck && firstCheckTmp;					
+					firstCheck = firstCheck && firstCheckTmp;
+					
+					if(!firstCheck) break;
 				}
 				
 				boolean secondCheckTmp = false;
@@ -172,7 +174,9 @@ public class ListPairProcess {
 							break;	
 						}					
 					}
-					secondCheck = secondCheck && secondCheckTmp;					
+					secondCheck = secondCheck && secondCheckTmp;
+					
+					if(!secondCheck) break;
 				}
 				
 				flagMain = flagMain && firstCheck && secondCheck;			
