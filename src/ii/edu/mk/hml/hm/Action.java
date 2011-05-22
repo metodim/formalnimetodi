@@ -46,8 +46,16 @@ public class Action {
   public boolean isForAny() {
     return !forAll;
   }
-  
 
+  
+  /**
+   * @param form sets Action's form (true = forAll, false = forAny)
+   */
+  public void setForm(boolean form) {
+    this.forAll = form;
+  }
+
+  
   /**
    * Example: [a]
    * @return action representation

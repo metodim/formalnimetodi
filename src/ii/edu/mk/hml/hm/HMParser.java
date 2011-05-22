@@ -16,9 +16,13 @@ public class HMParser {
   private Logic logic;
   private BooleanOperation finalResult = new BooleanOperation(true, 'R');
   private Stack<BooleanOperation> booleanStack = new Stack<BooleanOperation>();
+
+  private String actionName = "";
+  private Action previousAction = null;
+  private boolean untilOperatorFound = false;
+  private boolean untilWeak = true;
   
   private String previousToken = "";
-  private String actionName = "";
   private boolean literalOnTop = false;
   private Stack<String> stack = new Stack<String>();
   private ArrayList<String> grammar = new ArrayList<String>();
@@ -107,6 +111,8 @@ public class HMParser {
    */
   public HMParser(Node startNode) {
     this.logic = new HMLogic(startNode);
+    this.logic.PushState();
+    
     for(int i=0;i<grammarRules.length;i++) grammar.add(grammarRules[i]);
     for(int i=0;i<HMLexer.tokens.length;i++) terminals.add(HMLexer.tokens[i]);
     for(int i=0;i<terminalSigns.length;i++) terminals.add(terminalSigns[i]);
@@ -189,7 +195,7 @@ public class HMParser {
     
     //if in the top on stack is terminal
     if(topOnStack.compareTo(token)==0 && terminals.indexOf(topOnStack)>=0) {
-      executeTokenAction(token);
+      executeToken(token);
       return ;
     }
     
@@ -258,14 +264,33 @@ public class HMParser {
   }
   
   
-  private void executeTokenAction(String token) throws ParseException {
+  private void executeToken(String token) throws ParseException {
     if ("]".equals(token)) {
-      logic.ExecuteAction(new Action(actionName, true));
+      Action currentAction = new Action(actionName, true);
+      if (untilOperatorFound && previousAction != null) {
+        finalResult.evaluateBoolean(
+            logic.ExecuteUntil(previousAction, currentAction, untilWeak));
+      }
+      else {
+        logic.ExecuteAction(currentAction);
+      }
+      previousAction = currentAction;
       
     } else if (">".equals(token)) {
-      logic.ExecuteAction(new Action(actionName, false));
+      Action currentAction = new Action(actionName, false);
+      if (untilOperatorFound && previousAction != null) {
+        finalResult.evaluateBoolean(
+            logic.ExecuteUntil(previousAction, currentAction, untilWeak));
+      }
+      else {
+        logic.ExecuteAction(currentAction);
+      }
+      previousAction = currentAction;
       
     } else if ("(".equals(token)) {
+      if (untilOperatorFound) {
+        throw new ParseException("ERROR: After \"until\" operator, there can be no open bracket \"(\"");
+      }
       logic.ExecuteOpenBracket();
       booleanStack.push(new BooleanOperation(finalResult));
       finalResult = new BooleanOperation(true, 'R');
@@ -288,9 +313,11 @@ public class HMParser {
       throw new ParseException("Operation: \"NOT\" is not currently supported.");
       
     } else if ("TT".equals(token)) {
+      untilOperatorFound = false;
       finalResult.evaluateBoolean(logic.ExecuteTT());
       
     } else if ("FF".equals(token)) {
+      untilOperatorFound = false;
       finalResult.evaluateBoolean(logic.ExecuteFF());
       
     } else if ("{".equals(token)) {
@@ -303,10 +330,14 @@ public class HMParser {
       throw new ParseException("Operation: \",\" is not currently supported.");
       
     } else if ("US".equals(token)) {
-      throw new ParseException("Operation: \"US\" is not currently supported.");
+      untilOperatorFound = true;
+      untilWeak = false;
+      finalResult.setPreviousOperation('A');
       
     } else if ("UW".equals(token)) {
-      throw new ParseException("Operation: \"UW\" is not currently supported.");
+      untilOperatorFound = true;
+      untilWeak = true;
+      finalResult.setPreviousOperation('A');
       
     }
   }

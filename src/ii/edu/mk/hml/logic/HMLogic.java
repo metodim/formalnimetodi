@@ -3,6 +3,9 @@ package ii.edu.mk.hml.logic;
 
 import ii.edu.mk.hml.hm.Action;
 import ii.edu.mk.hml.utils.Node;
+import ii.edu.mk.hml.logic.HMLogic;
+import ii.edu.mk.hml.logic.Logic;
+import ii.edu.mk.hml.logic.NodeState;
 
 import java.util.ArrayList;
 
@@ -87,6 +90,10 @@ public class HMLogic extends Logic {
    */
   @Override
   public boolean ExecuteTT() {
+    if (currentState.isPreviousActionNull()) {
+      return true;
+    }
+    
     boolean result = false;
     if (currentState.isPreviousStatusOK() && currentState.isStatusOK()) {
       if (currentState.isPreviousActionForAny() && currentState.getCurrentNodesStateCount() > 0) {
@@ -105,6 +112,10 @@ public class HMLogic extends Logic {
    */
   @Override
   public boolean ExecuteFF() {
+    if (currentState.isPreviousActionNull()) {
+      return false;
+    }
+    
     boolean result = false;
     if (currentState.isPreviousStatusOK()) {
       if (currentState.isStatusOK() && currentState.isPreviousActionForAny()
@@ -123,5 +134,96 @@ public class HMLogic extends Logic {
 //    System.out.println("ExecuteFF = " + result);
     return result;
   }
-  
+
+
+  /**
+   * Executes the given {@link Action} if before it there is "until" operator. 
+   */
+  @Override
+  public boolean ExecuteUntil(Action previousAction, Action currentAction, boolean untilWeak) {
+    boolean finalResult = false;
+    
+    if (currentState.isPreviousStatusOK()) {
+      ArrayList<NodeState> currentNodesState = currentState.getCurrentNodesState();
+      ArrayList<NodeState> crossedNodesState = new ArrayList<NodeState>();
+      ArrayList<Node> visited = new ArrayList<Node>();
+      
+      do {
+        // 1. Execute the currentAction and get all the result nodes
+        // 2. Put them into crossedNodesStates
+        boolean foundAll = true, found;
+        for (int j = 0; j < currentNodesState.size(); j++) {
+          found = false;
+          for (int i = 0; i < currentNodesState.get(j).getNode().getTransitionsCount(); i++) {
+            if (currentNodesState.get(j).getNode().getTransition(i).getName()
+                .equals(currentAction.getName())) {
+              NodeState nodeState = new NodeState(
+                  currentNodesState.get(j).getNode().getTransition(i).getEndNode(),
+                  currentNodesState.get(j).getPath());
+              if (!crossedNodesState.contains(nodeState)) {
+                crossedNodesState.add(nodeState);
+              }
+              found = true;
+            }
+          }
+          
+          foundAll = foundAll && found;
+        }
+        
+        
+        // 3. Evaluate finalResult if UW (until weak)
+        if (untilWeak && crossedNodesState.size() > 0 && !finalResult && foundAll) {
+          finalResult = true;
+        }
+        
+        
+        // 4. Execute the previousAction and get all the result nodes
+        // 5. Put NOT visited nodes into newCurrentNodesState
+        ArrayList<NodeState> newCurrentNodesState = new ArrayList<NodeState>();
+        for (int j = 0; j < currentNodesState.size(); j++) {
+          if (!visited.contains(currentNodesState.get(j).getNode())) {
+            for (int i = 0; i < currentNodesState.get(j).getNode().getTransitionsCount(); i++) {
+              if (currentNodesState.get(j).getNode().getTransition(i).getName()
+                  .equals(previousAction.getName())) {
+                NodeState nodeState = new NodeState(
+                    currentNodesState.get(j).getNode().getTransition(i).getEndNode(),
+                    currentNodesState.get(j).getPath());
+                if (!newCurrentNodesState.contains(nodeState)) {
+                  newCurrentNodesState.add(nodeState);
+                }
+              }
+            }
+          }
+        }
+        
+        // 6. Update visited
+        for (NodeState nodeState : currentNodesState) {
+          if (!visited.contains(nodeState.getNode())) {
+            visited.add(nodeState.getNode());
+          }
+        }
+        
+        // 7. Replace currentNodesState with newCurrentNodesState
+        currentNodesState = newCurrentNodesState;
+        
+      } while (currentNodesState.size() != 0);
+      
+      //UNTIL
+      if (!untilWeak) {
+        if (crossedNodesState.size() > 0) {
+          finalResult = true;
+        }
+      } else {
+        if (crossedNodesState.size() == 0) {
+          finalResult = true;
+        }
+      }
+      
+      //Update currentState with crossedNodes
+      currentState.setCurrentNodesState(crossedNodesState);
+      currentState.setPreviousActionForm(currentAction.isForAll());
+    }
+    
+    return finalResult;
+  }
 }

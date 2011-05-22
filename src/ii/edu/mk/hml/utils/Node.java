@@ -3,6 +3,9 @@ package ii.edu.mk.hml.utils;
 
 import java.util.ArrayList;
 
+import ii.edu.mk.hml.utils.Node;
+import ii.edu.mk.hml.utils.Transition;
+
 
 /**
  * <p>Each node have a name and a list with transitions. This list keeps all
@@ -84,6 +87,16 @@ public class Node {
   @Override
   public String toString() {
     return "Node [name=" + name + ", transitions=" + transitions + "]";
+  }
+  
+  @Override
+  public boolean equals(Object obj) {
+    return getName().equals(((Node)obj).getName());
+  }
+  
+  @Override
+  public int hashCode() {
+    return getName().hashCode();
   }
     
 }
