@@ -413,9 +413,10 @@ public class Graph {
 		process = it.next();
 
 		LinkedList<PostTransition> nodePostTransitions = new LinkedList<PostTransition>();
+		
 		for (int i=0; i<pt.size(); i++)
 		{
-			if (!nodePostTransitions.contains(pt.get(i)))
+			if (!nodePostTransitions.contains(pt.get(i)))			
 				nodePostTransitions.add(pt.get(i));
 		}
 
@@ -427,12 +428,12 @@ public class Graph {
 			while (it2.hasNext())
 			{
 				PostTransition pt2 = it2.next();
-				if(!nodePostTransitions.contains(pt2))
+				if(!nodePostTransitions.contains(pt2))				
 					nodePostTransitions.add(pt2);
 			}
+			
 			graph.remove(node1);
 		}
-
 		node.setPostTransitions(nodePostTransitions);
 	}
 
@@ -444,8 +445,21 @@ public class Graph {
 		{
 			B = it.next();
 			minimizationGraphForBisimilarClass(B);
+		}	
+		
+		for(int i = 1; i < this.size(); i++)
+		{
+			LinkedList<PostTransition> o = this.getNode(i).getPostTransitions();
+			LinkedList<PostTransition> oNew = new LinkedList<PostTransition>();
+			for(int j = 0; j < o.size(); j++)
+			{
+				if (!oNew.contains(o.get(j)))			
+					oNew.add(o.get(j));
+			}
+			
+			this.getNode(i).setPostTransitions(oNew);			
 		}
-	}
+	}	
 
 	public LinkedList<Node> getAllNodeFromGraph(String NameGraph) {
 		LinkedList<Node> nodes = new LinkedList<Node>();
@@ -458,22 +472,31 @@ public class Graph {
 	}
 
 	public boolean equalGraph(Node n1, Graph g, Node n2) {
+		//se proveruva dali imaat isti rebra, dokolku ne se prekinuva tuka
 		if (!(n1.equalEdge(n2))) {
 			return false;
 		} else {
+			//se zemaat site posttranzicii od prvoto teme i se otkriva rebro po rebro 
 			LinkedList<PostTransition> ob1 = n1.getPostTransitions();
+			
+			//za sekoe izlezno rebro od prvata sostojba
 			for (int i = 0; i < ob1.size(); i++) {
 				boolean flag = false;
 				boolean isLoop = false;
+				
+				//se zemaat soodvetnite procesi od vtoroto rebro koi ja pravat istst taa kacija
+				
 				LinkedList<PostTransition> ob2 = n2.getPostTransitionsByAction(ob1.get(i).getAction());
 
+				//se pominuva niz niv se dodeka ne se najde soodvetnoto proces koj odgovara na sledniot
 				for (int j = 0; j < ob2.size(); j++) {
-					if (!ob1.get(i).getColor().equals("black") && !ob2.get(j).getColor().equals("black")) {
+					if (!ob1.get(i).getColor().equals("black") && !ob2.get(j).getColor().equals("black")) {						
+						
 						Node n11 = this.getNodeFromGraph(ob1.get(i).getPostProcess());
 						Node n22 = g.getNodeFromGraph(ob2.get(j).getPostProcess());
 
-						ob1.get(i).setColor("black");
-						ob2.get(j).setColor("black");
+						//ob1.get(i).setColor("black");
+						//ob2.get(j).setColor("black");
 
 						flag = flag || equalGraph(n11, g, n22);
 					} else {

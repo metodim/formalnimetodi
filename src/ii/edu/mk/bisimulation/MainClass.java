@@ -12,8 +12,8 @@ public class MainClass {
 
 		System.out.println("=====/ EXAMPLE 1 /=====\n");
 
-		System.out.println("abp.aut");
-		Graph graph1 = generateGraph("abp.aut");
+		System.out.println("dining3_schedule.aut");
+		Graph graph1 = generateGraph("dining3_schedule.aut");
 
 		Graph graph11 = new Graph(graph1);
 		Graph graph12 = new Graph(graph1);
@@ -28,9 +28,11 @@ public class MainClass {
 		System.out.println();
 		
 		Partition P = L1.createPartition();
+		System.out.println("Sets of mutually bisimilar states in Graph1: " + P);
 		graph11.minimizationGraph(P);
 		System.out.println("Minimal graph has " + graph11.getNumberOfStates() + " states");
 		System.out.println("Minimal graph has " + graph11.getNumberOfTransitions() + " transitions");
+		//System.out.println(graph11);
 		
 		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");		
 		
@@ -44,8 +46,10 @@ public class MainClass {
 		graph12.minimizationGraph(P1);
 		System.out.println("Minimal graph has " + graph12.getNumberOfStates() + " states");
 		System.out.println("Minimal graph has " + graph12.getNumberOfTransitions() + " transitions");
-	
+		//System.out.println(graph12);
 		System.out.println();
+		
+		//System.out.println(graph11.equalGraph(graph11.getInitialNode(), graph12, graph12.getInitialNode()));
 
 	}
 
