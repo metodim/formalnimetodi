@@ -63,10 +63,9 @@ public class MainClass {
 			String des = descriptor.substring(descriptor.indexOf('(') + 1, descriptor.indexOf(')'));
 
 			String[] desElements = des.split(",");
-			String start = desElements[0];
-			int numberTransitions = Integer.parseInt(desElements[1]);
-			int numberStates = Integer.parseInt(desElements[2]);
-
+			String start = desElements[0].trim();
+			int numberTransitions = Integer.parseInt(desElements[1].trim());
+			int numberStates = Integer.parseInt(desElements[2].trim());				
 			Node nodes[] = new Node[numberStates];
 			nodes[0] = new Node(start);
 			graph.addNode(nodes[0]);
@@ -75,10 +74,21 @@ public class MainClass {
 				String edge = scanner.nextLine();
 				String ed = edge.substring(1, edge.length()-1);
 
-				String[] edgeElements = ed.split("\"");
-				String node1 = edgeElements[0].substring(0, edgeElements[0].length()-1);
-				String action = edgeElements[1];
-				String node2 = edgeElements[2].substring(1, edgeElements[2].length());
+				String[] edgeElements = ed.split(",");//split("\"");
+				String node1 = edgeElements[0].trim();//.substring(0, edgeElements[0].length()-1)
+				String action = "";
+				if(edgeElements.length == 3)
+				{
+					action = edgeElements[1].trim();
+				}
+				else
+				{
+					for(int j = 1; j <= edgeElements.length - 2; j++)
+					{
+						action = action + edgeElements[j].trim();
+					}
+				}
+				String node2 = edgeElements[edgeElements.length - 1].trim();//.substring(1, edgeElements[2].length())
 
 				graph.addAction(action);
 
@@ -111,7 +121,6 @@ public class MainClass {
 		}
 
 		return graph;
-	}
-	
+	}	
 
 }
