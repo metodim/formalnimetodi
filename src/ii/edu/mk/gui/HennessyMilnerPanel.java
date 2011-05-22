@@ -34,21 +34,23 @@ public class HennessyMilnerPanel extends JPanel{
 	private final static Logger LOG = LogManager.getLogger(HennessyMilnerPanel.class);
 	private final JFrame frameOwner;
 
-	private JTextArea ltsArea = new JTextArea();
-	private JTextArea hmlArea = new JTextArea();
+	private JTextArea ltsArea;
+	private JTextArea hmlArea;
+	private JTextArea resArea;
 	private JLabel statusMessage = new JLabel("Status");
-	private JLabel calcStatusMessage = new JLabel("Calculation Status");
 	
 	private File aldebaranFile;
 	
 	public HennessyMilnerPanel(final JFrame owner) {
 		this.frameOwner = owner;
 		
-		setLayout(new MigLayout("fill", "[20%]3px[80%]", "[40%]3px[10%]3px[40%]3px[10%]"));
+		setLayout(new MigLayout("fill", "[20%]3px[40%]3px[40%]", "[40%]3px[10%]3px[40%]3px[10%]"));
 		JLabel ltsContentLabel = new JLabel("LTS (Aldebaran): ");
 		JLabel statusMessageLabel = new JLabel("Status: ");
 		JLabel hmlLabel = new JLabel("HM Logic: ");
-
+		
+		statusMessage.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
+		
 		ltsArea = new JTextArea();
 		ltsArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		JScrollPane ltsAreaScrollPane = new JScrollPane(ltsArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -62,6 +64,13 @@ public class HennessyMilnerPanel extends JPanel{
 		hmlAreaScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		hmlArea.setEnabled(true);
 		hmlArea.setEditable(true);
+		
+		resArea = new JTextArea();
+		resArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
+		JScrollPane resAreaScrollPane = new JScrollPane(resArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		resAreaScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		resArea.setEnabled(true);
+		resArea.setEditable(false);
 		
 		JButton openLtsExprsButton = new JButton("Open");
 		openLtsExprsButton.addActionListener(new OpenLtsAction());
@@ -84,11 +93,11 @@ public class HennessyMilnerPanel extends JPanel{
 		add(statusMessage, "al l, wrap");
 
 		add(hmlLabel);
-		add(hmlAreaScrollPane, "grow, wrap");
+		add(hmlAreaScrollPane, "grow");
+		add(resAreaScrollPane, "grow, wrap");
 		add(Box.createVerticalGlue());
-		add(saveHmlButton, "split 3, al l");
+		add(saveHmlButton, "split 2, al l");
 		add(calculateButton);
-		add(calcStatusMessage);
 	}
 	
 	class OpenLtsAction implements ActionListener{
@@ -150,9 +159,9 @@ public class HennessyMilnerPanel extends JPanel{
 				HMLexer lexer = new HMLexer(aldebaranFile);
 				String result = lexer.tokenization(hmlExpr);
 				if(result != null && !result.isEmpty()){
-					calcStatusMessage.setText(result);
+					resArea.setText(result);
 				}else{
-					calcStatusMessage.setText("Can not calculate");
+					resArea.setText("Can not calculate");
 				}
 			}else{
 				showMessageInPopUp("LTS file must be opened, and expression provided.");
@@ -165,7 +174,7 @@ public class HennessyMilnerPanel extends JPanel{
 		ltsArea.setText("");
 		hmlArea.setText("");
 		statusMessage.setText("");
-		calcStatusMessage.setText("");
+		resArea.setText("");
 	}
 	
 	private void showMessageInPopUp(final String message){

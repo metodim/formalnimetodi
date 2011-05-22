@@ -17,9 +17,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXStatusBar;
 import org.joda.time.DateTime;
@@ -32,6 +37,8 @@ import org.joda.time.DateTime;
 @SuppressWarnings("serial")
 public class MainFrame extends JXFrame {
 
+	private final static Logger LOG = LogManager.getLogger(MainFrame.class);
+	
 	private JMenuBar menuBar;
 //	private JToolBar toolBar;
 	private JXStatusBar statusBar;
@@ -89,8 +96,45 @@ public class MainFrame extends JXFrame {
 		fileMenu.setText("File");
 		JMenuItem exitSubMenu = new JMenuItem(new ExitAction());
 		fileMenu.add(exitSubMenu);
+		
+		JMenu lafMenu = new JMenu();
+		lafMenu.setText("L&F");
+		
+	    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+	    	lafMenu.add(new JMenuItem(new ChangeLafAction(info)));
+	    }
+		
+	    JMenu helpMenu = new JMenu("Help");
+	    JMenuItem aboutMenuItem = new JMenuItem(new AboutAction());
+	    helpMenu.add(aboutMenuItem);
+	    
+	    
 		menuBar.add(fileMenu);
+		menuBar.add(lafMenu);
+		menuBar.add(helpMenu);
 		return menuBar;
+	}
+	
+	class ChangeLafAction extends AbstractAction{
+		LookAndFeelInfo lafi;
+		public ChangeLafAction(LookAndFeelInfo lafi) {
+			this.lafi = lafi;
+			putValue(Action.NAME, lafi.getName());
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(lafi != null){setLookAndFeel(lafi);}
+		}
+	}
+	
+	private void setLookAndFeel(LookAndFeelInfo info){
+		try{
+			UIManager.setLookAndFeel(info.getClassName());
+			SwingUtilities.updateComponentTreeUI(this);
+		}catch (Exception ex) {
+			LOG.debug("Error setting Look and feel:" + info.getName());
+		}
 	}
 	
 	class ExitAction extends AbstractAction{
@@ -113,7 +157,19 @@ public class MainFrame extends JXFrame {
 			System.exit(0);
 		}
 	}
-
+	
+	class AboutAction extends AbstractAction{
+		
+		public AboutAction() {
+			putValue(Action.NAME, "About...");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+		}
+	}
+	
 	protected JXStatusBar buildStatusBar() {
 
 		JXStatusBar statusBar = new JXStatusBar();			
@@ -152,7 +208,7 @@ public class MainFrame extends JXFrame {
 
 		return statusBar;
 	}
-
+	
 	private static class TimerLabel extends JLabel implements ActionListener {
 		private static final long serialVersionUID = 1L;
 		DateTime dateTime;

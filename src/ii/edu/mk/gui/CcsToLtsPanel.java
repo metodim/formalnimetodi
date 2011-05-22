@@ -61,8 +61,8 @@ public class CcsToLtsPanel extends JPanel {
 	AldebaranFile aldebaranFile;
 	File ccsFile;
 
-	AldebaranGraphPanel aldebaranGraphPanel;
-	LtsGraphPanel ltsGraphPanel;
+	LtsGraphPanel aldebaranGraphPanel;
+	SosTransformationGraphPanel ltsGraphPanel;
 
 	JDialog aldebaranDialog;
 	JDialog ltsDialog;
@@ -70,7 +70,7 @@ public class CcsToLtsPanel extends JPanel {
 	public CcsToLtsPanel(final JXFrame frameOwner) {
 		this.frame = frameOwner;
 
-		setLayout(new MigLayout("fill", "[20%]3px[80%]", "[40%]3px[10%]3px[40%]3px[10%]"));
+		setLayout(new MigLayout("fill", "[20%]3px[40%]3px[40%]", "[40%]3px[10%]3px[40%]3px[10%]"));
 		JLabel testExpresionLabel = new JLabel("CCS Expression:");
 		JLabel parseStatusLabel = new JLabel("LTS Status:");
 		parseStatusMessageLabel = new JLabel("Status Message");
@@ -114,42 +114,42 @@ public class CcsToLtsPanel extends JPanel {
 		JButton saveLtsButton = new JButton("Save");
 		saveLtsButton.addActionListener(new SaveLtsAction(this));
 
-		JButton viewAldebaranGraphButton = new JButton("View Aldebaran Graph");
-		viewAldebaranGraphButton.addActionListener(new ViewAldebaranGraphAction());
-
 		JButton viewLtsGraphButton = new JButton("View LTS Graph");
 		viewLtsGraphButton.addActionListener(new ViewLtsGraphAction());
+
+		JButton viewSosTransfGraphButton = new JButton("View Transf. Graph");
+		viewSosTransfGraphButton.addActionListener(new ViewSosTransformationGraphAction());
 
 		JButton parserButton = new JButton("Generate LTS");
 		parserButton.addActionListener(new GenerateLTSAction(expressionArea, ltsArea, parseStatusMessageLabel));
 
 		add(testExpresionLabel);
-		add(testExpressionScrollPane, "grow, wrap");
+		add(testExpressionScrollPane, "spanx 2, grow, wrap");
 		add(parseStatusLabel);
 
-		add(openCcsExprsButton, "split 6, al l");
+		add(openCcsExprsButton, "split 5, al l");
 		add(saveCcsExprsButton, "al l");
 		add(clearExpressionArea, "al r");
 		add(parserButton, "al l");
-		add(viewLtsGraphButton, "al r");
+		add(viewSosTransfGraphButton, "al r");
 		add(parseStatusMessageLabel, "al l, wrap");
 
 		add(expressionTokensLabel);
-		add(aldebaranScrollPane, "split 3, al l, grow");
-		add(ltsScrollPane, "al r, grow, wrap");
+		add(aldebaranScrollPane, "grow");
+		add(ltsScrollPane, "grow, wrap");
 		add(Box.createVerticalGlue());
-		add(saveLtsButton, "split 4");
-		add(viewAldebaranGraphButton);
+		add(saveLtsButton, "split 3");
+		add(viewLtsGraphButton);
 		add(clearLtsAreaButton);
 
-		aldebaranGraphPanel = new AldebaranGraphPanel();
+		aldebaranGraphPanel = new LtsGraphPanel();
 		aldebaranDialog = new JDialog(this.frame, true);
-		aldebaranDialog.setTitle("Aldebaran Graph");
+		aldebaranDialog.setTitle("LTS Graph");
 		aldebaranDialog.setContentPane(aldebaranGraphPanel);
 
-		ltsGraphPanel = new LtsGraphPanel();
+		ltsGraphPanel = new SosTransformationGraphPanel();
 		ltsDialog = new JDialog(this.frame, true);
-		ltsDialog.setTitle("LTS Graph");
+		ltsDialog.setTitle("SOS Transformation Graph");
 		ltsDialog.setContentPane(ltsGraphPanel);
 	}
 
@@ -166,6 +166,7 @@ public class CcsToLtsPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			clearLtsGraph();
 			try {
 				List<String> expressions = getExpressionsStrings(expressionArea.getText());
 				if (expressions.size() == 0)
@@ -361,13 +362,13 @@ public class CcsToLtsPanel extends JPanel {
 		}
 	}
 
-	class ViewAldebaranGraphAction implements ActionListener {
+	class ViewLtsGraphAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (aldebaranFile != null) {
 				aldebaranGraphPanel.drawGraph(aldebaranFile);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-				aldebaranDialog.setLocation((dim.width / 2) - (AldebaranGraphPanel.VP_DIM.width / 2), (dim.height / 2) - (AldebaranGraphPanel.VP_DIM.height / 2));
+				aldebaranDialog.setLocation((dim.width / 2) - (LtsGraphPanel.VP_DIM.width / 2), (dim.height / 2) - (LtsGraphPanel.VP_DIM.height / 2));
 				aldebaranDialog.pack();
 				aldebaranDialog.setVisible(true);
 			} else {
@@ -376,13 +377,13 @@ public class CcsToLtsPanel extends JPanel {
 		}
 	}
 
-	class ViewLtsGraphAction implements ActionListener {
+	class ViewSosTransformationGraphAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (ltsRootNode != null) {
 				ltsGraphPanel.drawGraph(ltsRootNode);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-				ltsDialog.setLocation((dim.width / 2) - (LtsGraphPanel.VP_DIM.width / 2), (dim.height / 2) - (LtsGraphPanel.VP_DIM.height / 2));
+				ltsDialog.setLocation((dim.width / 2) - (SosTransformationGraphPanel.VP_DIM.width / 2), (dim.height / 2) - (SosTransformationGraphPanel.VP_DIM.height / 2));
 				ltsDialog.pack();
 				ltsDialog.setVisible(true);
 			} else {
