@@ -5,6 +5,9 @@ import ii.edu.mk.hml.hm.Action;
 import ii.edu.mk.hml.hm.HMParser;
 import ii.edu.mk.hml.utils.Graph;
 import ii.edu.mk.hml.utils.Node;
+import ii.edu.mk.hml.logic.Logic;
+import ii.edu.mk.hml.logic.NodeState;
+import ii.edu.mk.hml.logic.State;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -146,4 +149,13 @@ public abstract class Logic {
    * @return true if the state is NOT OK, else false
    */
   public abstract boolean ExecuteFF();
+  
+  /**
+   * This function will be called by the parser
+   * when it reaches to {@link Action} but before the action there is "until"
+   * operator: Uw or Us. 
+   * <br /><i>You should implement your logic to check your state.</i>
+   * @return true if the state is NOT OK, else false
+   */
+  public abstract boolean ExecuteUntil(Action previousAction, Action currentAction, boolean untilWeak);
 }

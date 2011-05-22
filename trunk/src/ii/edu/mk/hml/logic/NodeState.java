@@ -1,5 +1,6 @@
 package ii.edu.mk.hml.logic;
 
+import ii.edu.mk.hml.logic.NodeState;
 import ii.edu.mk.hml.utils.Node;
 
 public class NodeState {
@@ -50,6 +51,16 @@ public class NodeState {
   @Override
   public String toString() {
     return "NodeState [node=" + node + ", path=" + path + "]";
+  }
+  
+  @Override
+  public boolean equals(Object obj) {
+    return getNode().equals(((NodeState)obj).getNode());
+  }
+  
+  @Override
+  public int hashCode() {
+    return getNode().hashCode();
   }
   
 }
