@@ -93,11 +93,7 @@ public class Graph {
 		}
 		return null;
 	}
-
-	public String getNodeName(int i) {
-		return this.graph.get(i).getNodeName();
-	}
-
+	
 	public int size() {
 		return this.graph.size();
 	}
@@ -105,8 +101,8 @@ public class Graph {
 	public ListPairProcess findStrongBisimulationNaive() {
 		ListPairProcess list0 = new ListPairProcess();
 
-		for (int i = 0; i < graph.size(); i++) {
-			for (int j = i + 1; j < graph.size(); j++) {
+		for (int i = 0; i < graph.size()-1; i++) {
+			for (int j = i+1; j < graph.size(); j++) {
 				PairProcess pair = new PairProcess(this.getNode(i), this.getNode(j));
 				list0.addPairProcess(pair);
 			}
@@ -137,19 +133,22 @@ public class Graph {
 
 		return list1;
 	}
-
+	
 	public Block getInverseT(String action, Block B) {
 		Block tmp = new Block();
-		for (int i = 0; i < B.size(); i++) {
-			Node nd = getNodeByProcess(B.get(i));
-			LinkedList<CoupleTransition> llct = nd.getCoupleInverseTransitions();
-			for (int j = 0; j < llct.size(); j++) {
-				CoupleTransition ct = llct.get(j);
+		ListIterator<String> it = B.listIterator();
+		while (it.hasNext()){
+			String s = it.next();
+			Node nd = getNodeByProcess(s);
+			ListIterator<CoupleTransition> llct = nd.getCoupleInverseTransitions().listIterator();
+			while(llct.hasNext()){
+				CoupleTransition ct = llct.next();
 				if (ct.getAction().equals(action)) {
-					LinkedList<String> proc = ct.getProcesses();
-					for (int k = 0; k < proc.size(); k++) {
-						if (!tmp.getStates().contains(proc.get(k)))
-							tmp.addState(proc.get(k));
+					ListIterator<String> proc = ct.getProcesses().listIterator();
+					while(proc.hasNext()) {
+						String process = proc.next();
+						if (!tmp.contains(process))
+							tmp.addState(process);
 					}
 				}
 			}
@@ -158,16 +157,17 @@ public class Graph {
 	}
 
 	public int getInfoMap(Block B, String a, String s) {
-		LinkedList<CoupleTransition> ctlist = getNodeByProcess(s).getCoupleTransitions();
 		LinkedList<String> tr = new LinkedList<String>();
-		for (int i = 0; i < ctlist.size(); i++) {
-			CoupleTransition ct = ctlist.get(i);
+		ListIterator<CoupleTransition> ctit = getNodeByProcess(s).getCoupleTransitions().listIterator();
+		while (ctit.hasNext()) {
+			CoupleTransition ct = ctit.next();
 			if (ct.getAction().equals(a))
 				tr = ct.getProcesses();
 		}
 		int tmp = 0;
-		for (int i = 0; i < B.size(); i++) {
-			if (tr.contains(B.get(i)))
+		ListIterator<String> itB = B.listIterator();
+		while (itB.hasNext()) {
+			if (tr.contains(itB.next()))
 				tmp++;
 		}
 		return tmp;
@@ -191,16 +191,18 @@ public class Graph {
 			// if S is a simple splitter, composed only of B
 			if (S.size() == 1) {
 				W.remove(S);
-				for (int i = 0; i < A.size(); i++) {
-					String a = A.get(i);
+				ListIterator<String> it = A.listIterator();
+				while (it.hasNext()){
+					String a = it.next();
 					Block pomB = new Block();
 					pomB = S.get(0);
 
 					Block inverseT = getInverseT(a, pomB);
 					Partition I = P.constructI(inverseT);
 
-					for (int j = 0; j < I.size(); j++) {
-						Block X = I.get(j);
+					ListIterator<Block> it1 = I.listIterator();
+					while(it1.hasNext()) {
+						Block X = it1.next();
 						Partition tmp = X.partitionate(inverseT);
 						Block X1 = tmp.get(0);
 						Block X2 = tmp.get(1);
@@ -223,24 +225,27 @@ public class Graph {
 				}
 			}
 			// if S is a compound splitter composed of (B, Bi, Bii), B = Bi
-			// unija Bii
+			// union Bii
 			else if (S.size() > 1) {
 				W.remove(S);
-				for (int i = 0; i < A.size(); i++) {
-					String a = A.get(i);
+				ListIterator<String> it = A.listIterator();
+				while (it.hasNext()) {
+					String a = it.next();
 					Block pomB = new Block();
 					pomB = S.get(0);
 
 					Block inverseT = getInverseT(a, pomB);
 					Partition I = P.constructI2(inverseT);
 
-					for (int j = 0; j < I.size(); j++) {
-						Block X = I.get(j);
+					ListIterator<Block> it1 = I.listIterator();
+					while(it1.hasNext()) {
+						Block X = it1.next();
 						Block X1 = new Block();
 						Block X2 = new Block();
 						Block X3 = new Block();
-						for (int k = 0; k < X.size(); k++) {
-							String s = X.get(k);
+						ListIterator<String> it2 = X.listIterator();
+						while(it2.hasNext()) {
+							String s = it2.next();
 							int info0 = getInfoMap(S.get(0), a, s);
 							int info1 = getInfoMap(S.get(1), a, s);
 							if (info0 == info1) {
@@ -262,15 +267,19 @@ public class Graph {
 								Block X123 = new Block();
 
 								X23.addAllStates(X2);
-								for (int m = 0; m < X3.size(); m++) {
-									if (!X23.getStates().contains(X3.get(m)))
-										X23.addState(X3.get(m));
+								ListIterator<String> it3 = X3.listIterator();
+								while (it3.hasNext()) {
+									String m = it3.next();
+									if (!X23.contains(m))
+										X23.addState(m);
 								}
 
 								X123.addAllStates(X23);
-								for (int m = 0; m < X1.size(); m++) {
-									if (!X123.getStates().contains(X1.get(m)))
-										X123.addState(X1.get(m));
+								ListIterator<String> it4 = X1.listIterator();
+								while (it4.hasNext()) {
+									String m = it4.next();
+									if (!X123.contains(m))
+										X123.addState(m);
 								}
 
 								xtmp.addBlock(X123);
@@ -370,10 +379,12 @@ public class Graph {
 		return P;
 	}
 
-	public Node getNodeFromGraph(String NameGraph) {
-		for (int i = 0; i < this.graph.size(); i++) {
-			if (equalSpecificString(this.getNode(i).getNodeName(), NameGraph)) {
-				return this.getNode(i);
+	public Node getNodeFromGraph(String nameGraph) {
+		ListIterator<Node> it = graph.listIterator();
+		while(it.hasNext()){
+			Node tmp = it.next();
+			if (equalSpecificString(tmp.getNodeName(), nameGraph)) {
+				return tmp;
 			}
 		}
 		return null;
@@ -413,11 +424,12 @@ public class Graph {
 		process = it.next();
 
 		LinkedList<PostTransition> nodePostTransitions = new LinkedList<PostTransition>();
-		
-		for (int i=0; i<pt.size(); i++)
+		ListIterator<PostTransition> itpt = pt.listIterator();
+		while (itpt.hasNext())
 		{
-			if (!nodePostTransitions.contains(pt.get(i)))			
-				nodePostTransitions.add(pt.get(i));
+			PostTransition tmp = itpt.next();
+			if (!nodePostTransitions.contains(tmp))
+				nodePostTransitions.add(tmp);
 		}
 
 		while (it.hasNext())
@@ -428,76 +440,64 @@ public class Graph {
 			while (it2.hasNext())
 			{
 				PostTransition pt2 = it2.next();
-				if(!nodePostTransitions.contains(pt2))				
+				if(!nodePostTransitions.contains(pt2))
 					nodePostTransitions.add(pt2);
 			}
-			
 			graph.remove(node1);
 		}
+
 		node.setPostTransitions(nodePostTransitions);
 	}
 
 	public void minimizationGraph(Partition P)
 	{
 		ListIterator<Block> it = P.listIterator();
-		Block B;
 		while (it.hasNext())
 		{
-			B = it.next();
+			Block B = it.next();
 			minimizationGraphForBisimilarClass(B);
-		}	
+		}
 		
-		for(int i = 1; i < this.size(); i++)
+		ListIterator<Node> it1 = this.graph.listIterator();
+		while (it1.hasNext())
 		{
-			LinkedList<PostTransition> o = this.getNode(i).getPostTransitions();
-			LinkedList<PostTransition> oNew = new LinkedList<PostTransition>();
-			for(int j = 0; j < o.size(); j++)
+			Node node = it1.next();
+			LinkedList<PostTransition> ptNew = new LinkedList<PostTransition>();
+			ListIterator<PostTransition> ptit = node.getPostTransitions().listIterator();
+			while (ptit.hasNext())
 			{
-				if (!oNew.contains(o.get(j)))			
-					oNew.add(o.get(j));
+				PostTransition tmp = ptit.next();
+				if (!ptNew.contains(tmp))			
+					ptNew.add(tmp);
 			}
-			
-			this.getNode(i).setPostTransitions(oNew);			
+			node.setPostTransitions(ptNew);			
 		}
-	}	
-
-	public LinkedList<Node> getAllNodeFromGraph(String NameGraph) {
-		LinkedList<Node> nodes = new LinkedList<Node>();
-		for (int i = 0; i < this.graph.size(); i++) {
-			if (equalSpecificString(this.getNode(i).getNodeName(), NameGraph)) {
-				nodes.add(this.getNode(i));
-			}
-		}
-		return nodes;
+		
+		initialNode = getNodeFromGraph(initialNode.getNodeName());
+		
 	}
 
 	public boolean equalGraph(Node n1, Graph g, Node n2) {
-		//se proveruva dali imaat isti rebra, dokolku ne se prekinuva tuka
+		// checks whether the two nodes have same edges, if not, false is returned
 		if (!(n1.equalEdge(n2))) {
 			return false;
 		} else {
-			//se zemaat site posttranzicii od prvoto teme i se otkriva rebro po rebro 
+			// all posttransitions from the first node are taken and explored edge by edge 
 			LinkedList<PostTransition> ob1 = n1.getPostTransitions();
 			
-			//za sekoe izlezno rebro od prvata sostojba
+			// for every outgoing edge of the first node
 			for (int i = 0; i < ob1.size(); i++) {
 				boolean flag = false;
 				boolean isLoop = false;
 				
-				//se zemaat soodvetnite procesi od vtoroto rebro koi ja pravat istst taa kacija
-				
+				// the corresponding processes from the second edge which make the same action are taken
 				LinkedList<PostTransition> ob2 = n2.getPostTransitionsByAction(ob1.get(i).getAction());
 
-				//se pominuva niz niv se dodeka ne se najde soodvetnoto proces koj odgovara na sledniot
+				// we traverse through them until the process corresponding to the next one is found
 				for (int j = 0; j < ob2.size(); j++) {
-					if (!ob1.get(i).getColor().equals("black") && !ob2.get(j).getColor().equals("black")) {						
-						
+					if (!ob1.get(i).getColor().equals("black") && !ob2.get(j).getColor().equals("black")) {
 						Node n11 = this.getNodeFromGraph(ob1.get(i).getPostProcess());
 						Node n22 = g.getNodeFromGraph(ob2.get(j).getPostProcess());
-
-						//ob1.get(i).setColor("black");
-						//ob2.get(j).setColor("black");
-
 						flag = flag || equalGraph(n11, g, n22);
 					} else {
 						isLoop = true;
