@@ -2,18 +2,23 @@ package ii.edu.mk.io;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Vladimir Carevski
  */
 public class AldebaranFile {
 
+	private static final Pattern pattern 
+			= Pattern.compile("\\(\\s*([0-9]+)\\s*,\\s*(.*?)\\s*,\\s*([0-9]+)\\s*\\)");
+	
 	private Integer firstState;
 	private Integer numberOfTransitions;
 	private Integer numberOfStates;
 
 	private List<AldebaranFileLine> lines = new LinkedList<AldebaranFileLine>();
-
+	
 	public void setFirstState(Integer firstState) {
 		this.firstState = firstState;
 	}
@@ -107,10 +112,13 @@ public class AldebaranFile {
 		}
 
 		public static AldebaranFileLine fromString(String line) {
-			String[] comps = line.split(",+");
-			Integer start = Integer.parseInt(comps[0].split("\\(")[1].replaceAll(" +", ""));
-			Integer end = Integer.parseInt(comps[2].split("\\)")[0].replaceAll(" +", ""));
-			return new AldebaranFileLine(start, comps[1].replaceAll(" +", ""), end);
+			Matcher matcher = pattern.matcher(line);
+			if(!matcher.matches()) {throw new IllegalArgumentException("illegal format for aldebaran file line");};
+			Integer start = Integer.parseInt(matcher.group(1));
+			String label = matcher.group(2);
+			Integer end = Integer.parseInt(matcher.group(3));
+			if(label.trim().isEmpty()){throw new IllegalArgumentException("can not have empty labels in transitions");}
+			return new AldebaranFileLine(start, label, end);
 		}
 	}
 }
