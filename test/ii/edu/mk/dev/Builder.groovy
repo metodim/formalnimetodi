@@ -42,7 +42,16 @@ class Builder {
 				"joda-time-1.6.2.jar",
 				"miglayout-3.7.4-swing.jar",
 				"log4j-1.2.16.jar",
-				"antlr-runtime-3.3.jar"] as String[];
+				"antlr-runtime-3.3.jar",
+				
+				//for drawing graphs
+				"jung/collections-generic-4.01.jar",
+				"jung/colt-1.2.0.jar",
+				"jung/jung-algorithms-2.0.1.jar",
+				"jung/jung-graph-impl-2.0.1.jar",
+				"jung/jung-api-2.0.1.jar",
+				"jung/jung-visualization-2.0.1.jar"
+				] as String[];
 	}
 	
 	void cleanJnlpFolder() {
