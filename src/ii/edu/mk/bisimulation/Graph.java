@@ -474,44 +474,53 @@ public class Graph {
 		}
 
 		initialNode = getNodeFromGraph(initialNode.getNodeName());
-
 	}
 	
+	public static boolean flag = false;
 	public boolean equalGraph(Node n1, Graph g, Node n2) {
-		if (!(n1.equalEdge(n2))) {
+		if (!(n1.equalEdge(n2))) 
+		{
 			return false;
-		} else {
+		} 
+		else 
+		{			
 			LinkedList<PostTransition> ob1 = n1.getPostTransitions();
-			for (int i = 0; i < ob1.size(); i++) {
-				boolean flag = false;
-				boolean isLoop = false;
-				LinkedList<PostTransition> ob2 = n2.getPostTransitionsByAction(ob1.get(i).getAction());
 
-				for (int j = 0; j < ob2.size(); j++) {
-					if (!ob1.get(i).getColor().equals("black") && !ob2.get(j).getColor().equals("black")) {
-						Node n11 = this.getNodeFromGraph(ob1.get(i).getPostProcess());
-						Node n22 = g.getNodeFromGraph(ob2.get(j).getPostProcess());
+			for (int i = 0; i < ob1.size(); i++) {				
+				Node n11 = this.getNodeFromGraph(ob1.get(i).getPostProcess());				
 
+				//boolean flag = false;				
+
+				if(ob1.get(i).getColor().equals("white"))
+				{
+					ob1.get(i).setColor("gray");
+					LinkedList<PostTransition> ob2 = n2.getPostTransitionsByAction(ob1.get(i).getAction());
+					for (int j = 0; j < ob2.size(); j++)
+					{
+						if (ob2.get(j).getColor().equals("white")) 
+						{
+							Node n22 = g.getNodeFromGraph(ob2.get(j).getPostProcess());
+							ob2.get(j).setColor("gray");
+
+							flag = flag || equalGraph(n11, g, n22);
+						}
+
+						if (flag == false) {
+							ob2.get(j).setColor("white");
+							return false;
+						}
 						ob1.get(i).setColor("black");
-						//ob2.get(j).setColor("black");
-
-						flag = flag || equalGraph(n11, g, n22);
-					} else {
-						isLoop = true;
+						ob2.get(j).setColor("black");						
 					}
-
-					if (flag == false && !isLoop) {
-						return false;
-					}
-
-					ob1.get(i).setColor("black");
-					ob2.get(j).setColor("black");
-				}
+				}				
 			}
+			
+			flag = false;
 		}
 
-		return true;
-	}
+		return true;		
+
+	}	
 
 	private boolean equalSpecificString(String s1, String s2) {
 		boolean flag = false;
