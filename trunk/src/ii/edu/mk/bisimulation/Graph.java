@@ -475,52 +475,93 @@ public class Graph {
 
 		initialNode = getNodeFromGraph(initialNode.getNodeName());
 	}
-	
-	public static boolean flag = false;
-	public boolean equalGraph(Node n1, Graph g, Node n2) {
-		if (!(n1.equalEdge(n2))) 
+
+	public Graph mergeWithGraph(Graph g1)
+	{
+		Graph mergedGraph = new Graph(this);
+		LinkedList<String> actions = mergedGraph.getActions();
+
+		ListIterator<String> it1 = g1.getActions().listIterator();
+		while (it1.hasNext())
 		{
-			return false;
-		} 
-		else 
-		{			
-			LinkedList<PostTransition> ob1 = n1.getPostTransitions();
-
-			for (int i = 0; i < ob1.size(); i++) {				
-				Node n11 = this.getNodeFromGraph(ob1.get(i).getPostProcess());				
-
-				//boolean flag = false;				
-
-				if(ob1.get(i).getColor().equals("white"))
-				{
-					ob1.get(i).setColor("gray");
-					LinkedList<PostTransition> ob2 = n2.getPostTransitionsByAction(ob1.get(i).getAction());
-					for (int j = 0; j < ob2.size(); j++)
-					{
-						if (ob2.get(j).getColor().equals("white")) 
-						{
-							Node n22 = g.getNodeFromGraph(ob2.get(j).getPostProcess());
-							ob2.get(j).setColor("gray");
-
-							flag = flag || equalGraph(n11, g, n22);
-						}
-
-						if (flag == false) {
-							ob2.get(j).setColor("white");
-							return false;
-						}
-						ob1.get(i).setColor("black");
-						ob2.get(j).setColor("black");						
-					}
-				}				
-			}
-			
-			flag = false;
+			String tmp = it1.next();
+			if (!actions.contains(tmp))
+				mergedGraph.addAction(tmp);
 		}
 
-		return true;		
+		int n1 = this.getNumberOfStates();
 
-	}	
+		for (int i=0; i<g1.size(); i++)
+		{
+			Node node = g1.getNode(i);
+			int st = Integer.parseInt(node.getNodeName());
+			ListIterator<PostTransition> it = node.getPostTransitions().listIterator();
+			
+			Node node1 = mergedGraph.getNodeByProcess(Integer.toString(st+n1));
+			if (node1 == null)
+			{
+				node1 = new Node(Integer.toString(st+n1));
+				mergedGraph.addNode(node1);
+			}
+			
+			while (it.hasNext())
+			{
+				PostTransition tmp = it.next();
+				String action = tmp.getAction();
+				int state = Integer.parseInt(tmp.getPostProcess());
+				if (state < n1)
+					state = state + n1;
+				String process = Integer.toString(state);
+				node1.addPostTransition(new PostTransition(process, action));
+				
+				Node node2 = mergedGraph.getNodeByProcess(process);
+				if (node2 == null)
+				{
+					node2 = new Node(process);
+					mergedGraph.addNode(node2);
+				}
+				node2.addCoupleInverseTransition(new CoupleTransition(action, node1.getNodeName()));
+			}
+		}
+
+		mergedGraph.setInitialNode(mergedGraph.getNodeByProcess(Integer.toString(0)));
+
+		return mergedGraph;
+	}
+
+	public boolean equalGraph(Graph g1, String equivalence)
+	{
+		Graph mergedGraph;
+		String n;
+		if (this.size() >= g1.size())
+		{
+			n = Integer.toString(this.size());
+			mergedGraph = this.mergeWithGraph(g1);
+		}
+		else
+		{
+			n = Integer.toString(g1.size());
+			mergedGraph = g1.mergeWithGraph(this);
+		}
+		String initialState1 = mergedGraph.getInitialNode().getNodeName();
+		String initialState2 = mergedGraph.getNodeByProcess(n).getNodeName();
+
+		Partition P = new Partition();
+		if (equivalence.equals("naive"))
+		{
+			ListPairProcess L = mergedGraph.findStrongBisimulationNaive();
+			P = L.createPartition();
+		}
+		else if (equivalence.equals("fernandez"))
+		{
+			P = mergedGraph.findStrongBisimulationFernandez();
+		}
+		System.out.println(P);
+		if (P.inSameBlock(initialState1, initialState2))
+			return true;
+		else
+			return false;
+	}
 
 	private boolean equalSpecificString(String s1, String s2) {
 		boolean flag = false;

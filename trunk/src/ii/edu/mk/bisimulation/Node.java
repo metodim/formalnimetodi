@@ -1,6 +1,5 @@
 package ii.edu.mk.bisimulation;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -147,31 +146,8 @@ public class Node {
 		return con;
 	}
 
-	public boolean equalEdge(Node n2) {
-		LinkedList<PostTransition> p = this.getPostTransitions();
-		Collections.sort(p);
-
-		if (this.getPostTransitions().size() != n2.getPostTransitions().size()) {
-			return false;
-		} else {
-			LinkedList<PostTransition> p1 = this.getPostTransitions();
-			Collections.sort(p1);
-
-			LinkedList<PostTransition> p2 = n2.getPostTransitions();
-			Collections.sort(p2);
-
-			for (int i = 0; i < p1.size(); i++) {
-				if (!(p1.get(i).getAction().equals(p2.get(i).getAction()))) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
 	public LinkedList<PostTransition> getPostTransitionsByAction(String action) {
 		LinkedList<PostTransition> ob = new LinkedList<PostTransition>();
-		
 		ListIterator<PostTransition> it = postTransitions.listIterator();
 		PostTransition tmp;
 		while (it.hasNext())
@@ -181,7 +157,6 @@ public class Node {
 				ob.add(tmp);
 			}
 		}
-
 		return ob;
 	}
 	

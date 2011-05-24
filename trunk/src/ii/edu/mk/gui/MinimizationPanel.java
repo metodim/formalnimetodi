@@ -1,6 +1,8 @@
 package ii.edu.mk.gui;
 
 import ii.edu.mk.bisimulation.Graph;
+import ii.edu.mk.bisimulation.ListPairProcess;
+import ii.edu.mk.bisimulation.Partition;
 import ii.edu.mk.io.AldebaranFile;
 import ii.edu.mk.io.AldebaranUtils;
 import ii.edu.mk.saturation.Saturator;
@@ -37,10 +39,10 @@ public class MinimizationPanel extends JPanel{
 
 	private final static Logger LOG = LogManager.getLogger(MinimizationPanel.class);
 	
-	private JFrame frameOwner = null;
+	private JFrame frameOwner;
 	
-	private File ltsFile = null;
-	private JTextField ltsFileField = null;
+	private File ltsFile;
+	private JLabel calculationStatusLabel;
 	
 	JRadioButton weakBisim;
 	JRadioButton strongBisim;
@@ -58,14 +60,14 @@ public class MinimizationPanel extends JPanel{
 		setLayout(new MigLayout("fill", "[10%]3px[90%]", "[30!]3px![30!]3px![30!]3px![30!]3px![30!]"));
 		
 		JLabel ltsLabel = new JLabel("LTS:");
-		ltsFileField = new JTextField(256);
+		JTextField ltsFileField = new JTextField(256);
 		ltsFileField.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		ltsFileField.setEditable(false);
 		JButton browseLtsButton = new JButton("Browse");
 		JButton clearLtsButton = new JButton("Clear");
 		JButton viewLtsButton = new JButton("View");
 		browseLtsButton.addActionListener(new BrowseAction(ltsFileField, this));
-		clearLtsButton.addActionListener(new ClearAction());
+		clearLtsButton.addActionListener(new ClearAction(ltsFileField));
 		viewLtsButton.addActionListener(new ViewAction());
 		
 		add(ltsLabel);
@@ -98,7 +100,10 @@ public class MinimizationPanel extends JPanel{
 
 		JButton calculateButton = new JButton("Calculate");
 		calculateButton.addActionListener(new CalculateAction());
-		add(calculateButton, "wrap");
+		calculationStatusLabel = new JLabel("results");
+		
+		add(calculateButton);
+		add(calculationStatusLabel);
 		
 		viewPanel = new ViewPanel();
 		dialog = new JDialog(this.frameOwner, true);
@@ -129,9 +134,16 @@ public class MinimizationPanel extends JPanel{
 	}
 	
 	class ClearAction implements ActionListener {
+		private JTextField textField;
+
+		public ClearAction(JTextField textField) {
+			this.textField = textField;
+		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			clear();
+			ltsFile = null;
+			textField.setText("");
 		}
 	}
 	
@@ -142,13 +154,20 @@ public class MinimizationPanel extends JPanel{
 		}
 	}
 	
+	private void setCalculationStatusMessage(String message) {
+		calculationStatusLabel.setText(message);
+	}
+	
 	class CalculateAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			setCalculationStatusMessage("");// clear
+			setCalculationStatusMessage(""); // clear
 
+			// check to see if all needed data are submitted, before doing any
+			// processing
 			if (ltsFile == null) {
-				if (ltsFile == null) LOG.debug("First LTS file is null");
+				if (ltsFile == null) 
+					LOG.debug("The LTS file is null");
 				showMessageInPopUp("Must select a file with defined LTS in Aldebaran format.");
 				return;
 			}
@@ -170,7 +189,7 @@ public class MinimizationPanel extends JPanel{
 			try {
 				alFile = AldebaranUtils.readFile(ltsFile);
 			} catch (IOException ioe) {
-				showMessageInPopUp("Selected files are not comp");
+				showMessageInPopUp("Selected file is not comp");
 				return;
 			}
 			
@@ -180,13 +199,28 @@ public class MinimizationPanel extends JPanel{
 
 			Graph graph = AldebaranUtils.generateGraphFromAldebaranFile(alFile);
 			
-			//TODO (CV): finish the implementation
+			long time = System.currentTimeMillis();
+			if (isNaiveMetodChosen) {
+				ListPairProcess lpp = graph.findStrongBisimulationNaive();
+				Partition par = lpp.createPartition();
+				graph.minimizationGraph(par);
+			} else {
+				Partition par = graph.findStrongBisimulationFernandez();
+				graph.minimizationGraph(par);
+			}
+			time = System.currentTimeMillis() - time;
+
+			StringBuilder builder = new StringBuilder();
+			builder.append("Minimal LTS has ");
+			builder.append(graph.getNumberOfStates());
+			builder.append(" states and ");
+			builder.append(graph.getNumberOfTransitions());
+			builder.append(" transitions -- ");
+			builder.append("Lasted: ");
+			builder.append(String.format("%d sec.", (time / 1000)));
+
+			setCalculationStatusMessage(builder.toString());
 		}
-	}
-	
-	private void clear(){
-		ltsFile = null;
-		ltsFileField.setText("");
 	}
 	
 	/**
