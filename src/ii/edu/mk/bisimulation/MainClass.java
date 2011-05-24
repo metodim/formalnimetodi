@@ -8,49 +8,138 @@ import java.util.Scanner;
 //remove this class when this test are converted into unit tests
 public class MainClass {
 
+	protected static String[] aldebaranFilenames = {    
+		"scheduler.aut", "trains.aut", "abp.aut", "par.aut", "abp_bw.aut", 
+		"dining3.aut", "mpsu.aut", "leader.aut", "tree.aut", "cabp.aut", 
+		"parallel.aut", "onebit.aut"
+	};  
+
 	public static void main(String[] args) {
 
-		System.out.println("=====/ EXAMPLE 1 /=====\n");
+		System.out.println("Graph1:");
+        Graph graph1 = generateGraph("parallel_min.aut");
+        //System.out.println(graph1);
 
-		System.out.println("dining3_schedule.aut");
-		Graph graph1 = generateGraph("dining3_schedule.aut");
+        //Graph graph11 = new Graph(graph1);
+       
 
-		Graph graph11 = new Graph(graph1);
-		Graph graph12 = new Graph(graph1);
+        System.out.println("Graph2:");
+        Graph graph2 = generateGraph("parallel.aut");
+        //Graph graph12 = new Graph(graph2);
+        //System.out.println(graph2);
 
-		System.out.println("\n1) Minimisation using naive bisimulation algorithm\n");
+        /*
+        Graph graph21 = new Graph(graph2);
+        Graph graph22 = new Graph(graph2);
 
-		long start1 = System.currentTimeMillis();
-		ListPairProcess L1 = graph11.findStrongBisimulationNaive();
-		long end1 = System.currentTimeMillis();
-		System.out.println("Execution time: " + (end1-start1) + " ms");
-		System.out.println("Pairs of bisimilar states in Graph1: " + L1);
-		System.out.println();
-		
-		Partition P = L1.createPartition();
-		System.out.println("Sets of mutually bisimilar states in Graph1: " + P);
-		graph11.minimizationGraph(P);
-		System.out.println("Minimal graph has " + graph11.getNumberOfStates() + " states");
-		System.out.println("Minimal graph has " + graph11.getNumberOfTransitions() + " transitions");
-		//System.out.println(graph11);
-		
-		System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");		
-		
-		long start2 = System.currentTimeMillis();
-		Partition P1 = graph12.findStrongBisimulationFernandez();
-		long end2 = System.currentTimeMillis();
-		System.out.println("Execution time: " + (end2-start2) + " ms");
-		System.out.println("Sets of mutually bisimilar states in Graph1: " + P1);
-		System.out.println();
-		
-		graph12.minimizationGraph(P1);
-		System.out.println("Minimal graph has " + graph12.getNumberOfStates() + " states");
-		System.out.println("Minimal graph has " + graph12.getNumberOfTransitions() + " transitions");
-		//System.out.println(graph12);
-		System.out.println();
-		
-		//System.out.println(graph11.equalGraph(graph11.getInitialNode(), graph12, graph12.getInitialNode()));
+        System.out.println("\n1) Minimisation using standard bisimulation algorithm\n");
 
+        ListPairProcess L1 = graph11.findStrongBisimulationNaive();
+        System.out.println("Pairs of bisimilar states in Graph1: " + L1);
+        System.out.println();
+        Partition P1 = L1.createPartition();
+        graph11.minimizationGraph(P1);
+        System.out.println("Minimised Graph1:");
+        //System.out.println(graph11);
+
+        ListPairProcess L2 = graph21.findStrongBisimulationNaive();
+        System.out.println("Pairs of bisimilar states in Graph2: " + L2);
+        System.out.println();
+        Partition P2 = L2.createPartition();
+        graph21.minimizationGraph(P2);
+        System.out.println("Minimised Graph2:");
+        //System.out.println(graph21);
+         * 
+         */
+
+        System.out.println("Are the two graphs strongly bisimilar?");
+        //System.out.println(graph11.equalGraph(graph11.getInitialNode(), graph21, graph21.getInitialNode()));
+        System.out.println(graph1.equalGraph(graph2, "fernandez"));
+
+        /*
+        System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");
+
+        Partition P1 = graph12.findStrongBisimulationFernandez();
+        System.out.println("Sets of mutually bisimilar states in Graph1: " + P1);
+        System.out.println();
+        graph12.minimizationGraph(P1);
+        System.out.println("Minimised Graph1:");
+        System.out.println(graph12);
+
+        Partition P2 = graph22.findStrongBisimulationFernandez();
+        System.out.println("Sets of mutually bisimilar states in Graph2: " + P2);
+        System.out.println();
+        graph22.minimizationGraph(P2);
+        System.out.println("Minimised Graph2:");
+        System.out.println(graph22);
+
+        System.out.println("Are the two graphs strongly bisimilar?");
+        System.out.println(graph12.equalGraph(graph12.getInitialNode(), graph22, graph22.getInitialNode()));
+
+        System.out.println("\n***********************\n");
+		
+		/*
+		for (int i=0; i<aldebaranFilenames.length-2; i++)
+		{
+			String filename = aldebaranFilenames[i];
+			System.out.println("\n ************* " + filename + " ************ ");
+			Graph graph = generateGraph(filename);
+			//Graph graph = generateGraph("goback.aut");
+
+			Graph graph1 = new Graph(graph);
+			Graph graph2 = new Graph(graph);
+
+			System.out.println("\n1) Minimisation using naive bisimulation algorithm\n");
+			long avgTime1 = 0;
+			ListPairProcess L1 = new ListPairProcess();
+			System.out.print("Execution time: ");
+			for (int j=0; j < 10; j++)
+			{
+				Graph graph11 = new Graph(graph1);
+				long start1 = System.currentTimeMillis();
+				L1 = graph11.findStrongBisimulationNaive();
+				long end1 = System.currentTimeMillis();
+				long tmp1 = end1-start1;
+				System.out.print (tmp1 + " ms");
+				if (i != 9)
+					System.out.print(", ");
+				else
+					System.out.println("\n");
+				avgTime1 += tmp1;
+			}
+			System.out.println("\nAverage executiion time = " + avgTime1/10);
+			
+			System.out.println("Pairs of bisimilar states in Graph1: " + L1);
+			//System.out.println();
+
+			Partition P = L1.createPartition();
+			System.out.println("Sets of bisimilar states in Graph1: " + P);
+			//graph1.minimizationGraph(P);
+			//System.out.println("Minimal graph has " + graph1.getNumberOfStates() + " states");
+			//System.out.println("Minimal graph has " + graph1.getNumberOfTransitions() + " transitions");
+			
+			System.out.println("\n\n2) Minimisation using Fernandez bisimulation algorithm\n");		
+
+			long avgTime2 = 0;
+			Partition P1 = new Partition();
+			System.out.print("Execution time: ");
+			for (int j=0; j < 10; j++)
+			{
+				Graph graph12 = new Graph(graph2);
+				long start2 = System.currentTimeMillis();
+				P1 = graph12.findStrongBisimulationFernandez();
+				long end2 = System.currentTimeMillis();
+				long tmp2 = end2-start2;
+				System.out.print(tmp2 + " ms");
+				if (i != 9)
+					System.out.print(", ");
+				avgTime2 += tmp2;
+			}
+			System.out.println("\nAverage execution time = " + avgTime2/10);
+				
+			System.out.println("Sets of bisimilar states in Graph1: " + P1);
+		}
+		*/
 	}
 
 	//should only be used for testing purposes
