@@ -1,8 +1,6 @@
 package ii.edu.mk.gui;
 
 import ii.edu.mk.bisimulation.Graph;
-import ii.edu.mk.bisimulation.ListPairProcess;
-import ii.edu.mk.bisimulation.Partition;
 import ii.edu.mk.io.AldebaranFile;
 import ii.edu.mk.io.AldebaranUtils;
 import ii.edu.mk.saturation.Saturator;
@@ -120,11 +118,11 @@ public class BisimulationPanel extends JPanel {
 		add(naiveMethod, "split 2, al l");
 		add(fernandezMethod, "al l, wrap");
 
-		JButton calculate = new JButton("Calculate");
-		calculate.addActionListener(new CalculateAction());
+		JButton calculateButton = new JButton("Calculate");
+		calculateButton.addActionListener(new CalculateAction());
 		calculationStatusLabel = new JLabel("results");
 
-		add(calculate);
+		add(calculateButton);
 		add(calculationStatusLabel);
 
 		viewPanel = new ViewPanel();
@@ -275,9 +273,7 @@ public class BisimulationPanel extends JPanel {
 
 			if (!isStrongBisimChosen) {
 				file1 = Saturator.getInstance().saturate(file1);
-//				System.out.println(AldebaranUtils.toString(file1, true));
 				file2 = Saturator.getInstance().saturate(file2);
-//				System.out.println(AldebaranUtils.toString(file2, true));
 			}
 
 			Graph graph1 = AldebaranUtils.generateGraphFromAldebaranFile(file1);
@@ -286,21 +282,9 @@ public class BisimulationPanel extends JPanel {
 			boolean bisimilar = false;
 			long time = System.currentTimeMillis();
 			if (isNaiveMetodChosen) {
-				ListPairProcess lpp1 = graph1.findStrongBisimulationNaive();
-				ListPairProcess lpp2 = graph2.findStrongBisimulationNaive();
-				Partition par1 = lpp1.createPartition();
-				Partition par2 = lpp2.createPartition();
-				graph1.minimizationGraph(par1);
-				graph2.minimizationGraph(par2);
-
-				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph2, graph2.getInitialNode());
+				bisimilar = graph1.equalGraph(graph2, "naive");
 			} else {
-				Partition par1 = graph1.findStrongBisimulationFernandez();
-				Partition par2 = graph2.findStrongBisimulationFernandez();
-				graph1.minimizationGraph(par1);
-				graph2.minimizationGraph(par2);
-
-				bisimilar = graph1.equalGraph(graph1.getInitialNode(), graph2, graph2.getInitialNode());
+				bisimilar = graph1.equalGraph(graph2, "fernandez");
 			}
 			time = System.currentTimeMillis() - time;
 

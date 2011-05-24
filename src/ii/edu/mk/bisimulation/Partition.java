@@ -127,4 +127,16 @@ public class Partition {
 		sb.append("}");
 		return sb.toString();
 	}
+
+	public boolean inSameBlock(String state1, String state2) {
+		ListIterator<Block> it = partition.listIterator();
+		Block tmp;
+		while (it.hasNext())
+		{
+			tmp = it.next();
+			if (tmp.contains(state1) && tmp.contains(state2))
+				return true;
+		}
+		return false;
+	}
 }
