@@ -1,24 +1,21 @@
 \section{Peterson and Hamilton algorithm - Modeling,  Specification and Testing}
 % no \IEEEPARstart
-The algorithm
-
-var flag: array [0..1] of boolean; 
-turn: 0..1; 
-%flag[k] means that process[k] is interested in the critical section 
-flag[0] := FALSE; 
-flag[1] := FALSE; 
-turn := random(0..1) 
-
-%After initialization, each process, which is called process i in the code, runs this code: 
-
-repeat 
-flag[i] := TRUE; 
-turn := j; 
-while (flag[j] and turn=j) do no-op; 
-%CRITICAL SECTION 
-flag[i] := FALSE; 
-%REMAINDER SECTION 
-until FALSE;
+The algorithm:\\*
+var flag: array [0..1] of boolean; \\*
+turn: 0..1; \\*
+//flag[k] means that process[k] is interested in the critical section \\*
+flag[0] := FALSE; \\*
+flag[1] := FALSE; \\*
+turn := random(0..1) \\*
+//After initialization, each process, which is called process i in the code, runs this code: \\*
+repeat \\*
+flag[i] := TRUE; \\*
+turn := j; \\*
+while (flag[j] and turn=j) do no-op; \\*
+//CRITICAL SECTION \\*
+flag[i] := FALSE; \\*
+//REMAINDER SECTION \\*
+until FALSE;\\*
 
 There are two different processes which want to enter at critical section. 
 This means that the processes are fighting for one resource (ex. Say one variable or data structure). 
@@ -26,45 +23,35 @@ flag[i]= true means that process I wants to enter the critical section and the t
  At first the shared variables flag[0] and flag[1] are initialized to false because neither process is yet interested in the critical section. 
  The shared variable turn is set to either 0 or 1 randomly (or it can always be set to say 0). 
  If the process can’t enter the critical section it waits in while loop.
-
+\\*
 Legend:
-
 turn € {0, 1}
 flag0, flag1 € {true, false} = {t, f}
-
 w – write
 r – read
 enter – enter the critical section
 exit – exit the critical section
 
-Initialization:
+Initialization:\\*
+turn=1\\*
+flag1 = flag2 = f\\*
 
-turn=1
-flag1 = flag2 = f
-
-CCS Specification:
-
-Peterson = (P1 | P2 | flag1f | flag2f | turn1) \ L
-
-P1 = flag1wt.turnw2.P11
-P11 = flag2rf.P12 + flag2rt.(turnr2. τ.P11 + turnr1.P12)
-P12 = enter1.exit1.flag1wf.P1
-
-P2 = flag2wt.turnw1.P21
-P21 = flag1rf.P22 + flag1rt.(turnr1. τ.P21 + turnr2.P22)
-P22 = enter2.exit2.flag2wf.P2
-
-FLAG1f = flag1rf.flag1f + flag1wf.flag1f + flag1wt.flag1t
-FLAG1t = flag1rt.flag1t + flag1wt.flag1t + flag1wf.flag1f
-
-FLAG2f = flag2rf.flag2f + flag2wf.flag2f + flag2wt.flag2t
-FLAG2t = flag2rt.flag2t + flag2wt.flag2t + flag2wf.flag2f
-
-TURN1 = turnr1.turn1 + turnw1.turn1 + turnw2.turn2
-TURN2 = turnr2.turn2 + turnw2.turn2 + turnw1.turn1
-
+CCS Specification:\\*
+Peterson = (P1 | P2 | flag1f | flag2f | turn1) \ L\\*
+P1 = flag1wt.turnw2.P11\\*
+P11 = flag2rf.P12 + flag2rt.(turnr2. τ.P11 + turnr1.P12)\\*
+P12 = enter1.exit1.flag1wf.P1\\*\\*
+P2 = flag2wt.turnw1.P21\\*
+P21 = flag1rf.P22 + flag1rt.(turnr1. τ.P21 + turnr2.P22)\\*
+P22 = enter2.exit2.flag2wf.P2\\*\\*
+FLAG1f = flag1rf.flag1f + flag1wf.flag1f + flag1wt.flag1t\\*
+FLAG1t = flag1rt.flag1t + flag1wt.flag1t + flag1wf.flag1f\\*\\*
+FLAG2f = flag2rf.flag2f + flag2wf.flag2f + flag2wt.flag2t\\*
+FLAG2t = flag2rt.flag2t + flag2wt.flag2t + flag2wf.flag2f\\*
+TURN1 = turnr1.turn1 + turnw1.turn1 + turnw2.turn2\\*\\*
+TURN2 = turnr2.turn2 + turnw2.turn2 + turnw1.turn1\\*\\*
 L = { flag1wt, flag1rt, turnw2,… union of the access sorts (r,w) of the
-variables }
+variables }\\*
 
 \begin{figure}[h!]
 \centering
@@ -72,7 +59,7 @@ variables }
 % where an .eps filename suffix will be assumed under latex, 
 % and a .pdf suffix will be assumed for pdflatex; or what has been declared
 % via \DeclareGraphicsExtensions.
-\caption{Model 1}
+\caption{Live cycle of one process}
 \label{fig:model1}
 \end{figure}
 
@@ -82,36 +69,35 @@ variables }
 % where an .eps filename suffix will be assumed under latex, 
 % and a .pdf suffix will be assumed for pdflatex; or what has been declared
 % via \DeclareGraphicsExtensions.
-\caption{Model 2}
+\caption{Model of Peterson-Hamilton algorithm}
 \label{fig:model2}
 \end{figure}
 
 The mutual exclusion requirement is assured. Suppose instead that both processes are in their critical section. 
+
 Only one can have the turn, so the other must have reached the while test before the process with the turn set its flag. 
 But after setting its flag, the other process had to give away the turn. 
 Contradicting our assumption, the process at the while test has already changed the turn and will not change it again.
 	The progress requirement is assured. 
+	
 	Again, the turn variable is only considered when both processes are using, or trying to use, the resource.
 	Deadlock is not possible. One of the processes must have the turn if both processes are testing the while condition. 
 	That process will proceed.
 	Finally, bounded waiting is assured. When a process that has exited the CS reenters, it will give away the turn. 
-	If the other process is already waiting, it will be the next to proceed.
+	If the other process is already waiting, it will be the next to proceed.\\*
 
-Test and set algorithm
-
-repeat
-while Test-and-Set(lock) do no-op;
-critical section 
-lock := false;
-remainder section 
-until false 
-
-Test-and-Set(target) 
-result := target;
-target := true; 
-return result 
-
-\begin{tabular}{ | l | l | }
+Test and set algorithm\\*
+repeat\\*
+while Test-and-Set(lock) do no-op;\\*
+critical section \\*
+lock := false;\\*
+remainder section \\*
+until false \\*\\*
+Test-and-Set(target) \\*
+result := target;\\*
+target := true; \\*
+return result \\*\\*
+\begin{tabular}{ |p{4.0cm}| p{4.0cm} | }
   \hline                       
   Process 1	& Process 2 \\ \hline 
   Wants to set target to true & \\
