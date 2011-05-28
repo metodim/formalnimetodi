@@ -76,7 +76,7 @@ start 	: 	trans
  						)
 	;
 	
-trans	:	t=trans_var '.' (p=process | s=sync)	-> ^(TRANSITION $t $p? $s?)
+trans	:	t=trans_var '.' (p=process | s=start)	-> ^(TRANSITION $t $p? $s?)
 	;
 	
 process	:	PROCESS;

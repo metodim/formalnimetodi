@@ -1,5 +1,5 @@
-// $ANTLR 3.3 Nov 30, 2010 12:45:30 /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g 2011-05-15 18:51:18
-package ii.edu.mk.parser;
+// $ANTLR 3.3 Nov 30, 2010 12:45:30 /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g 2011-05-28 19:29:46
+	package ii.edu.mk.parser;
 import org.antlr.runtime.*;
 import java.util.Stack;
 import java.util.List;

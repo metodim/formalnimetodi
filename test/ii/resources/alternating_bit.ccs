@@ -25,7 +25,7 @@ A2 = _ack1.A + #.A + _ack1.A2
 # Version 1
 I = (S|A|R|T)\{send0,send1,receive0,receive1,reply0,reply1,ack0,ack1}
 S = _send0.S + ack0.accept.S1 + ack1.S
-S1 = _send1.S1 + ack1.accept.S1 + ack0.S1
+S1 = _send1.S1 + ack1.accept.S + ack0.S1
 T = send0.T1 + send1.T2
 T1 = _receive0.T + #.T + _receive0.T1
 T2 = _receive1.T + #.T + _receive1.T2
@@ -47,3 +47,11 @@ R1 = receive1.deliver.R + reply0.R1 + receive0.R1
 A = reply0.(A+A1) + reply1.(A+A2)
 A1 = _ack0.(A + A1)
 A2 = _ack1.(A + A2)
+
+# Version 3 (simple)
+I = (S | R)\{send0, send1, reply0, reply1}
+S = _send0.S + reply0.accept.S1 + reply1.S
+S1 = _send1.S1 + reply1.accept.S + reply1.S1
+R = send0._deliver.R1 + reply1.R +send1.R
+R1 = send1._deliver.R + reply0.R +send0.R1
+
