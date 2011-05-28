@@ -115,7 +115,7 @@ public class AldebaranFile {
 			Matcher matcher = pattern.matcher(line);
 			if(!matcher.matches()) {throw new IllegalArgumentException("illegal format for aldebaran file line");};
 			Integer start = Integer.parseInt(matcher.group(1));
-			String label = matcher.group(2);
+			String label = matcher.group(2).replaceAll(" ", "");
 			Integer end = Integer.parseInt(matcher.group(3));
 			if(label.trim().isEmpty()){throw new IllegalArgumentException("can not have empty labels in transitions");}
 			return new AldebaranFileLine(start, label, end);
