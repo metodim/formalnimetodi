@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:45:30 /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g 2011-05-15 18:51:18
+// $ANTLR 3.3 Nov 30, 2010 12:45:30 /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g 2011-05-28 19:29:45
 
 	package ii.edu.mk.parser;
 
@@ -560,7 +560,7 @@ public class Ccs2Parser extends Parser {
 
 
                             // AST REWRITE
-                            // elements: s, rest, p
+                            // elements: rest, s, p
                             // token labels: 
                             // rule labels: retval, s, p, rest
                             // token list labels: 
@@ -614,7 +614,7 @@ public class Ccs2Parser extends Parser {
 
 
                             // AST REWRITE
-                            // elements: s, p, ren
+                            // elements: p, s, ren
                             // token labels: 
                             // rule labels: retval, s, p, ren
                             // token list labels: 
@@ -751,7 +751,7 @@ public class Ccs2Parser extends Parser {
     };
 
     // $ANTLR start "trans"
-    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:1: trans : t= trans_var '.' (p= process | s= sync ) -> ^( TRANSITION $t ( $p)? ( $s)? ) ;
+    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:1: trans : t= trans_var '.' (p= process | s= start ) -> ^( TRANSITION $t ( $p)? ( $s)? ) ;
     public final Ccs2Parser.trans_return trans() throws RecognitionException {
         Ccs2Parser.trans_return retval = new Ccs2Parser.trans_return();
         retval.start = input.LT(1);
@@ -763,17 +763,17 @@ public class Ccs2Parser extends Parser {
 
         Ccs2Parser.process_return p = null;
 
-        Ccs2Parser.sync_return s = null;
+        Ccs2Parser.start_return s = null;
 
 
         CommonTree char_literal14_tree=null;
         RewriteRuleTokenStream stream_21=new RewriteRuleTokenStream(adaptor,"token 21");
         RewriteRuleSubtreeStream stream_trans_var=new RewriteRuleSubtreeStream(adaptor,"rule trans_var");
         RewriteRuleSubtreeStream stream_process=new RewriteRuleSubtreeStream(adaptor,"rule process");
-        RewriteRuleSubtreeStream stream_sync=new RewriteRuleSubtreeStream(adaptor,"rule sync");
+        RewriteRuleSubtreeStream stream_start=new RewriteRuleSubtreeStream(adaptor,"rule start");
         try {
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:7: (t= trans_var '.' (p= process | s= sync ) -> ^( TRANSITION $t ( $p)? ( $s)? ) )
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:9: t= trans_var '.' (p= process | s= sync )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:7: (t= trans_var '.' (p= process | s= start ) -> ^( TRANSITION $t ( $p)? ( $s)? ) )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:9: t= trans_var '.' (p= process | s= start )
             {
             pushFollow(FOLLOW_trans_var_in_trans302);
             t=trans_var();
@@ -784,7 +784,7 @@ public class Ccs2Parser extends Parser {
             char_literal14=(Token)match(input,21,FOLLOW_21_in_trans304);  
             stream_21.add(char_literal14);
 
-            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:25: (p= process | s= sync )
+            // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:25: (p= process | s= start )
             int alt8=2;
             int LA8_0 = input.LA(1);
 
@@ -814,14 +814,14 @@ public class Ccs2Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:38: s= sync
+                    // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:38: s= start
                     {
-                    pushFollow(FOLLOW_sync_in_trans315);
-                    s=sync();
+                    pushFollow(FOLLOW_start_in_trans315);
+                    s=start();
 
                     state._fsp--;
 
-                    stream_sync.add(s.getTree());
+                    stream_start.add(s.getTree());
 
                     }
                     break;
@@ -831,7 +831,7 @@ public class Ccs2Parser extends Parser {
 
 
             // AST REWRITE
-            // elements: t, s, p
+            // elements: s, p, t
             // token labels: 
             // rule labels: retval, t, s, p
             // token list labels: 
@@ -844,21 +844,21 @@ public class Ccs2Parser extends Parser {
             RewriteRuleSubtreeStream stream_p=new RewriteRuleSubtreeStream(adaptor,"rule p",p!=null?p.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 79:46: -> ^( TRANSITION $t ( $p)? ( $s)? )
+            // 79:47: -> ^( TRANSITION $t ( $p)? ( $s)? )
             {
-                // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:49: ^( TRANSITION $t ( $p)? ( $s)? )
+                // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:50: ^( TRANSITION $t ( $p)? ( $s)? )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(TRANSITION, "TRANSITION"), root_1);
 
                 adaptor.addChild(root_1, stream_t.nextTree());
-                // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:65: ( $p)?
+                // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:66: ( $p)?
                 if ( stream_p.hasNext() ) {
                     adaptor.addChild(root_1, stream_p.nextTree());
 
                 }
                 stream_p.reset();
-                // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:69: ( $s)?
+                // /home/dragan/Dragan/workspaces/fax/formalnimetodi/src/ii/edu/mk/parser/Ccs2.g:79:70: ( $s)?
                 if ( stream_s.hasNext() ) {
                     adaptor.addChild(root_1, stream_s.nextTree());
 
@@ -1477,7 +1477,7 @@ public class Ccs2Parser extends Parser {
     public static final BitSet FOLLOW_trans_var_in_trans302 = new BitSet(new long[]{0x0000000000200000L});
     public static final BitSet FOLLOW_21_in_trans304 = new BitSet(new long[]{0x000000000008E800L});
     public static final BitSet FOLLOW_process_in_trans309 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_sync_in_trans315 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_start_in_trans315 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_PROCESS_in_process344 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_action_in_trans_var353 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_22_in_renaming364 = new BitSet(new long[]{0x000000000000E000L});

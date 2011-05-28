@@ -54,6 +54,11 @@ public class TestSosTranformer extends BaseParserTest {
 	}
 
 	@Test
+	public void test6() throws Exception {
+		print(new SosTransformer().generateLtsGraph(new ASTDomainBuilder().getRoot("a.b.C+b.D")));
+	}
+
+	@Test
 	public void test_two_processes() throws Exception {
 		print(new SosTransformer().generateLtsGraph(
 

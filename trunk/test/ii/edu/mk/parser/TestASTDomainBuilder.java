@@ -57,7 +57,7 @@ public class TestASTDomainBuilder extends BaseParserTest {
 	public void testRecursiveDomainBuilder3() throws Exception {
 
 		CcsOperation root = ASTDomainBuilder.INSTANCE.getRoot("a.b.A");
-		
+
 		// TODO implement the tests they are copied from the prev test
 		assertEquals(root.getType(), OperatorType.RESTRICTION);
 
@@ -119,5 +119,12 @@ public class TestASTDomainBuilder extends BaseParserTest {
 		assertEquals("b", right.getAction().getName());
 		assertEquals("C", right.getRight().getName());
 		assertTrue(right.getRight() instanceof CcsProcess);
+	}
+
+	@Test
+	public void testNonRecursiveDomainBuilder3() throws Exception {
+
+		CcsOperation root = ASTDomainBuilder.INSTANCE.getRootNoRecursion("a.b.C+b.D");
+		assertEquals(root.getType(), OperatorType.ADDITION);		
 	}
 }
