@@ -1,22 +1,16 @@
 \section{Bisimulation equivalence}
 % no \IEEEPARstart
 Bisimulation equivalence (bisimilarity)\footnote{The notion of bisimulation equivalence (bisimilarity) in this chapter 
-refers to strong bisimulation equivalence (strong bisimilarity)} is a binary relation between labeled transition systems 
-which associates systems that can simulate each other's behaviour in a stepwise manner. This enables comparison of 
-different transition systems. An alternative perspective is to consider bisimulation equivalence as a relation between 
-states of a single labelled transition system. By considering the quotient transition system under such a relation, smaller 
-models are obtained \cite{ModelChecking}.
+refers to strong bisimulation equivalence (strong bisimilarity)} is a binary relation between labeled transition systems which associates systems that can simulate each other's behaviour in a stepwise manner. This enables comparison of different transition systems. An alternative perspective is to consider bisimulation equivalence as a relation between states of a single labelled transition system. By considering the quotient transition system under such a relation, smaller models are obtained \cite{ModelChecking}.
 
-The bisimulation equivalence finds its extensive application in the area of formal verification of concurrent systems,
-for example to check the equivalence of an implementation of a certain system with respect to its specification model.
+The bisimulation equivalence finds its extensive application in many areas of computer science such as concurrency theory, formal verification, set theory, etc. For instance, in formal verification minimization with respect to bisimulation equivalence is used to reduce the size of the state space to be analyzed. Also, bisimulation equivalence is of particular interest in model checking, in specific to check the equivalence of an implementation of a certain system with respect to its specification model.
 
-In our tool the process of determining an existance of a bisimulation equivalence 
-between two labeled transition systems was implemented using an approach which consists of three steps:
+Our tool implements both options: reducing the size of the state space of a given LTS (minimization modulo bisimilarity) and checking the equivalence of two labeled transition systems modulo bisimilarity.
+
+The process of reducing the size of the state space of a certain labeled transition system was implemented using an approach which consists of two steps:
 \begin{enumerate}
-\item Computing strong bisimulation equivalence (strong bisimilarity) for each of the two LTSs;
-\item Minimizing each of the two LTSs to its canonical form using the strong bisimilarity obtained
-in the first step;
-\item Performing a comparison between the two canonical forms obtained in the second step.
+\item Computing strong bisimulation equivalence (strong bisimilarity) for the LTS;
+\item Minimizing the LTS to its canonical form using the strong bisimilarity obtained in the first step;
 \end{enumerate}
 
 The first step, computing strong bisimulation equivalence, was implemented with two different methods: the so called
@@ -33,7 +27,7 @@ The labeled graph was represented as a list of nodes and the following terminolo
 	reachable from $p$ with the action $a$
 \end{itemize}
 
-Our Java implementation the algorithm takes as input an LTS in aldebaran format, generates a corresponding labeled 
+Our Java implementation of the algorithm takes as input an LTS in aldebaran format, generates a corresponding labeled 
 graph and then computes the strong bisimulation equivalence as pairs of bisimilar states.
 
 This algorithm has time complexity of $O(mn)$ for a labeled transition system with \emph{m} transitions and \emph{n} 
@@ -46,7 +40,7 @@ equivalence by computing the coarsest partition problem with respect to the fami
 $\left(T_a\right)_{a\in A}$ instead of one binary relation, where $T_a=\{(p,q)|(p,a,q)\in T\}$ is a transition 
 relation for action ${a\in A}$ and $T$ is a set of all transitions \cite{PaigeTarjan, Fernandez}.
 
-The algorithm due to Fernandez in our implementation in Java takes an LTS in aldebaran format as an input, generates a 
+The algorithm due to Fernandez in our Java implementation takes an LTS in aldebaran format as an input, generates a 
 corresponding labeled graph and then partitions the labeled graph into its coarsest blocks where each block represents 
 a set of bisimilar states. Partition is a set of mutually exclusive blocks whose union constitutes the graph universe.
 
@@ -62,8 +56,7 @@ To define graph transitions the following terminology was used:
 The time complexity of Fernandez's algorithm is $O(m \log n)$ for a labeled transition system 
 with $m$ transitions and $n$ states. 
 
-The next step uses the bisimulation equivalence computed in the first step in order to minimize the graphs. This reduction 
-is implemented as follows:
+The next step in the reduction of the state space of an LTS uses the bisimulation equivalence computed in the first step in order to minimize the labeled graph. This reduction is implemented as follows:
 \begin{enumerate}
 	\item If a pair of states $(p, q)$ is bisimilar, then the two states are merged into one single state $k$;
 	\item All incoming transitions $r \stackrel{a}{\rightarrow} p$ and $s \stackrel{a}{\rightarrow} q$ are replaced by transitions $r \stackrel{a}{\rightarrow} k$ and $s \stackrel{a}{\rightarrow} k$;
@@ -72,57 +65,30 @@ is implemented as follows:
 \end{enumerate}
 The procedure is repeated for all pairs of bisimilar states.
 
-Having reduced the two labeled graphs into their minimal forms, the last step in the process of checking the equivalence
-between the two labeled transition systems consists of checking whether the two minimal labeled graphs are isomorphic.
-Two isomorphic graphs are always bisimilar \cite{HandbookProcessAlgebra2}.
+The process of reducing a given labeled graph module strong bisimilarity is illustrated below for the labeled graph in Fig. \ref{fig:graph1}.
 
-Two graphs $G$ and $H$ are isomorphic if there exists a graph isomorphism between them. According to \cite{HandbookProcessAlgebra1}, 
-a graph isomorphism between two graphs G and H is a bijective function $f: Nodes(G) \rightarrow Nodes(H)$ satisfying:
-\begin{itemize}
-	\item $f(initialNode(G)) = g(initialNode(H))$
-	\item $(s, a, t)$ is an edge in $G \Leftrightarrow (f(s), a, f(t))$ is an edge in $H$
-\end{itemize}
-
-The graph isomorphism check was implemented recursively as follows: Starting from the initial states of the minimal graphs, 
-the outgoing labeled transitions have to be same, and for every outgoing transition with a given label in the first graph, 
-there has to be another one in the other graph with the same label that leads again to isomorphic states. 
-
-The process of determining equivalence of two labeled transition systems with respect to strong bisimularity is illustrated 
-on the graphs Graph 1 and Graph 2 as input labeled graphs.
 \begin{figure}[h!]
 \centering
-\subfigure[Graph 1]{
 \includegraphics[width=2.3in]{graph1}
+\caption{Graph 1}
 \label{fig:graph1}
-}
-\subfigure[Graph 2]{
-\includegraphics[width=0.9in]{graph2}
-\label{fig:graph2}
-}
-\label{fig:exampleGraphs}
-\caption{Example of two labeled graphs}
 \end{figure}
 
-The result from the first step, computing the strong bisimulation equivalence, is given in TABLE \ref{table1} for both the
-naive algorithm and the advanced algorithm due to Fernandez:
+Applying both the naive and the advanced algorithm due to Fernandez for computing strong bisimulation equivalence for Graph 1, gives the results shown in Table \ref{table1}.
 \begin{table}[h!]
-\begin{tabular}{| l | p{3.2cm}| p{3.2cm} | }
+\begin{tabular}{| l | p{6.5cm}| }
   \hline                       
-  Algorithm & Graph 1 & Graph 2 \\ \hline
-  Naive & \{(2, 3), (3, 2), (4, 5), 
-(5, 4), (4, 6), (6, 4), (5, 6), (6, 5), (0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6)\} & \{(3, 4), (4, 3), (0, 0), 
-(1, 1), (2, 2), (3, 3), (4, 4)\} \\ \hline
-  Fernandez & \{\{0\}, \{1\}, \{2\}, \{3\}, \{4, 5, 6\}\} & \{\{0\}, \{1\}, \{2\}, \{3, 4\}\} \\ \hline  
+  Algorithm & Graph 1 \\ \hline
+  Naive & (2, 3), (3, 2), (4, 5), 
+(5, 4), (4, 6), (6, 4), (5, 6), (6, 5), (0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6) \\ \hline
+  Fernandez & \{0\}, \{1\}, \{2\}, \{3\}, \{4, 5, 6\} \\ \hline  
 \end{tabular}
-\caption{Computing strong bisimularity for Graph 1 and Graph 2}
+\caption{Computing strong bisimularity for Graph 1}
 \label{table1}
 \end{table}
 
-The second step involves minimization of the input graphs using the bisimulation equivalence obtained in the first step. 
+The results obtained with either of the two algorithms for computing strong bisimilarity are then used as a basis for the reduction of the given graph to its minimal form. Namely, all mutually bisimilar states are merged into a single state and their transitions are updated accordingly. The reduction of Graph 1 to its canonical form with respect to the bisimulation equivalence is given in Fig.  \ref{fig:bisimGraph1}. As it can be seen from the figure, the states 2 and 3 are merged into state 2 in the minimal graph, and states 4, 5 and 6 are merged into state 3 in the minimal graph.
 
-The process of reduction of Graph 1 to its minimal form is given on Fig. \ref{fig:bisimGraph1}. As it can be seen from the figure, 
-all mutually bisimilar states are merged into a single state: the states 2 and 3 are merged into state 2 in the minimal graph, and 
-states 4, 5, and 6 are merged into state 3 in the minimal graph.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=2.8in]{bisimGraph1}.
@@ -130,18 +96,14 @@ states 4, 5, and 6 are merged into state 3 in the minimal graph.
 \label{fig:bisimGraph1}
 \end{figure}
 
-Similarly, Fig. \ref{fig:bisimGraph2} illustrates the process of reduction of Graph 2 to its minimal form. Here, the states 
-3 and 4 are merged into state 3 in the minimal graph.
-\begin{figure}[h!]
-\centering
-\includegraphics[width=1.6in]{bisimGraph2}
-\caption{Minimized Graph 2}
-\label{fig:bisimGraph2}
-\end{figure}
+The idea for the implementation of the equivalence checking of two labeled transition systems modulo strong bisimilarity was based on the following fact: Two labelled transition systems are (strongly) bisimilar iff their initial states are bisimilar \cite{ModellingAndAnalysis}.
 
-In the last step, the two minimal graphs from \ref{fig:bisimGraph1} and \ref{fig:bisimGraph2} are compared for graph isomorphism.
-From the figures, it can be seen that the minimal graphs are isomorhic which implies that the two input graphs Graph 1 and Graph 2 
-are bisimular and they exhibit the same behaviour.
+That means that in order to check whether two labeled transition systems are bisimilar it is enough to check whether their initial states are bisimilar. This can be done using the following approach:
+\begin{enumerate}
+	\item The two labeled transition systems are merged into a single transition system
+	\item An algorithm for computing the strong bisimilarity is applied to the merged system
+	\item A check is performed to see if the initial states belong to the same bisimulation equivalence class
+\end{enumerate}
 
 The correctness of the implementation was tested with the use of ltsconvert and ltscompare tools of mCRL2, micro Common Representation Language 2, a specification language that can be used to specify and analyse the behaviour of distributed systems and protocols
 \cite{mCRL2Ref}.

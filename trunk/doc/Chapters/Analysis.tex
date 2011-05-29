@@ -1,32 +1,41 @@
-\section{Bisimulation equivalence}
+\section{Comparison and Analysis of the bisimulation equivalence algorithms}
 % no \IEEEPARstart
+
+There is no official set of benchmarks for testing algorithms for computing bisimulation equivalence \cite{PiazzaPolicriti}. And it is also very difficult to randomly generate suitable labeled transition systems. Therefore, we used the academical examples from mCRL2 as experimental test models. 
+
+The experiments were conducted on a laptop with the following specifications: 
+\begin{enumerate}
+	\item CPU: Intel Pentium P6100 2.0 GHz
+	\item Memory: 3 GB
+	\item ??? sth else???
+\end{enumerate}
+
+The results from the experiments carried on our Java implementations of the naive algorithm and Fernandez's advanced algorithm for computing bisimulation equivalence are presented in Table \ref{table2}. The table includes the running times in miliseconds and the absolute error in miliseconds for both of the algorithms, the number of pairs of bisimilar states obtained with the naive algorithm (excluding the reflexive and symmetric pairs) and the number of classes of bisimulation equivalence obtained with the algorithm due to Fernandez (excluding the one-element classes), as well as the ratio of the running time of the naive algorithm with respect to the running time of Fernandez's algorithm.
+
 \begin{table}
 \begin{tabular}{| l | l | l | l | l | l | l | l | l | l | }
 
 	\hline 
-	
-		
 	\multicolumn{3}{|c} { }
 	& \multicolumn{2}{|c|}{Naive}
 	& \multicolumn{2}{|c|}{Fernandez}
 	& \multicolumn{2}{|c|} { }
 	& Ratio
 	\\ \hline  
-	
   \hline                       
-	aut file &
-	state &
-	transition &
+	aut &
+	#states &
+	#transitions &
 	$t (ms)$ &
 	$\Delta t (ms)$ &
 	$t (ms)$ &
 	$\Delta t (ms)$ &
-	pair of bisimular state &
-	sets of bisimular state &
+	#pairs of bisimilar states &
+	#sets of bisimilar states &
 	$tntf$
 	\\ \hline
 	
-  Shedular &
+  scheduler &
   13 &
   19 &
   17.4 &
@@ -38,7 +47,7 @@
   3.95   
   \\ \hline
   
-  Trains &
+  trains &
   32 &
   52 &
   64.5 &
@@ -50,7 +59,7 @@
   8.48   
   \\ \hline
   
-  Mpsu &
+  mpsu &
   52 &
   150 &
   215.4 &
@@ -62,7 +71,7 @@
   7.83   
   \\ \hline
   
-  Par &
+  par &
   94 &
   121 &
   5909.4 &
@@ -74,7 +83,7 @@
   207.34   
   \\ \hline
   
-  Abp &
+  abp &
   74 &
   92 &
   162.2 &
@@ -86,7 +95,7 @@
   2.33   
   \\ \hline
   
-  AbpBw &
+  abp_bw &
   97 &
   122 &
   287.9 &
@@ -98,7 +107,7 @@
   1.661   
   \\ \hline
   
-  Leader &
+  leader &
   392 &
   1128 &
   / &
@@ -110,7 +119,7 @@
   /   
   \\ \hline
   
-  Tree &
+  tree &
   1025 &
   1024 &
   / &
@@ -121,7 +130,7 @@
   8 &     
   / \\ \hline
   
-  Dining3 &
+  dining3 &
   93 &
   431 &
   16.8 &
@@ -133,7 +142,7 @@
   0.067
   \\ \hline
   
-  Cabp &
+  cabp &
   672 &
   2352 &
   / &
@@ -146,7 +155,7 @@
   \\ \hline
   
 \end{tabular}
-\caption{Computing strong bisimularity for Graph 1 and Graph 2}
+\caption{Results of the comperisons}
 \label{table2}
 \end{table}
 
