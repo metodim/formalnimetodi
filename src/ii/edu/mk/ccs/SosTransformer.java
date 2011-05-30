@@ -34,7 +34,7 @@ public class SosTransformer {
 
 	private Map<String, SosGraphNode> graphNodeNamesToGraphNodes;
 	private int graphNodeOrderNo;
-	
+
 	public SosTransformer() {
 		graphNodeNamesToGraphNodes = new LinkedHashMap<String, SosGraphNode>();
 	}
@@ -112,8 +112,6 @@ public class SosTransformer {
 		graph.setTotalNodesInGraph(order);
 	}
 
-
-
 	/**
 	 * Returns an {@link SosGraphNode} oriented graph, from a
 	 * {@link CcsOperation} tree. The graph is not yet built
@@ -177,13 +175,20 @@ public class SosTransformer {
 	 * @return SosGraphNode after the triggered transition
 	 */
 	private SosGraphNode createNewNode(SosGraphNode graph, int level, SosRule rule) {
+		SosGraphNode n = null;
 		if (graphNodeNamesToGraphNodes.containsKey(rule.getCcsOpNext().toString())) {
-			SosGraphNode n = graphNodeNamesToGraphNodes.get(rule.getCcsOpNext().toString());
-			graph.getTransitions().put(rule, n);
-			return n;
-		}
+			n = graphNodeNamesToGraphNodes.get(rule.getCcsOpNext().toString());
+			
+			/**
+			 * Avoid making two TAU transitions for the same child
+			 */
+			for (SosRule r : graph.getTransitions().keySet())
+				if (graph.getTransitions().get(r).getName().equals(n.getName()) && r.getAction().isTau() && rule.getAction().isTau())
+					return n;
 
-		SosGraphNode n = new SosGraphNode(graph.name + "." + level, rule.getCcsOpNext(), graphNodeOrderNo++, false);
+		} else
+			n = new SosGraphNode(graph.name + "." + level, rule.getCcsOpNext(), graphNodeOrderNo++, false);
+
 		graph.getTransitions().put(rule, n);
 		return n;
 	}
@@ -228,7 +233,9 @@ public class SosTransformer {
 				for (SosRule ruleRight : applySosTransformations(synch.getRight()))
 					// COM3: a.A | b.B (tau)-> A | B
 					if (ruleLeft.action.canSynchWith(ruleRight.action))
-						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.TAU));//CcsAction.newTau("tau on " + ruleLeft.action.getName())));
+						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.TAU));// CcsAction.newTau("tau on "
+																																					// +
+																																					// ruleLeft.action.getName())));
 
 			return synchRules;
 
