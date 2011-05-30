@@ -49,9 +49,9 @@ A1 = _ack0.(A + A1)
 A2 = _ack1.(A + A2)
 
 # Version 3 (simple)
-I = (S | R)\{send0, send1, reply0, reply1}
+I = (S|R)\{send0, send1, reply0, reply1}
 S = _send0.S + reply0.accept.S1 + reply1.S
-S1 = _send1.S1 + reply1.accept.S + reply1.S1
-R = send0._deliver.R1 + reply1.R +send1.R
-R1 = send1._deliver.R + reply0.R +send0.R1
+S1 = _send1.S1 + reply1.accept.S + reply0.S1
+R = send0._deliver.R1 + _reply1.R + send1.R
+R1 = send1._deliver.R + _reply0.R1 + send0.R1
 

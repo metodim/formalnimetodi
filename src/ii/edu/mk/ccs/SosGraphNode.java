@@ -28,6 +28,11 @@ public class SosGraphNode {
 
 	final Map<SosRule, SosGraphNode> transitions;
 
+	// set only for the root node
+	private Map<Integer, SosGraphNode> orderNumberToGraphNode;
+	// set only for the root node
+	private int totalNodesInGraph;
+
 	final CcsOperation ccsTree;
 	final String ccsTreeHash;
 	final String name;
@@ -96,5 +101,21 @@ public class SosGraphNode {
 
 	public void setBuilt(boolean isBuilt) {
 		this.isBuilt = isBuilt;
+	}
+
+	public Map<Integer, SosGraphNode> getOrderNumberToGraphNode() {
+		return orderNumberToGraphNode;
+	}
+
+	public void setOrderNumberToGraphNode(Map<Integer, SosGraphNode> orderNumberToGraphNode) {
+		this.orderNumberToGraphNode = orderNumberToGraphNode;
+	}
+
+	public int getTotalNodesInGraph() {
+		return totalNodesInGraph;
+	}
+
+	public void setTotalNodesInGraph(int totalNodesInGraph) {
+		this.totalNodesInGraph = totalNodesInGraph;
 	}
 }
