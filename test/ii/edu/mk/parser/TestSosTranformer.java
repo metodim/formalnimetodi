@@ -141,6 +141,21 @@ public class TestSosTranformer extends BaseParserTest {
 	}
 
 	@Test
+	public void test_alt_bit2() throws Exception {
+		print(new SosTransformer().generateLtsGraph(
+
+		ASTDomainBuilder.INSTANCE.getRoot("I = (S|R)\\{send0, send1, reply0, reply1}"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("S = _send0.S + reply0.accept.S1+ reply1.S"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("S1 = _send1.S1 + reply1.accept.S+ reply0.S1"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("R = send0._deliver.R1+ _reply1.R + send1.R"),
+
+		ASTDomainBuilder.INSTANCE.getRoot("R1 = send1._deliver.R + _reply0.R1 + send0.R1")).get(0));
+	}
+
+	@Test
 	public void test_restrict_tau_multiple_processes1() throws Exception {
 		print(new SosTransformer().generateLtsGraph(
 
@@ -232,10 +247,10 @@ public class TestSosTranformer extends BaseParserTest {
 		for (SosRule sosRule : graph.getTransitions().keySet()) {
 			SosGraphNode next = graph.getTransitions().get(sosRule);
 
-			System.out.println(prefix + "\t" + sosRule.getSymbol() + "\t" + next.getName() + ": " + next.getCcsTree());
+			System.out.println(prefix + "  " + sosRule.getSymbol() + "  " + next.getName() + ": " + next.getCcsTree());
 
 			if (!next.isForestRoot())
-				print(next, prefix + "\t\t\t", level + 1);
+				print(next, prefix + "\t\t  ", level + 1);
 		}
 	}
 }

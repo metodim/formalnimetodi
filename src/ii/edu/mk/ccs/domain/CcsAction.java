@@ -15,6 +15,10 @@ public class CcsAction extends CcsOperator {
 
 	public static final String REVERSE_ACTION_PREFIX = "_";
 
+	public static CcsAction newTau(String name) {
+		return new CcsAction(name, true, false);
+	}
+
 	public CcsAction(String name) {
 		this(name, false);
 	}
