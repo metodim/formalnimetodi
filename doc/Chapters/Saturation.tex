@@ -4,7 +4,7 @@ Def: Let $P$ and $Q$ be CCS processes or, more generally, states in a labeled tr
 $P\stackrel{a}{\Rightarrow}Q$ iff:
 \begin{itemize}
 	\item Either $a\neq\tau$ and there are processes $P'$ and $Q'$ such that $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}P'\ \stackrel{a}{\rightarrow}\ Q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
-	\item Or $a=\tau}$ and ${P\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
+	\item Or $a=\tau$ and $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
 \end{itemize}
 where we write $\left(\stackrel{\tau}{\rightarrow}\right)^{*}$ for he reflexive and transitive closure of the relation $\stackrel{\tau}{\rightarrow}$.
 
@@ -65,7 +65,7 @@ $T^{i}_{bq}=T^{i-1}_{bq}\cup\left\{\left(p',a,q\right)|\left(\exists p\in S\righ
 $T^{*}_{bq}=T^{n|Act|}_{bq}$
 
 Finally the saturated LTS is:\\
-$T^{*}=\bigcup_{p\in S}\left(T^{*}_{\tau p}\cup T^{*}_{bp}\right)=\left(\stackrel{\tau}{\rightarrow}\right)^{*}\cup\left{\left(p,a,q\right)|a\neq\tau\wedge\left(\exists p',q'\in A\right)p\left(\stackrel{\tau}{\rightarrow}\right)^{*}p'\stackrel{a}{\rightarrow}q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right}$
+$T^{*}=\bigcup_{p\in S}\left(T^{*}_{\tau p}\cup T^{*}_{bp}\right)=\left(\stackrel{\tau}{\rightarrow}\right)^{*}\cup\left\{\left(p,a,q\right)|a\neq\tau\wedge\left(\exists p',q'\in A\right) p\left(\stackrel{\tau}{\rightarrow}\right)^{*}p'\stackrel{a}{\rightarrow}q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}$
 
 \begin{figure}[!ht]
 \centering
