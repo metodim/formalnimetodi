@@ -95,10 +95,19 @@ public class SosTransformer {
 		while (toVisit.size() > 0) {
 			SosGraphNode current = toVisit.remove();
 			visited.add(current);
+			System.out.println(order + " " + current.getName());
 			current.setOrderNo(order++);
 			for (SosGraphNode child : current.getChildNodes())
-				if (!visited.contains(child))
-					toVisit.add(child);
+				if (!visited.contains(child)) {
+					boolean found = false;
+					for (SosGraphNode v : toVisit)
+						if (v.getName().equals(child.getName())) {
+							found = true;
+							break;
+						}
+					if (!found)
+						toVisit.add(child);
+				}
 		}
 	}
 
@@ -216,7 +225,9 @@ public class SosTransformer {
 				for (SosRule ruleRight : applySosTransformations(synch.getRight()))
 					// COM3: a.A | b.B (tau)-> A | B
 					if (ruleLeft.action.canSynchWith(ruleRight.action))
-						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.TAU));//CcsAction.newTau("tau on " + ruleLeft.action.getName())));
+						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.TAU));// CcsAction.newTau("tau on "
+																																					// +
+																																					// ruleLeft.action.getName())));
 
 			return synchRules;
 
