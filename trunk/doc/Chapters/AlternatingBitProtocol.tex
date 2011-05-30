@@ -20,12 +20,12 @@ Messages are sent from a sender $S$ to a receiver $R$. Channel from $S$ to $R$ i
 \begin{enumerate}
 	\item Each message sent by $S$ contains the protocol bit, 0 or 1.\\
 	      Here is the implementation:\\
-	      $Imp=\left(S|T|R|A\right)\backslash\left{send0,send1,receive0,receive1,reply0,reply1,ack0,ack1\right}$
+	      $\left(S|T|R|A\right)\backslash \left(send0,send1,receive0,receive1,reply0,reply1,ack0,ack1\right)$
 	\item When a sender $S$ sends a message, it sends it repeatedly (with its corresponding bit) until receiving an acknowledgment ($ack0$ or $ack1$) from a receiver $R$ that contains the same protocol bit as the message being sent.\\
 	      $S=\overline{send0}.S+ack0.accept.S_{1}+ack1.S$\\
 	      $S_{1}=\overline{send1}.S_{1}+ack1.accept.S+ack0.S_{1}$\\
 	      The transport channel transmits the message to the receiver, but it may lose the message (lossy channel) or transmit it several times (chatty channel).
-	      $T=send0.\left(T+T_{1}\right)+send1.left(T+T_{2}\right)$\\
+	      $T=send0.\left(T+T_{1}\right)+send1.\left(T+T_{2}\right)$\\
 	      $T_{1}=\overline{receive0}.\left(T+T_{1}\right)$\\
 	      $T_{2}=\overline{receive1}.\left(T+T_{2}\right)$
   \item When $R$ receives a message, it sends a reply to $S$ that includes the protocol bit of the message received. When a message is received for the first time, the receiver delivers it for processing, while subsequent messages with the same bit are simply acknowledged.
