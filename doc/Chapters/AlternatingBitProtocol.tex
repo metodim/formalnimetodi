@@ -38,7 +38,7 @@ Messages are sent from a sender $S$ to a receiver $R$. Channel from $S$ to $R$ i
   \item When $S$ receives an acknowledgment containing the same bit as the message it is currently transmitting, it stops transmitting that message, flips the protocol bit, and repeats the protocol for the next message.\cite{Kulick}\cite{ProcessAlgebraParallel}
 \end{enumerate}
 
-L = \left{send0,send1,receive0,receive1,reply0,reply1,ack0,ack1\right}
+L = $\left{send0,send1,receive0,receive1,reply0,reply1,ack0,ack1\right}$
 
 \begin{table}
 \begin{tabular}{| p{15.5cm} | p{15.5cm} | }
@@ -49,26 +49,26 @@ L = \left{send0,send1,receive0,receive1,reply0,reply1,ack0,ack1\right}
 	ABP specification state	
 	\\ \hline
 	
-\left[\left(\left(\left(\left(S\right)|\left(T\right)\right)|\left(R\right)\right)|\left(A\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R\right)\right)|\left(A\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(T\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(_deliver.\left(R1\right)\right)\right)|\left(A\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(_deliver.\left(R1\right)\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash,
-\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash,
-\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(_deliver.\left(R\right)\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash,
-\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash\right] &
+$\left[\left(\left(\left(\left(S\right)|\left(T\right)\right)|\left(R\right)\right)|\left(A\right)\right)\backslash,\\
+\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R\right)\right)|\left(A\right)\right)\backslash L,\\
+\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S\right)|\left(T\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(\overline{deliver}.\left(R1\right)\right)\right)|\left(A\right)\right)\backslash L,\\
+\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(\overline{deliver}.\left(R1\right)\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(\overline{deliver}.\left(R\right)\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash L \right]\\$ &
   ABP   
   \\ \hline
   
-  \left[\left(\left(\left(\left(accept.\left(S1\right)\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash,
-\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(A\right)\right)\backslash,
-\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash,
-\left(\left(\left(\left(accept.\left(S\right)\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash,
-\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash\right] &
+  $\left[\left(\left(\left(\left(accept.\left(S1\right)\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S\right)|\left(\left(T\right)+\left(T1\right)\right)\right)|\left(R1\right)\right)|\left(A\right)\right)\backslash L,\\
+\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(accept.\left(S\right)\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A2\right)\right)\right)\backslash L,\\
+\left(\left(\left(\left(S1\right)|\left(\left(T\right)+\left(T2\right)\right)\right)|\left(R\right)\right)|\left(\left(A\right)+\left(A1\right)\right)\right)\backslash L \right]\\$ &
   ABP'
   \\ \hline  
   
