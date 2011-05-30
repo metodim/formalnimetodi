@@ -67,7 +67,7 @@ The procedure is repeated for all pairs of bisimilar states.
 
 The process of reducing a given labeled graph module strong bisimilarity is illustrated below for the labeled graph in Fig. \ref{fig:graph1}.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=2.3in]{graph1}
 \caption{Graph 1}
@@ -75,7 +75,7 @@ The process of reducing a given labeled graph module strong bisimilarity is illu
 \end{figure}
 
 Applying both the naive and the advanced algorithm due to Fernandez for computing strong bisimulation equivalence for Graph 1, gives the results shown in Table \ref{table1}.
-\begin{table}[h!]
+\begin{table}[!ht]
 \begin{tabular}{| l | p{6.5cm}| }
   \hline                       
   Algorithm & Graph 1 \\ \hline
@@ -89,7 +89,7 @@ Applying both the naive and the advanced algorithm due to Fernandez for computin
 
 The results obtained with either of the two algorithms for computing strong bisimilarity are then used as a basis for the reduction of the given graph to its minimal form. Namely, all mutually bisimilar states are merged into a single state and their transitions are updated accordingly. The reduction of Graph 1 to its canonical form with respect to the bisimulation equivalence is given in Fig.  \ref{fig:bisimGraph1}. As it can be seen from the figure, the states 2 and 3 are merged into state 2 in the minimal graph, and states 4, 5 and 6 are merged into state 3 in the minimal graph.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=2.8in]{bisimGraph1}.
 \caption{Minimized Graph 1}
