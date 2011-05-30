@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 public class Saturator {
 
 	private final static Logger LOG = LogManager.getLogger(Saturator.class);
-	private static final String tau = "#";
+	private static final String tau = "tau";
 
 	/**
 	 * Grafot e vsusnost mnozestvo od tranzicii, koe za ovaa potreba ke go
