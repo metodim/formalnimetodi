@@ -27,8 +27,8 @@ public class MainPanel extends JXPanel{
 	private void initComponents(){
 		tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("CCS to LTS", new CcsToLtsPanel(owner));
-		tabbedPane.addTab("Bisimulation", new BisimulationPanel(owner));
-		tabbedPane.addTab("Minimization", new MinimizationPanel(owner));
+		tabbedPane.addTab("LTS minimization", new MinimizationPanel(owner));
+		tabbedPane.addTab("LTS comparison", new BisimulationPanel(owner));
 		tabbedPane.addTab("Hennessy-Milner", new HennessyMilnerPanel(owner));
 	}
 	
