@@ -31,7 +31,7 @@ public class SosGraphNode {
 	final CcsOperation ccsTree;
 	final String ccsTreeHash;
 	final String name;
-	final int orderNo;
+	int orderNo;
 	final boolean isForestRoot;
 
 	// beware mutable state
@@ -72,6 +72,10 @@ public class SosGraphNode {
 
 	public int getOrderNo() {
 		return orderNo;
+	}
+
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
 	}
 
 	public CcsOperation getCcsTree() {

@@ -13,10 +13,13 @@ import ii.edu.mk.ccs.domain.base.OperatorType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -29,14 +32,11 @@ public class SosTransformer {
 		return new SosTransformer();
 	}
 
-	private Map<CcsProcess, CcsOperation> processDefinitions;
-
 	private Map<String, SosGraphNode> graphNodeNamesToGraphNodes;
 
 	private int graphNodeOrderNo;
 
 	public SosTransformer() {
-		processDefinitions = new HashMap<CcsProcess, CcsOperation>();
 		graphNodeNamesToGraphNodes = new LinkedHashMap<String, SosGraphNode>();
 	}
 
@@ -54,12 +54,7 @@ public class SosTransformer {
 			throw new SosTransformerException("ccsOperations must be with size 1 or all operations must be CcsDefinitions");
 
 		graphNodeOrderNo = 0;
-		if (ccsOperations.size() > 1)
-			return buildSosGraph((List) ccsOperations);
-
-		SosGraphNode graph = createSosGraph(ccsOperations.get(0));
-		buildGraph(graph);
-		return Arrays.asList(graph);
+		return buildSosGraph((List) ccsOperations);
 	}
 
 	private boolean checkCcsDefinitions(List<CcsOperation> ccsOperations) {
@@ -83,7 +78,28 @@ public class SosTransformer {
 				buildGraph(graph);
 		}
 
+		fixOrderNumber(forrest.get(0));
+
 		return forrest;
+	}
+
+	/**
+	 * Fix the order number of the given graph starting from zero and
+	 * incrementing for each chid.
+	 */
+	private void fixOrderNumber(SosGraphNode graph) {
+		Set<SosGraphNode> visited = new HashSet<SosGraphNode>();
+		Queue<SosGraphNode> toVisit = new LinkedList<SosGraphNode>();
+		toVisit.add(graph);
+		int order = 0;
+		while (toVisit.size() > 0) {
+			SosGraphNode current = toVisit.remove();
+			visited.add(current);
+			current.setOrderNo(order++);
+			for (SosGraphNode child : current.getChildNodes())
+				if (!visited.contains(child))
+					toVisit.add(child);
+		}
 	}
 
 	/**
@@ -97,10 +113,14 @@ public class SosTransformer {
 	 */
 	private SosGraphNode createSosGraph(CcsOperation ccsOperation) {
 		SosGraphNode graph;
+		graphNodeOrderNo = 0;
 		if (ccsOperation instanceof CcsDefinition) {
 			CcsDefinition ccsDefinition = (CcsDefinition) ccsOperation;
 			graph = new SosGraphNode(ccsDefinition.getLeft().getName(), ccsDefinition.getRight(), graphNodeOrderNo++, true);
+			// put the process name
 			graphNodeNamesToGraphNodes.put(ccsDefinition.getLeft().getName(), graph);
+			// put the ccs expression definition
+			graphNodeNamesToGraphNodes.put(ccsDefinition.getRight().toString(), graph);
 		} else {
 			graph = new SosGraphNode("A", ccsOperation, graphNodeOrderNo++, true);
 			graphNodeNamesToGraphNodes.put(ccsOperation.toString(), graph);
@@ -196,7 +216,7 @@ public class SosTransformer {
 				for (SosRule ruleRight : applySosTransformations(synch.getRight()))
 					// COM3: a.A | b.B (tau)-> A | B
 					if (ruleLeft.action.canSynchWith(ruleRight.action))
-						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.TAU));
+						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.newTau("tau on " + ruleLeft.action.getName())));
 
 			return synchRules;
 
