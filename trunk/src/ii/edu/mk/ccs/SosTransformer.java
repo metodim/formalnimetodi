@@ -33,9 +33,8 @@ public class SosTransformer {
 	}
 
 	private Map<String, SosGraphNode> graphNodeNamesToGraphNodes;
-
 	private int graphNodeOrderNo;
-
+	
 	public SosTransformer() {
 		graphNodeNamesToGraphNodes = new LinkedHashMap<String, SosGraphNode>();
 	}
@@ -88,6 +87,7 @@ public class SosTransformer {
 	 * incrementing for each chid.
 	 */
 	private void fixOrderNumber(SosGraphNode graph) {
+		graph.setOrderNumberToGraphNode(new LinkedHashMap<Integer, SosGraphNode>());
 		Set<SosGraphNode> visited = new HashSet<SosGraphNode>();
 		Queue<SosGraphNode> toVisit = new LinkedList<SosGraphNode>();
 		toVisit.add(graph);
@@ -95,7 +95,7 @@ public class SosTransformer {
 		while (toVisit.size() > 0) {
 			SosGraphNode current = toVisit.remove();
 			visited.add(current);
-			System.out.println(order + " " + current.getName());
+			graph.getOrderNumberToGraphNode().put(order, current);
 			current.setOrderNo(order++);
 			for (SosGraphNode child : current.getChildNodes())
 				if (!visited.contains(child)) {
@@ -109,7 +109,10 @@ public class SosTransformer {
 						toVisit.add(child);
 				}
 		}
+		graph.setTotalNodesInGraph(order);
 	}
+
+
 
 	/**
 	 * Returns an {@link SosGraphNode} oriented graph, from a
@@ -225,9 +228,7 @@ public class SosTransformer {
 				for (SosRule ruleRight : applySosTransformations(synch.getRight()))
 					// COM3: a.A | b.B (tau)-> A | B
 					if (ruleLeft.action.canSynchWith(ruleRight.action))
-						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.TAU));// CcsAction.newTau("tau on "
-																																					// +
-																																					// ruleLeft.action.getName())));
+						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.newTau("tau on " + ruleLeft.action.getName())));
 
 			return synchRules;
 

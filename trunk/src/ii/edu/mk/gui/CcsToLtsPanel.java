@@ -53,6 +53,7 @@ public class CcsToLtsPanel extends JPanel {
 	private final JXFrame frame;
 
 	JTextArea expressionArea;
+	JTextArea stateToCcsArea;
 	JTextArea ltsArea;
 	JTextArea aldebaranArea;
 	JLabel parseStatusMessageLabel;
@@ -79,10 +80,18 @@ public class CcsToLtsPanel extends JPanel {
 
 		expressionArea = new JTextArea();
 		expressionArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
+		stateToCcsArea = new JTextArea();
+		stateToCcsArea.setFont(Parameters.DEFAULT_TEXT_FIELD_FONT.getValue());
 		JScrollPane testExpressionScrollPane = new JScrollPane(expressionArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		testExpressionScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+		JScrollPane stateToCcsExpressionScrollPane = new JScrollPane(stateToCcsArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		stateToCcsExpressionScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
 		expressionArea.setEnabled(true);
 		expressionArea.setEditable(true);
+		stateToCcsArea.setEnabled(true);
+		stateToCcsArea.setEditable(true);
 		JButton clearExpressionArea = new JButton("Clear");
 		clearExpressionArea.addActionListener(new ClearExpressionAreaAction());
 
@@ -124,7 +133,8 @@ public class CcsToLtsPanel extends JPanel {
 		parserButton.addActionListener(new GenerateLTSAction(expressionArea, ltsArea, parseStatusMessageLabel));
 
 		add(testExpresionLabel);
-		add(testExpressionScrollPane, "spanx 2, grow, wrap");
+		add(testExpressionScrollPane, "grow");
+		add(stateToCcsExpressionScrollPane, "grow, wrap");
 		add(parseStatusLabel);
 
 		add(openCcsExprsButton, "split 5, al l");
@@ -185,6 +195,7 @@ public class CcsToLtsPanel extends JPanel {
 				aldebaranFile = AldebaranUtils.convert(ltsRootNode);
 				aldebaranArea.setText(AldebaranUtils.toString(aldebaranFile, true));
 				ltsArea.setText(print(ltsRootNode));
+				stateToCcsArea.setText(stateToCcs(ltsRootNode));
 			} catch (SosTransformerException ste) {
 				LOG.debug("sos transformer exception:" + ste.getLocalizedMessage());
 				parseStatusMessageLabel.setText(ste.getLocalizedMessage());
@@ -196,6 +207,18 @@ public class CcsToLtsPanel extends JPanel {
 				parseStatusMessageLabel.setText("Error in generation");
 			}
 		}
+	}
+
+	private String stateToCcs(SosGraphNode ltsRootNode) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < ltsRootNode.getTotalNodesInGraph(); i++) {
+			sb.append(i);
+			sb.append(":");
+			sb.append(ltsRootNode.getOrderNumberToGraphNode().get(i).getCcsTree().toString());
+			sb.append("\n");
+		}
+
+		return sb.toString();
 	}
 
 	private String print(SosGraphNode graph) {
@@ -269,6 +292,7 @@ public class CcsToLtsPanel extends JPanel {
 		aldebaranFile = null;
 		aldebaranArea.setText("");
 		ltsArea.setText("");
+		stateToCcsArea.setText("");
 		parseStatusMessageLabel.setText("");
 	}
 
