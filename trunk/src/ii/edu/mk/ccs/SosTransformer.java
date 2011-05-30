@@ -216,7 +216,7 @@ public class SosTransformer {
 				for (SosRule ruleRight : applySosTransformations(synch.getRight()))
 					// COM3: a.A | b.B (tau)-> A | B
 					if (ruleLeft.action.canSynchWith(ruleRight.action))
-						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.newTau("tau on " + ruleLeft.action.getName())));
+						synchRules.add(new SosRule(SosRuleType.COM3, tree, new CcsSynch(ruleLeft.ccsOpNext, ruleRight.ccsOpNext), CcsAction.TAU));//CcsAction.newTau("tau on " + ruleLeft.action.getName())));
 
 			return synchRules;
 
