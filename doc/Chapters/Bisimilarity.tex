@@ -7,6 +7,7 @@ The bisimulation equivalence finds its extensive application in many areas of co
 
 Our tool implements both options: reducing the size of the state space of a given LTS (minimization modulo bisimilarity) and checking the equivalence of two labeled transition systems modulo bisimilarity.
 
+\subsubsection{Minimization of an LTS modulo bisimilarity.}
 The process of reducing the size of the state space of a certain labeled transition system was implemented using an approach which consists of two steps:
 \begin{enumerate}
 \item Computing strong bisimulation equivalence (strong bisimilarity) for the LTS;
@@ -38,7 +39,7 @@ and the relational coarsest partition problem solved by Paige and Tarjan. It rep
 Paige-Tarjan algorithm of complexity $O(m \log n)$ to minimize labeled transition systems modulo bisimulation 
 equivalence by computing the coarsest partition problem with respect to the family of binary relations 
 $\left(T_a\right)_{a\in A}$ instead of one binary relation, where $T_a=\{(p,q)|(p,a,q)\in T\}$ is a transition 
-relation for action ${a\in A}$ and $T$ is a set of all transitions \cite{PaigeTarjan, Fernandez}.
+relation for action $a\in A$ and $T$ is a set of all transitions \cite{PaigeTarjan}\cite{Fernandez}.
 
 The algorithm due to Fernandez in our Java implementation takes an LTS in aldebaran format as an input, generates a 
 corresponding labeled graph and then partitions the labeled graph into its coarsest blocks where each block represents 
@@ -76,13 +77,14 @@ The process of reducing a given labeled graph module strong bisimilarity is illu
 
 Applying both the naive and the advanced algorithm due to Fernandez for computing strong bisimulation equivalence for Graph 1, gives the results shown in Table \ref{table1}.
 \begin{table}[!ht]
-\begin{tabular}{| l | p{6.5cm}| }
+\begin{tabular}{| l | p{10.5cm}| }
   \hline                       
   Algorithm & Graph 1 \\ \hline
   Naive & (2, 3), (3, 2), (4, 5), 
 (5, 4), (4, 6), (6, 4), (5, 6), (6, 5), (0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6) \\ \hline
   Fernandez & \{0\}, \{1\}, \{2\}, \{3\}, \{4, 5, 6\} \\ \hline  
 \end{tabular}
+\\
 \caption{Computing strong bisimularity for Graph 1}
 \label{table1}
 \end{table}
@@ -96,6 +98,7 @@ The results obtained with either of the two algorithms for computing strong bisi
 \label{fig:bisimGraph1}
 \end{figure}
 
+\subsubsection{Comparison of two LTSs modulo bisimilarity.}
 The idea for the implementation of the equivalence checking of two labeled transition systems modulo strong bisimilarity was based on the following fact: Two labelled transition systems are (strongly) bisimilar iff their initial states are bisimilar \cite{ModellingAndAnalysis}.
 
 That means that in order to check whether two labeled transition systems are bisimilar it is enough to check whether their initial states are bisimilar. This can be done using the following approach:
