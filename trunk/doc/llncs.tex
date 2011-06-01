@@ -3,6 +3,7 @@
 % for Lecture Notes in Computer Science,
 % version 2.4 for LaTeX2e as of 16. April 2010
 %
+
 \documentclass{llncs}
 %
 \usepackage{makeidx}  % allows for indexgeneration
@@ -13,50 +14,51 @@
 % every instance of \includegraphics[scale=•]{•}
 \DeclareGraphicsExtensions{.jpeg,.jpg,.png}
 
+\usepackage{url}
+\urldef{\mailsa}\path|jane.jovanovski@gmail.com, maja.siljanoska@gmail.com, carevski@gmail.com, dragan.sahpaski@gmail.com, pgorcevski@t-home.mk, metodi.micev@gmail.com, b.ilijoski@gmail.com, vlatko.gmk@gmail.com|
+\usepackage[pdfpagelabels,hypertexnames=false,breaklinks=true,bookmarksopen=true,bookmarksopenlevel=2]{hyperref}
+
 \begin{document}
+
+\mainmatter
+
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Formal Methods Technical Report}
-
-\input{./Chapters/Authors}
-
-% use for special paper notices
-%\IEEEspecialpapernotice{(Invited Paper)}
-
-% make the title area
-
-
 \pagestyle{plain}
 \thispagestyle{plain}
 \pagenumbering{arabic}
 
+\title{Formal Methods Technical Report}
+
+% the name(s) of the author(s) follow(s) next
+%
+% NB: Chinese authors should write their first names(s) in front of
+% their surnames. This ensures that the names appear correctly in
+% the running heads and the author index.
+%
+%
+% NB: a more complex sample for affiliations and the mapping to the
+% corresponding authors can be found in the file "lnicst.dem",
+% that is contained in the LNICST LaTeX support package.
+%
+
+\input{./Chapters/Authors}
+
+\maketitle
+
 \input{./Chapters/Abstract} % Abstract
-
-
 \input{./Chapters/Introduction} % Chapter1
 \input{./Chapters/Parsing} % Chapter2
 \input{./Chapters/Bisimilarity} % Chapter3
+\input{./Chapters/Saturation} % Chapter4
+\input{./Chapters/AlternatingBitProtocol} % Chapter5
+\input{./Chapters/PetersonAndHamilton} % Chapter6
+\input{./Chapters/UwAndUsImplementation} % Chapter7
+\input{./Chapters/Conclusion} % Chapter9
+\input{./Chapters/Acknowledgment} 
+\input{./Chapters/Bibliography} 
 
-\input{./Chapters/PetersonAndHamilton}
-\input{./Chapters/UwAndUsImplementation}
-\input{./Chapters/Analysis} % Chapter3
-\input{./Chapters/Conclusion}
-
-% conference papers do not normally have an appendix
-
-\input{./Chapters/Acknowledgment}
-
-
-% trigger a \newpage just before the given reference
-% number - used to balance the columns on the last page
-% adjust value as needed - may need to be readjusted if
-% the document is modified later
-%\IEEEtriggeratref{8}
-% The "triggered" command can be changed if desired:
-%\IEEEtriggercmd{\enlargethispage{-5in}}
-
-\input{./Chapters/Bibliography} % Chapter1
-
+\input{./Chapters/Analysis}
 
 \end{document}

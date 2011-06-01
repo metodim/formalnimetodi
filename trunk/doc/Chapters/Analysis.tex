@@ -1,4 +1,4 @@
-\section{Comparison and Analysis of the bisimulation equivalence algorithms}
+\section*{Appendix A: Comparison and Analysis of the bisimulation equivalence algorithms}
 % no \IEEEPARstart
 
 There is no official set of benchmarks for testing algorithms for computing bisimulation equivalence \cite{PiazzaPolicriti}. And it is also very difficult to randomly generate suitable labeled transition systems. Therefore, we used the academical examples from mCRL2 as experimental test models. 
@@ -10,7 +10,8 @@ The experiments were conducted on a laptop with the following specifications:
 	\item ??? sth else???
 \end{enumerate}
 
-The results from the experiments carried on our Java implementations of the naive algorithm and Fernandez's advanced algorithm for computing bisimulation equivalence are presented in Table \ref{table2}. The table includes the running times in miliseconds and the absolute error in miliseconds for both of the algorithms, the number of pairs of bisimilar states obtained with the naive algorithm (excluding the reflexive and symmetric pairs) and the number of classes of bisimulation equivalence obtained with the algorithm due to Fernandez (excluding the one-element classes), as well as the ratio of the running time of the naive algorithm with respect to the running time of Fernandez's algorithm.
+Each of the experiments carried out on our Java implementations of the two algorithms for computing bisimulation equivalence consisted of 10 repeated runs of each of the algorithms on each of the aldebaran test files and measuring the average running time in miliseconds. 
+The results from these experiments are presented in Table \ref{table2}. The table includes the running times in miliseconds and the absolute error in miliseconds for both of the algorithms, the number of pairs of bisimilar states obtained with the naive algorithm (excluding the reflexive and symmetric pairs) and the number of classes of bisimulation equivalence obtained with the algorithm due to Fernandez (excluding the one-element classes), as well as the ratio of the running time of the naive algorithm with respect to the running time of Fernandez's algorithm.
 
 \begin{table}
 \begin{tabular}{| l | l | l | l | l | l | l | l | l | l | }
@@ -159,3 +160,38 @@ The results from the experiments carried on our Java implementations of the naiv
 \label{table2}
 \end{table}
 
+The results from the experiments carried out are presented graphically in Fig. \ref{fig:naiveAnalysis} and Fig. \ref{fig:fernandezAnalysis} for the naive algorithm and the algorithm of Fernandez, respectively. 
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=5.0in]{naiv}
+\caption{Analysis of the running time of the naive bisimulation algorithm}
+\label{fig:naiveAnalysis}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=5.0in]{fernandez}
+\caption{Analysis of the running time of the bisimulation algorithm due to Fernandez}
+\label{fig:fernandezAnalysis}
+\end{figure}
+
+It can be seen that for all test models, with the exception of the first one, the running time of the naive algorithm is proportional to the number of states, the number of transitions and the number of resulting bisimilar pairs. However, we need to note that this is not a general conclusion and that in general the running time of the naive algorithm for computing bisimulation equivalence depends on the nature of the monotonic function used by this algorithm, which is strongly related with the form of the labeled transition system. As an example, dining3 is a labeled transition system that has big number of transitions, however in this test model the algorithm determines that the monotony condition is not fulfilled in the second development of the monotonic function and therefore the algorithm stops there.
+
+Similar conclusions can be drawn for the algorithm due to Fernandez. Its running time is also proportional to the number of transitions, number of states and the number of bisimilar classes. 
+
+The comparison of running times of the two algorithms obtained with the experiment is shown in Fig. \ref{fig:comparison1}. As it can be clearly seen the algorithm of Fernandez is few times faster than the naive algorithm. The biggest difference can be noticed for the example par.aut where the ratio of the running times is 207.34. An exception is only the example dining3.aut for which the naive algorithm performs faster due to the reasons described earlier. The ration of the running times in this case is 0.0067. Fig. \ref{fig:comparison2} shows the ratios of the running times of the two algorithms for each of the examples.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=5.0in]{compare1}
+\caption{Comparison of the running time of the two bisimulation algorithms}
+\label{fig:comparison1}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=5.0in]{compare2}
+\caption{Ratio of the running times of the two bisimulation algorithm}
+\label{fig:comparison2}
+\end{figure}
