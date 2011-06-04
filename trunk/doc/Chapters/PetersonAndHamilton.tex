@@ -2,8 +2,9 @@
 % no \IEEEPARstart
 
 
-Peterson's algorithm (aka Peterson's solution) is a concurrent programming algorithm for mutual exclusion. Mutual exclusion (often abbreviated to mutex) algorithms are used in concurrent programming to avoid the simultaneous use of a common resource, such as a global variable, by pieces of computer code called critical sections. A critical section is a piece of code in which a process or thread accesses a common resource. The critical section by itself is not a mechanism or algorithm for mutual exclusion. A program, process, or thread can have the critical section in it without any mechanism or algorithm which implements mutual exclusion. Assume that a variable (memory location) can only have one value (never between values) and processes A and B write want to write to the same memory location at the "same time", either the value from A or the value from B will be written rather than some scrambling of bits. Peterson and Hamilton's algorithm is a simple algorithm that can be run by two processes to ensure mutual exclusion for one resource (say one variable or data structure). Shared variables are created and initialized before either process starts. The shared variables flag[0] and flag[1] are initialized to FALSE because neither process is yet interested in the critical section. The shared variable turn is set to either 0 or 1 randomly (or it can always be set to say 0).\\*\\*
-The algorithm:\\*
+Peterson's algorithm (aka Peterson's solution) is a concurrent programming algorithm for mutual exclusion. Mutual exclusion (often abbreviated to mutex) algorithms are used in concurrent programming to avoid the simultaneous use of a common resource, such as a global variable, by pieces of computer code called critical sections. A critical section is a piece of code in which a process or thread accesses a common resource. The critical section by itself is not a mechanism or algorithm for mutual exclusion. A program, process, or thread can have the critical section in it without any mechanism or algorithm which implements mutual exclusion. Assume that a variable (memory location) can only have one value (never between values) and processes A and B write want to write to the same memory location at the "same time", either the value from A or the value from B will be written rather than some scrambling of bits. Peterson and Hamilton's algorithm is a simple algorithm that can be run by two processes to ensure mutual exclusion for one resource (say one variable or data structure). Shared variables are created and initialized before either process starts. The shared variables flag[0] and flag[1] are initialized to FALSE because neither process is yet interested in the critical section. The shared variable turn is set to either 0 or 1 randomly (or it can always be set to say 0). The next figure shows the algorithm.
+
+\begin{figure}[h!]
 var flag: array [0..1] of boolean; \\*
 turn: 0..1; \\*
 //flag[k] means that process[k] is interested in the critical section \\*
@@ -11,14 +12,19 @@ flag[0] := FALSE; \\*
 flag[1] := FALSE; \\*
 turn := random(0..1) \\*
 //After initialization, each process, which is called process i in the code, runs this code: \\*
-repeat \\*
-flag[i] := TRUE; \\*
-turn := j; \\*
-while (flag[j] and turn=j) do no-op; \\*
-//CRITICAL SECTION \\*
-flag[i] := FALSE; \\*
-//REMAINDER SECTION \\*
+repeat \\
+\begin{tabular} l
+ flag[i] := TRUE; \\*
+ turn := j; \\*
+ while (flag[j] and turn=j) do no-op; \\*
+ //CRITICAL SECTION \\*
+ flag[i] := FALSE; \\*
+ //REMAINDER SECTION \\*
+\end{tabular} \\
 until FALSE;\\*
+\caption{Peterson-Hamilton's algorithm}
+\label{fig:model1}
+\end{figure}
 
 There are two different processes which want to enter at critical section. 
 This means that the processes are fighting for one resource (ex. Say one variable or data structure). 
@@ -75,6 +81,8 @@ variables }\\*
 \caption{Model of Peterson-Hamilton algorithm}
 \label{fig:model2}
 \end{figure}
+
+The previous figures were shown pictures of life cycle of a one process and Model of Peterson - Hamilton algorithm.
 
 The mutual exclusion requirement is assured. Suppose instead that both processes are in their critical section. 
 
