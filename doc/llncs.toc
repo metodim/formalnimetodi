@@ -1,15 +1,15 @@
 \contentsline {title}{Formal Methods Technical Report}{1}{chapter.2}
 \authcount {8}
 \contentsline {author}{ Jane Jovanovski \and Maja Siljanoska\and Vladimir Carevski \and \unskip \ \ignorespaces Dragan Sahpaski \and Petar Gjorcevski \and Metodi Micev \and \unskip \ \ignorespaces Bojan Ilijoski \and Vlado Georgiev }{1}{chapter.2}
-\contentsline {section}{\numberline {1}Introduction}{4}{section.7}
-\contentsline {section}{\numberline {2}Parsing and LTS generation}{4}{section.8}
-\contentsline {section}{\numberline {3}Bisimulation equivalence}{6}{section.12}
-\contentsline {subsection}{\numberline {3.1}Minimization of an LTS modulo bisimilarity.}{6}{subsection.14}
-\contentsline {subsection}{\numberline {3.2}Comparison of two LTSs modulo bisimilarity.}{8}{subsection.24}
-\contentsline {section}{\numberline {4}Saturation and weak bisimulation equivalence}{9}{section.28}
-\contentsline {subsection}{\numberline {4.1}The algorithm for saturation.}{10}{subsection.29}
-\contentsline {section}{\numberline {5}Alternating Bit Protocol - Modelling, Specification and Verification}{12}{section.32}
-\contentsline {subsection}{\numberline {5.1}Alternating Bit Protocol - Tool Usage Example}{14}{subsection.39}
-\contentsline {section}{\numberline {6}Peterson and Hamilton algorithm - Modeling, Specification and Testing}{14}{section.45}
-\contentsline {section}{\numberline {7}$U^w$ and $U^s$ implementation}{20}{section.49}
-\contentsline {section}{\numberline {8}Conclusion}{22}{section.72}
+\contentsline {section}{\numberline {1}Introduction}{5}{section.7}
+\contentsline {section}{\numberline {2}Parsing and LTS generation}{5}{section.8}
+\contentsline {subsection}{\numberline {2.1}Generating the parser}{6}{subsection.10}
+\contentsline {subsection}{\numberline {2.2}CCS domain model and LTS graph generation}{7}{subsection.13}
+\contentsline {subsection}{\numberline {2.3}Workflow of operations}{7}{subsection.14}
+\contentsline {section}{\numberline {3}Saturation and weak bisimulation equivalence}{7}{section.16}
+\contentsline {subsection}{\numberline {3.1}The algorithm for saturation.}{9}{subsection.17}
+\contentsline {section}{\numberline {4}Alternating Bit Protocol - Modelling, Specification and Verification}{10}{section.20}
+\contentsline {subsection}{\numberline {4.1}Alternating Bit Protocol - Tool Usage Example}{12}{subsection.27}
+\contentsline {section}{\numberline {5}Peterson and Hamilton algorithm - Modeling, Specification and Testing}{13}{section.33}
+\contentsline {section}{\numberline {6}$U^w$ and $U^s$ implementation}{18}{section.37}
+\contentsline {section}{\numberline {7}Conclusion}{20}{section.60}
