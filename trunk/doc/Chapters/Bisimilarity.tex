@@ -7,7 +7,7 @@ The bisimulation equivalence finds its extensive application in many areas of co
 
 Our tool implements both options: reducing the size of the state space of a given LTS (minimization modulo bisimilarity) and checking the equivalence of two labeled transition systems modulo bisimilarity.
 
-\subsubsection{Minimization of an LTS modulo bisimilarity.}
+\subsection{Minimization of an LTS modulo bisimilarity.}
 The process of reducing the size of the state space of a certain labeled transition system was implemented using an approach which consists of two steps:
 \begin{enumerate}
 \item Computing strong bisimulation equivalence (strong bisimilarity) for the LTS;
@@ -98,7 +98,7 @@ The results obtained with either of the two algorithms for computing strong bisi
 \label{fig:bisimGraph1}
 \end{figure}
 
-\subsubsection{Comparison of two LTSs modulo bisimilarity.}
+\subsection{Comparison of two LTSs modulo bisimilarity.}
 The idea for the implementation of the equivalence checking of two labeled transition systems modulo strong bisimilarity was based on the following fact: Two labelled transition systems are (strongly) bisimilar iff their initial states are bisimilar \cite{ModellingAndAnalysis}.
 
 That means that in order to check whether two labeled transition systems are bisimilar it is enough to check whether their initial states are bisimilar. This can be done using the following approach:

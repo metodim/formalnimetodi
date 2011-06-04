@@ -97,6 +97,12 @@ public class TestAldebaranIO extends BaseTest {
 		}catch (IllegalArgumentException e) {
 			assertThat(e.getMessage(), comparesEqualTo("illegal format for aldebaran file line"));
 		}
+		
+		line = fromString("(1,\"c2(d1, true)\",3)");
+		assertThat(line.getStartState(), comparesEqualTo(1));
+		assertThat(line.getLabel(), comparesEqualTo("\"c2(d1, true)\""));
+		assertThat(line.getEndState(), comparesEqualTo(3));
+		
 	}
 
 }
