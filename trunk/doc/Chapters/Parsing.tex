@@ -23,6 +23,7 @@ the parser will not make a parsing decision until it reads ahead several tokens.
 alows us to use a parser generator software, that will generate LR or LL parser which is able to
 recognize the non-deterministic grammar.
 
+\subsection{Generating the parser}
 ANTLR (ANother Tool for Language Recognition) \cite{ANTLRRef} is a parser generator that was used 
 to generate the parser for the CCS grammar. ANTLR uses LL(*) parsing and also allows generating 
 parsers, lexers, tree parsers and combined lexer parsers. It also automatically generates 
@@ -57,16 +58,32 @@ tokens. One example of an AST is shown in  Fig. \ref{fig:ast_example} which is t
 \label{fig:ast_example}
 \end{figure}
 
+\subsection{CCS domain model and LTS graph generation}
 Although working directly with ASTs and performing all algorithms on them is possible, it causes 
-a limitation in future changes. Even a small change in the grammar and/or on the structure of the
-generated abstract syntax trees causes a change in the implemented algorithms. Because of this,
-a specific domain model is built along with a domain builder algorithm. The input of the domain
-builder algorithm is a AST and the output is a fully built domain model. It is not expected for 
-the domain model to change, so all algorithms are implemented on the domain model. The domain
-model also is a tree-like structure, so it is as easy to work with, as with AST. The algorithms 
-for LTS generation is built using the domain model. The LTS generation algorithm is recursive
-algorithm which traverses the tree structure and performs SOS rule every time it reaches operation.
-In this fashion all sos transformation are preformed on the domain and as result a new tree
-structure is created which represents the LTS. This tree structure can be easily exported to file
+a limitation in future changes, where even a small change in the grammar and/or in the structure of the
+generated ASTs causes a change in the implemented algorithms. Because of this,
+a specific domain model is built along with a domain builder algorithm, which has corresponding
+abstractions for all CCS operators, processes and actions. The input of the domain builder algorithm 
+is an AST, and the output is a fully built domain model. The algorithms for constructing an LTS graph 
+are implemented on the domain model because it is not expected for the domain model structure to 
+change much in the future. The domain model is also a tree-like structure, so it is as easy to work with, 
+as with the AST. 
+
+The LTS generation algorithm is a recursive algorithm which traverses the tree structure of objects 
+in the domain model and performs SOS rule every time it reaches an operation.
+In this fashion all SOS transformation are performed on the domain and as result a new graph
+structure is created which represents the LTS which can be easily exported to a file
 in Aldebaran format.
-\\
+
+\subsection{Workflow of operations}
+In  Fig. \ref{fig:workflow} the workflow of all operations that are executed for constructing an LTS graph from a 
+CCS expression are shown. Every operation is done as a standalone algorithm independent from the other operations,
+that has input and output shown in the Figure. The modular design is deliberately chosen in order to help achieve better 
+testing and maintenance of the source code. 
+
+\begin{figure}[!t]
+\centering
+\includegraphics[height=3.0in]{workflow}
+\caption{Workflow of all operations for producing an LTS graph from a CCS expression}
+\label{fig:workflow}
+\end{figure}
