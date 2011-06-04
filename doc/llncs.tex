@@ -17,7 +17,7 @@
 \usepackage{url}
 \urldef{\mailsa}\path|jane.jovanovski@gmail.com, maja.siljanoska@gmail.com, carevski@gmail.com, dragan.sahpaski@gmail.com, pgorcevski@t-home.mk, metodi.micev@gmail.com, b.ilijoski@gmail.com, vlatko.gmk@gmail.com|
 \usepackage[pdfpagelabels,hypertexnames=false,breaklinks=true,bookmarksopen=true,bookmarksopenlevel=2]{hyperref}
-
+\setcounter{tocdepth}{3}
 \begin{document}
 
 \mainmatter
@@ -29,36 +29,32 @@
 \thispagestyle{plain}
 \pagenumbering{arabic}
 
+%\titlerunning \toctitle
+%\authorrunning \tocauthor
+% \authorrunning{J. Jovanovski \and M. Siljanoska\and V. Carevski \and D. Sahpaski \\
+% \and P. Gjorcevski \and M. Micev \and  B. Ilijoski \and V. Georgiev }
+
 \title{Formal Methods Technical Report}
-
-% the name(s) of the author(s) follow(s) next
-%
-% NB: Chinese authors should write their first names(s) in front of
-% their surnames. This ensures that the names appear correctly in
-% the running heads and the author index.
-%
-%
-% NB: a more complex sample for affiliations and the mapping to the
-% corresponding authors can be found in the file "lnicst.dem",
-% that is contained in the LNICST LaTeX support package.
-%
-
 \input{./Chapters/Authors}
-
+\date{June 2011}
 \maketitle
 
 \input{./Chapters/Abstract} % Abstract
+\input{./Chapters/Acknowledgment} 
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
 \input{./Chapters/Introduction} % Chapter1
 \input{./Chapters/Parsing} % Chapter2
 \input{./Chapters/Bisimilarity} % Chapter3
 \input{./Chapters/Saturation} % Chapter4
 \input{./Chapters/AlternatingBitProtocol} % Chapter5
+\input{./Chapters/ABPToolUsage} % Chapter 5.1
 \input{./Chapters/PetersonAndHamilton} % Chapter6
 \input{./Chapters/UwAndUsImplementation} % Chapter7
 \input{./Chapters/Conclusion} % Chapter9
-\input{./Chapters/Acknowledgment} 
-\input{./Chapters/Bibliography} 
-
 \input{./Chapters/Analysis}
+\input{./Chapters/Bibliography} 
 
 \end{document}
