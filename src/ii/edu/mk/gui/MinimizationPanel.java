@@ -199,18 +199,33 @@ public class MinimizationPanel extends JPanel{
 
 			Graph graph = AldebaranUtils.generateGraphFromAldebaranFile(alFile);
 			
+			StringBuilder builder = new StringBuilder();
+			builder.append("Original LTS has ");
+			builder.append(graph.getNumberOfStates());
+			builder.append(" states and ");
+			builder.append(graph.getNumberOfTransitions());
+			builder.append(" transitions ");
+			builder.append("\n");
+			
+			ListPairProcess lpp = new ListPairProcess();
+			Partition par = new Partition();
 			long time = System.currentTimeMillis();
 			if (isNaiveMetodChosen) {
-				ListPairProcess lpp = graph.findStrongBisimulationNaive();
-				Partition par = lpp.createPartition();
+				lpp = graph.findStrongBisimulationNaive();
+				par = lpp.createPartition();
+				builder.append("Bisimilar state pairs: ");
+				builder.append(lpp);
 				graph.minimizationGraph(par);
 			} else {
-				Partition par = graph.findStrongBisimulationFernandez();
+				par = graph.findStrongBisimulationFernandez();
+				builder.append("Bisimilar state classes: ");
+				builder.append(par);
 				graph.minimizationGraph(par);
 			}
 			time = System.currentTimeMillis() - time;
+			
+			builder.append("\n");
 
-			StringBuilder builder = new StringBuilder();
 			builder.append("Minimal LTS has ");
 			builder.append(graph.getNumberOfStates());
 			builder.append(" states and ");
