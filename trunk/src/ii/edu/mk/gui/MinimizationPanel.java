@@ -57,9 +57,9 @@ public class MinimizationPanel extends JPanel {
 	ViewPanel viewPanel;
 
 	JTextArea resultsArea;
-	
+
 	JLabel resultsLabel;
-	
+
 	public MinimizationPanel(JFrame owner) {
 		this.frameOwner = owner;
 
@@ -121,7 +121,7 @@ public class MinimizationPanel extends JPanel {
 		resultsArea.setEditable(false);
 		resultsArea.setLineWrap(true);
 		resultsArea.setWrapStyleWord(true);
-		
+
 		resultsLabel = new JLabel("Results:");
 		add(resultsLabel);
 		add(resultsScrollPane, "grow");
@@ -234,18 +234,20 @@ public class MinimizationPanel extends JPanel {
 			if (isNaiveMetodChosen) {
 				lpp = graph.findStrongBisimulationNaive();
 				par = lpp.createPartition();
-				builder.append("Bisimilar state pairs: ");
+				builder.append("\n");
+				builder.append("Bisimilar state pairs (excluding reflexive and symmetric):\n");
 				builder.append(lpp);
 				graph.minimizationGraph(par);
 			} else {
 				par = graph.findStrongBisimulationFernandez();
-				builder.append("Bisimilar state classes: ");
+				builder.append("\n");
+				builder.append("Bisimilar state classes (excluding one-element ones):\n");
 				builder.append(par);
 				graph.minimizationGraph(par);
 			}
 			time = System.currentTimeMillis() - time;
 
-			builder.append("\n");
+			builder.append("\n\n");
 
 			builder.append("Minimal LTS has ");
 			builder.append(graph.getNumberOfStates());
