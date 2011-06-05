@@ -27,9 +27,7 @@ public class SplashScreen extends JWindow {
 		startTime = System.currentTimeMillis();
 
 		ImageIcon icon = Images.SPLASH.loadImageIcon();
-		if (icon == null) {
-			return;
-		}
+		if (icon == null) {	return; }
 
 		JLabel label = new JLabel(icon);
 		label.setBorder(BorderFactory.createLineBorder(java.awt.Color.black));

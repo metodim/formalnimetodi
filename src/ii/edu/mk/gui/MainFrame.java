@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -20,14 +21,13 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXStatusBar;
-import org.joda.time.DateTime;
 
 
 /**
@@ -61,7 +61,7 @@ public class MainFrame extends JXFrame {
 
 		setScreenSizeAndLocation();
 
-		menuBar = createMenuBar();
+//		menuBar = createMenuBar();
 //		toolBar = createToolBar();
 		statusBar = buildStatusBar();
 
@@ -69,9 +69,9 @@ public class MainFrame extends JXFrame {
 //		setJMenuBar(menuBar);
 //		setToolBar(toolBar);
 		add(statusBar, BorderLayout.SOUTH);
-		
 		add(new MainPanel(this));
-		setIconImage(Images.APP_ICON_32.loadImageIcon().getImage());
+		ImageIcon icon = Images.APP_ICON_32.loadImageIcon();
+		if(icon != null){setIconImage(icon.getImage());}
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 		setVisible(true);
 	}
@@ -199,25 +199,9 @@ public class MainFrame extends JXFrame {
 		Timer statusBarMemory = new Timer(1000, memoryLabel);
 		statusBarMemory.start();
 
-		JXStatusBar.Constraint timerConstraint = new JXStatusBar.Constraint();
-		timerConstraint.setFixedWidth(200);
-		TimerLabel timerLabel = new TimerLabel();
-		statusBar.add(timerLabel, timerConstraint);
-		Timer statusBarTimer = new Timer(1000, timerLabel);
-		statusBarTimer.start();
-
 		return statusBar;
 	}
 	
-	private static class TimerLabel extends JLabel implements ActionListener {
-		private static final long serialVersionUID = 1L;
-		DateTime dateTime;
-		public void actionPerformed(ActionEvent e) {
-			dateTime = new DateTime();
-			this.setText(dateTime.toString("dd-mm-YYYY") + dateTime.toString(" HH:mm:ss"));
-		}
-	}
-
 	private static class MemoryLabel extends JLabel implements ActionListener {
 		private static final long serialVersionUID = 1L;
 		Runtime runtime = Runtime.getRuntime();
