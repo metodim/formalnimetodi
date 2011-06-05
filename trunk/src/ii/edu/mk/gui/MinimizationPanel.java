@@ -234,12 +234,12 @@ public class MinimizationPanel extends JPanel {
 			if (isNaiveMetodChosen) {
 				lpp = graph.findStrongBisimulationNaive();
 				par = lpp.createPartition();
-				resultsLabel.setText("Bisimilar state pairs: ");
+				builder.append("Bisimilar state pairs: ");
 				builder.append(lpp);
 				graph.minimizationGraph(par);
 			} else {
 				par = graph.findStrongBisimulationFernandez();
-				resultsLabel.setText("Bisimilar state classes: ");
+				builder.append("Bisimilar state classes: ");
 				builder.append(par);
 				graph.minimizationGraph(par);
 			}
