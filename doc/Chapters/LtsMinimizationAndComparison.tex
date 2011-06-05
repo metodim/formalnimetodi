@@ -1,0 +1,189 @@
+\section{LTS minimization and comparison}
+
+Bisimulation equivalence (bisimilarity) is a binary relation between labeled transition systems which associates systems that can simulate each other's behaviour in a stepwise manner. This enables comparison of different transition systems with respect to behavioural relations. An alternative perspective is to consider bisimulation equivalence as a relation between states of a single labelled transition system. By considering the quotient transition system under such a relation, smaller models are obtained \cite{ModelChecking}.
+
+The bisimulation equivalence finds its extensive application in many areas of computer science such as concurrency theory, formal verification, set theory, etc. For instance, in formal verification minimization with respect to bisimulation equivalence is used to reduce the size of the state space to be analyzed. Also, bisimulation equivalence is of particular interest in model checking, in specific to check the equivalence of an implementation of a certain system with respect to its specification model.
+
+Our tool implements both options: reducing the size of the state space of a given LTS and checking the equivalence of two labeled transition systems, using two behavioral equivalence relations: strong bisimilarity and observational equivalence (weak bisimilarity).
+
+\subsection{Minimization of an LTS modulo strong bisimilarity.}
+The process of reducing the size of the state space of an LTS was implemented using an approach which consists of two steps:
+\begin{enumerate}
+\item Computing strong bisimulation equivalence (strong bisimilarity) for the LTS;
+\item Minimizing the LTS to its canonical form using the strong bisimilarity obtained in the first step;
+\end{enumerate}
+
+The first step, computing strong bisimulation equivalence, was implemented with two different methods: the so called
+naive method and a more efficient method due to Fernandez, both of which afterwards serve as minimization procedures.
+
+The naive algorithm for computing bisimulation equivalence stems from the theory underlying 
+Tarski's fixed point theorem \cite{ReactiveSystems2}. It is based on the fact that the strong bisimulation equivalence is 
+the largest fixed point of the monotic function $F$ as defined in \cite{ReactiveSystems1} given by Tarsky's fixed 
+point theorem. This algorithm has time complexity of $O(mn)$ for a labeled transition system with \emph{m} transitions and \emph{n} 
+states. 
+
+Our Java implementation of the algorithm takes as an input an LTS in aldebaran format, and generates the corresponding labelled graph as a list of nodes representing the states which use the following data structure:
+\begin{itemize}
+	\item $S_p=\{(a, q)\}$ - set of pairs $(a, q)$ for state $p$ where $a$ is an outgoing action for $p$ and $q$ is a state
+	reachable from $p$ with the action $a$
+\end{itemize}
+
+The algorithm then computes the strong bisimulation equivalence and outputs it as pairs of bisimilar states.
+
+The algorithm due to Fernandez exploits the idea of the relationship between strong bisimulation equivalence 
+and the relational coarsest partition problem solved by Paige and Tarjan. It represents adaptation of the 
+Paige-Tarjan algorithm of complexity $O(m \log n)$ to minimize labeled transition systems modulo bisimulation 
+equivalence by computing the coarsest partition problem with respect to the family of binary relations 
+$\left(T_a\right)_{a\in A}$ instead of one binary relation, where $T_a=\{(p,q)|(p,a,q)\in T\}$ is a transition 
+relation for action $a\in A$ and $T$ is a set of all transitions \cite{PaigeTarjan}\cite{Fernandez}.
+
+Our Java implementatio of the algorithm takes an LTS in aldebaran format as an input, generates a 
+corresponding labeled graph and then partitions the labeled graph into its coarsest blocks where each block represents 
+a set of bisimilar states. Partition is a set of mutually exclusive blocks whose union constitutes the graph universe.
+
+To define graph states and transitions the following terminology was used: 
+\begin{itemize}
+	\item $T_a[p]=\{q\}$ - an $a$-transition from state $p$ to state $q$
+	\item $T_a{}^{-1}[q]=\{p\}$ - an inverse $a$-transition from state $q$ to state $p$
+	\item $T_a{}^{-1}[B]=\cup \left\{T_a{}^{-1}[q],q\in B\right\}$ - inverse transition for block $B$ and action $a$
+	\item $W$ - set of sets called splitters that are being used to split the partition
+	\item infoB$(a, p)$ - info map for block $B$, state $p$ and action $a$
+\end{itemize}
+
+The time complexity of Fernandez's algorithm is $O(m \log n)$ for a labeled transition system 
+with $m$ transitions and $n$ states. 
+
+Having computed the strong bisimulation equivalence, the next step in the reduction of the state space of the LTS uses the bisimulation equivalence obtained in the first step in order to minimize the labeled graph. This reduction is implemented as follows:
+\begin{enumerate}
+	\item If a pair of states $(p, q)$ is bisimilar, then the two states are merged into one single state $k=p\cup q$;
+	\item All incoming transitions $r \stackrel{a}{\rightarrow} p$ and $s \stackrel{a}{\rightarrow} q$ are replaced by transitions $r \stackrel{a}{\rightarrow} k$ and $s \stackrel{a}{\rightarrow} k$;
+	\item All outgoing transitions $p \stackrel{a}{\rightarrow} r$ and $q \stackrel{a}{\rightarrow} s$ are replaced by transitions $k \stackrel{a}{\rightarrow} r$ and $k \stackrel{a}{\rightarrow} s$;
+	\item The duplicate transitions are not taken into consideration.
+\end{enumerate}
+The procedure is repeated for all pairs of bisimilar states.
+
+This process of reduction of an LTS to its canonical form with respect to strong bisimilarity is illustrated below in Fig. \ref{fig:graph1}. The results obtained by applying both algorithms for computing strong bisimulation equivalence are given in Table \ref{table1}. These results are then used as a basis for the reduction of the graph to its minimal form: all mutually bisimilar states are merged into a single state and their transitions are updated accordingly. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=3.5in]{bisimGraph1}
+	\caption{Example LTS graph and its minimial form modulo strong bisimilarity. The red dashed arrows depict the mapping of the states using the computed bisimulation equivalence. States 2 and 3 are merged into state 2 in the minimal graph, and states 4,5 and 6 are merged into state 3 in the minimal graph.}
+	\label{fig:graph1}
+\end{figure}
+
+\begin{table}[h]
+\begin{tabular}{| l | p{10.5cm}| }
+  \hline                       
+  Algorithm & LTS graph \\ \hline
+  Naive & (2, 3), (3, 2), (4, 5), 
+(5, 4), (4, 6), (6, 4), (5, 6), (6, 5), (0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6) \\ \hline
+  Fernandez & \{0\}, \{1\}, \{2\}, \{3\}, \{4, 5, 6\} \\ \hline  
+\end{tabular}
+\\
+\caption{Computing strong bisimularity for the example LTS graph from Fig.\ref{fig:graph1}}
+\label{table1}
+\end{table}
+
+\subsection{Minimization of an LTS modulo weak bisimilarity.}
+The minimization of an LTS modulo observational equivalence (weak bisimilarity) is reduced to the problem of minimization of an LTS modulo strong bisimilarity, using a technique called saturation. Namely, the computation of weak bisimilarity amounts to computing strong bisimilarity of the saturated LTS. 
+
+The algorithm for saturation in our tool was implemented as follows:\\
+The set of triples ${R}$ can be partitioned in ${2n}$ sets with: 
+\begin{equation*}
+	\begin{array}{lcl}
+ 		{T_{\tau p}=\left\{\left(p,\tau,q\right)| \left(p,\tau,q\right)\in T\right\}}, \text{and}\\
+    {T_{ap}=\left\{\left(p,\tau,q\right)|\ a\neq\tau\wedge\left(p,\tau,q\right)\in T\right\}}
+  \end{array}
+\end{equation*} 
+for every ${p\in S}$.
+
+By the definition of ${T_{\tau p}}$ and ${T_{ap}}$ it can be seen that
+\begin{equation*}
+ {\bigcup_{p\in S}\left(T_{\tau p}\cup T_{ap}\right)=T},
+\end{equation*} 
+and also, their pairwise intersection is empty. 
+
+The family of sets ${T^{*}_{\tau p}}$ can be iteratively constructed with:
+\begin{equation*}
+	\begin{array}{lcl}
+		{T^{0}_{\tau p}=T_{\tau p}\cup\left\{\left(p,\tau,p\right)\right\}},\\
+		{T^{i}_{\tau p}=T^{i-1}_{\tau p}\cup\left\{\left(p,\tau,r\right)|\left(\exists q\in S\right)\left(p,\tau,q\right)\in T^{i-1}_{\tau p}\wedge\left(q,\tau,r\right)\in T_{\tau q}\right\}}, \text{and} \\
+		{T^{*}_{\tau p}=T^{n}_{\tau p}}
+	\end{array}
+\end{equation*}
+
+(Note: ${\left|T^{*}_{\tau p}\right|\leq\left|S\right|=n}$; when for some ${k<n}$, ${T^{k}_{\tau p}=T^{k+1}_{\tau p}}$, then ${T^{*}_{\tau p}=T^{k}_{\tau p}=T^{n}_{\tau p}}$)
+
+With this step a reflexive, transitive closure was constructed:
+\begin{equation*}
+	{T^{*}_{\tau}=\bigcup_{p\in A}T^{*}_{\tau p}=\left\{\left(p,\tau,q\right)|p\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}}
+\end{equation*}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=4.5in]{saturation}
+\caption{Reflexive, transitive closure of $\tau$. The original graph is depicted with red lines}
+\label{fig:saturation}
+\end{figure}
+
+The next step is to construct 
+\begin{equation}
+	\begin{array}{lcl}
+		T'_{ap}=\bigcup_{p\in A}T'_{ap}=\left\{\left(p,a,q\right)|\left(\exists q'\in S\right)\left(p,a,q'\right)\in T\wedge q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}:\\
+		T^{0}_{ap}=T_{ap'},\\
+		T^{i}_{ap}=T^{i-1}_{ap}\cup \left\{\left(p,a,r\right)|\left(\exists q\in S\right)\left(p,a,q\right)\in T^{i-1}_{ap}\wedge \left(q,\tau,r\right)\in T^{i-1}_{\tau q}\right\} \text{and} \\
+		T'_{ap}=T^{n|Act|}_{ap}
+	\end{array}
+\end{equation}
+
+(Note: $|T'_{ap}|\leq |S||Act|=n|Act|$, when for some $k<n|Act|$, $T^{k}_{ap}=T^{k+1}_{ap}$, then $T'_{ap}=T^{k}_{ap}=T^{n|Act|}_{ap}$)
+
+For the third step, 
+\begin{equation*}
+	T'=\bigcup_{p\in S}\left(T^{*}_{\tau p}\cup T'_{ap}\right)
+\end{equation*}
+needs to be partitioned again, defined by the destination in the triple:
+\begin{equation*}
+	\begin{array}{lcl}
+		T_{\tau q}=\left\{\left(p,\tau,q\right)|\left(p,\tau,q\right)\in T'\right\}, \text{and}\\
+		T_{bq}=\left\{\left(p,a,q\right)|a\neq\tau\wedge\left(p,a,q\right)\in T'\right\}				    
+	\end{array}
+\end{equation*}
+for every $p\in S$, and then construct:
+\begin{equation*}
+	\begin{array}{lcl}
+		T^{0}_{bq}=T_{bq},\\
+		T^{i}_{bq}=T^{i-1}_{bq}\cup\left\{\left(p',a,q\right)|\left(\exists p\in S\right)\left(p,a,q\right)\in T^{i-1}_{bq}\wedge\left(p',\tau,p\right)\in T^{*}_{\tau p}\right\} \text{and}\\
+		T^{*}_{bq}=T^{n|Act|}_{bq}
+	\end{array}
+\end{equation*}
+
+Finally the saturated LTS is:
+\begin{equation*}
+	T^{*}=\bigcup_{p\in S}\left(T^{*}_{\tau p}\cup T^{*}_{bp}\right)=\left(\stackrel{\tau}{\rightarrow}\right)^{*}\cup\left\{\left(p,a,q\right)|a\neq\tau\wedge\left(\exists p',q'\in A\right) p\left(\stackrel{\tau}{\rightarrow}\right)^{*}p'\stackrel{a}{\rightarrow}q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}
+\end{equation*}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=4.5in]{saturation2}
+\caption{Example saturated LTS}
+\label{fig:saturation2}
+\end{figure}
+
+Having computed the observational equivalence (weak bisimilarity) of the LTS, the process of minimizing the original LTS is the same as the process for minimization modulo strong bisimilarity applied on the saturated LTS.
+
+\subsection{Comparison of two LTSs modulo strong bisimilarity.}
+The idea for the implementation of the equivalence checking of two labeled transition systems modulo strong bisimilarity was based on the following fact: Two labelled transition systems are (strongly) bisimilar iff their initial states are bisimilar \cite{ModellingAndAnalysis}.
+
+That means that in order to check whether two labeled transition systems are bisimilar it is enough to check whether their initial states are bisimilar. This can be done using the following approach:
+\begin{enumerate}
+	\item The two labeled transition systems are merged into a single transition system
+	\item An algorithm for computing the strong bisimilarity is applied to the merged system
+	\item A check is performed to see if the initial states belong to the same bisimulation equivalence class
+\end{enumerate}
+
+The correctness of the implementation was tested with the use of ltsconvert and ltscompare tools of mCRL2, micro Common Representation Language 2, a specification language that can be used to specify and analyse the behaviour of distributed systems and protocols
+\cite{mCRL2Ref}.
+
+\subsection{Comparison of two LTSs modulo weak bisimilarity.}
+The comparison of two LTSs modulo weak bisimilariy amounts to checking strong bisimilarity over the saturated LTSs \cite{ReactiveSystems4}. In another words, two LTSs are weakly bisimilar iff their saturated LTSs are strongly bisimilar. Following this fact, the comparison of two LTSs modulo weak bisimilarity was implemented by first applying the saturation algorithm over the original LTSs in order to obtain their saturated LTSs, after which the process of comparison of the saturated LTSs modulo strong bisimilarity is applied as described above.

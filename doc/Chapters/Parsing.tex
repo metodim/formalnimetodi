@@ -1,4 +1,4 @@
-\section{Parsing and LTS generation}
+\section{CCS parsing and LTS generation}
 
 Given a set of action names, the set of CCS processes is defined by the following BNF grammar:
 
@@ -37,7 +37,7 @@ tokens of lookahead, but can make parsing decisions by recognizing whether the f
 belong to a regular language. This is achieved by building temporary deterministic finite
 automaton, which are maintained and used until the parser makes a decision. This feature and
 some more optimization for the LL parser were published in recent years which made this kind 
-of parser generators popular and favorable \cite{NiklausWirth}.
+of parser generators popular and favorable.
 
 ANTLR was used to generate lexer, parser and a well defined AST which represents a tree representation 
 of the abstract syntactic structure of the parsed sentence. The term abstract is used in a sense 
@@ -81,7 +81,7 @@ CCS expression are shown. Every operation is done as a standalone algorithm inde
 that has input and output shown in the Figure. The modular design is deliberately chosen in order to help achieve better 
 testing and maintenance of the source code. 
 
-\begin{figure}[!t]
+\begin{figure}[h]
 \centering
 \includegraphics[height=3.0in]{workflow}
 \caption{Workflow of all operations for producing an LTS graph from a CCS expression}

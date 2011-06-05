@@ -1,10 +1,11 @@
-\section{$U^w$ and $U^s$ implementation}
+\section{HML and $U^w$ and $U^s$ operators}
 The $U^w$  and $U^s$ operators are added to Hennessy-Milner logic in order to enable and describe the recursive definitions. The addition of the recursive definitions increases the power for specifying the features of the processes of the language.
 \\
 F $U^s$ G $\stackrel{min}{=}$ G $\vee$ (F $\wedge$ $\langle$Act$\rangle$tt $\wedge$ [Act](F $U^s$ G))\\*
 F $U^w$ G $\stackrel{max}{=}$ G $\vee$ (F $\wedge$ [Act](F $U^w$ G)).
 
 This part explains how implementation of Hennessy-Milner logic works. For a given Hennessy-Milner expression and a graph, we should get an output whether that expression is valid for that graph.  One Hennessy-Milner expression can be made of these set of tokens \{"AND", "OR", "UW", "US", "NOT", "[", "]", "$\langle$", "$\rangle$", "TT", "FF", "(", ")", "{", "}", ","\}.  The first part of this process is called tokenization. Tokenization is the process of demarcating and possibly classifying sections of a string of input characters. The resulting tokens are then passed on to some other form of processing.
+
 The process can be considered as a sub-task of parsing input. As the tokens are being read they are proceeded to the parser. The parser is a LR top-down parser. This parser is able to recognize a non-deterministic grammar which is essential for the evaluation of the Hennessy-Milner expression. As the parser is reading the tokens, thus in a way we “move” through the graph and determine if some of the following steps are possible. Every condition is in a way kept on stack and that enables later return to any of the previous conditions. The process is finished when the expression  is processed or when it is in a condition from which none of the following actions can be taken over.
 
 The implementing of these operators is made in this way: we get the current state. Current state is the state which contains all the nodes that satisfied the previous actions. For example if we have expression $\langle$a$\rangle$ $\langle$a$\rangle$TT $U^s$ $\langle$b$\rangle$TT, than we get all the nodes that we can reach, starting from the start node, with two actions “a”. When we get to the “Until” operation, in this case $U^s$, we take the start state and check if we can make an action b from some nod. If we can’t do action b, than we repeat the process, do a again and check if can we do b. This process is being repeated until we come to a state in which we can't do action a from all nodes in that state.

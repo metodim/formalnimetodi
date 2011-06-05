@@ -1,0 +1,62 @@
+\section{Preliminaries}
+
+In this section, we give some preliminaries of the basic terminology used throughout the report.
+
+\begin{definition}
+(Calculus of Communicating Systems): Calculus of Communicating Systems is algebraic theory to formalize the notion of concurrent computation. Commonly known as CCS.
+\end{definition}
+
+\begin{definition}
+(Labelled Transition System): A labelled transition system (LTS) is a five tuple $A=\left(S, Act, \rightarrow, s, T \right)$ where
+\begin{itemize}
+	\item $S$ is set of $states$,
+	\item $Act$ is a set of actions, possibly multi-actions,
+	\item $\rightarrow \subseteq S \times Act \times S$ is a $transition relation$,
+	\item $s \in S$ is the $initial state$,
+	\item $T \subseteq S$ is the set of $terminating states$.	
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+(Strong bisimulation): Let $A_{1}=\left(S_{1}, Act, \rightarrow_{1}, s_{1}, T_{1}\right)$ and $A_{2}=\left(S_{2}, Act, \rightarrow_{2}, s_{2}, T_{2}\right)$ be labelled transition systems. A binary relation $R \subseteq S_{1} \times S_{2}$ is called a strong bisimulation relation iff for all $s \in S_{1}$ and $t \in S_{2}$ such that $sRt$ holds, it also holds for all actions $a \in Act$ that:
+\end{definition}
+
+\begin{definition}
+\begin{enumerate}
+\item if $s\stackrel{a}{\rightarrow}_{1}s'$ then there is a $t' \in S_{2}$ such that $t\stackrel{a}{\rightarrow}_{2}t'$ with $s'Rt'$,
+\item if $t\stackrel{a}{\rightarrow}_{2}t'$ then there is a $s' \in S_{1}$ such that $s\stackrel{a}{\rightarrow}_{1}s'$ with $s'Rt'$, and
+\item $s \in T_{1}$ if and only in $t \in T_{2}$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+Let $P$ and $Q$ be CCS processes or, more generally, states in a labeled transition system. For each action $a$, we shall write
+$P\stackrel{a}{\Rightarrow}Q$ iff:
+\begin{itemize}
+	\item Either $a\neq\tau$ and there are processes $P'$ and $Q'$ such that $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}P'\ \stackrel{a}{\rightarrow}\ Q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
+	\item Or $a=\tau$ and $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
+\end{itemize}
+where we write $\left(\stackrel{\tau}{\rightarrow}\right)^{*}$ for he reflexive and transitive closure of the relation $\stackrel{\tau}{\rightarrow}$.
+\end{definition}
+
+\begin{definition}
+(weak bisimulation and observational equivalence): A binary relation $R$ over the set of states of an LTS is a weak bisimulation iff, whenever $s_{1}Rs_{2}$ and $a$ is an action (including $\tau$):
+\begin{itemize}
+	\item If $s_{1}\stackrel{a}{\rightarrow}s_{1}'$ then there is a transition $s_{2}\stackrel{a}{\Rightarrow}s_{2}'$ such that $s_{1}'Rs_{2}'$;
+	\item If $s_{2}\stackrel{a}{\rightarrow}s_{2}'$ then there is a transition $s_{1}\stackrel{a}{\Rightarrow}s_{1}'$ such that $s_{1}'Rs_{2}'$;
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+(Hennessy Milner formulae): The set $M$ Hennessy Milner formulae over a set of actions $Act$ is given by the following abstract syntax:
+\begin{equation*}
+  F,G::=tt |ff | F\wedge G | F \vee G|\left\langle a \right\rangle F|\left[ a \right] F
+\end{equation*}
+where $a \in Act$ and we use $tt$ and $ff$ to denoto true and false, respectively. 
+If $A=\left\{ a_{1},...,a_{n} \right\} \subseteq Act \left( n \geq 0\right)$, 
+we use use the abbreviation $\left\langle A \right\rangle F$ for the formula 
+$\left\langle a_{1} \right\rangle F \vee ... \vee \left\langle a_{n} \right\rangle F$ and 
+$\left[ a \right] F$ for the formula 
+$\left[ a_{1} \right] F \wedge ... \wedge \left[ a_{n} \right]F$. 
+(If $A=\emptyset$ then $\left\langle a\right\rangle F=ff$ and $\left[a\right] = tt$.)
+\end{definition}
