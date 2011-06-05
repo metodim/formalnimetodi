@@ -1,12 +1,11 @@
 \section{LTS minimization and comparison}
-
 Bisimulation equivalence (bisimilarity) is a binary relation between labeled transition systems which associates systems that can simulate each other's behaviour in a stepwise manner. This enables comparison of different transition systems with respect to behavioural relations. An alternative perspective is to consider bisimulation equivalence as a relation between states of a single labelled transition system. By considering the quotient transition system under such a relation, smaller models are obtained \cite{ModelChecking}.
 
 The bisimulation equivalence finds its extensive application in many areas of computer science such as concurrency theory, formal verification, set theory, etc. For instance, in formal verification minimization with respect to bisimulation equivalence is used to reduce the size of the state space to be analyzed. Also, bisimulation equivalence is of particular interest in model checking, in specific to check the equivalence of an implementation of a certain system with respect to its specification model.
 
 Our tool implements both options: reducing the size of the state space of a given LTS and checking the equivalence of two labeled transition systems, using two behavioral equivalence relations: strong bisimilarity and observational equivalence (weak bisimilarity).
 
-\subsection{Minimization of an LTS modulo strong bisimilarity.}
+\subsection{Minimization of an LTS modulo strong bisimilarity}
 The process of reducing the size of the state space of an LTS was implemented using an approach which consists of two steps:
 \begin{enumerate}
 \item Computing strong bisimulation equivalence (strong bisimilarity) for the LTS;
@@ -84,7 +83,7 @@ This process of reduction of an LTS to its canonical form with respect to strong
 \label{table1}
 \end{table}
 
-\subsection{Minimization of an LTS modulo weak bisimilarity.}
+\subsection{Minimization of an LTS modulo weak bisimilarity}
 The minimization of an LTS modulo observational equivalence (weak bisimilarity) is reduced to the problem of minimization of an LTS modulo strong bisimilarity, using a technique called saturation. Namely, the computation of weak bisimilarity amounts to computing strong bisimilarity of the saturated LTS. 
 
 The algorithm for saturation in our tool was implemented as follows:\\
@@ -182,8 +181,7 @@ That means that in order to check whether two labeled transition systems are bis
 	\item A check is performed to see if the initial states belong to the same bisimulation equivalence class
 \end{enumerate}
 
-The correctness of the implementation was tested with the use of ltsconvert and ltscompare tools of mCRL2, micro Common Representation Language 2, a specification language that can be used to specify and analyse the behaviour of distributed systems and protocols
-\cite{mCRL2Ref}.
+The correctness of the implementation was tested with the use of ltsconvert and ltscompare tools of mCRL2, micro Common Representation Language 2.
 
-\subsection{Comparison of two LTSs modulo weak bisimilarity.}
+\subsection{Comparison of two LTSs modulo weak bisimilarity}
 The comparison of two LTSs modulo weak bisimilariy amounts to checking strong bisimilarity over the saturated LTSs \cite{ReactiveSystems4}. In another words, two LTSs are weakly bisimilar iff their saturated LTSs are strongly bisimilar. Following this fact, the comparison of two LTSs modulo weak bisimilarity was implemented by first applying the saturation algorithm over the original LTSs in order to obtain their saturated LTSs, after which the process of comparison of the saturated LTSs modulo strong bisimilarity is applied as described above.

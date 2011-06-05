@@ -19,9 +19,6 @@ In this section, we give some preliminaries of the basic terminology used throug
 
 \begin{definition}
 (Strong bisimulation): Let $A_{1}=\left(S_{1}, Act, \rightarrow_{1}, s_{1}, T_{1}\right)$ and $A_{2}=\left(S_{2}, Act, \rightarrow_{2}, s_{2}, T_{2}\right)$ be labelled transition systems. A binary relation $R \subseteq S_{1} \times S_{2}$ is called a strong bisimulation relation iff for all $s \in S_{1}$ and $t \in S_{2}$ such that $sRt$ holds, it also holds for all actions $a \in Act$ that:
-\end{definition}
-
-\begin{definition}
 \begin{enumerate}
 \item if $s\stackrel{a}{\rightarrow}_{1}s'$ then there is a $t' \in S_{2}$ such that $t\stackrel{a}{\rightarrow}_{2}t'$ with $s'Rt'$,
 \item if $t\stackrel{a}{\rightarrow}_{2}t'$ then there is a $s' \in S_{1}$ such that $s\stackrel{a}{\rightarrow}_{1}s'$ with $s'Rt'$, and
