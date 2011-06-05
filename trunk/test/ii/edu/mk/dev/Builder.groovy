@@ -39,7 +39,7 @@ class Builder {
 	
 	void defineClientJars(){
 		jars =  ["swingx-core-1.6.2.jar",
-				"joda-time-1.6.2.jar",
+//				"joda-time-1.6.2.jar",
 				"miglayout-3.7.4-swing.jar",
 				"log4j-1.2.16.jar",
 				"antlr-runtime-3.3.jar",
