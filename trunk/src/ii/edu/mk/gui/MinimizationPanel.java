@@ -122,7 +122,7 @@ public class MinimizationPanel extends JPanel {
 		resultsArea.setLineWrap(true);
 		resultsArea.setWrapStyleWord(true);
 		
-		resultsLabel = new JLabel("Results");
+		resultsLabel = new JLabel("Results:");
 		add(resultsLabel);
 		add(resultsScrollPane, "grow");
 
