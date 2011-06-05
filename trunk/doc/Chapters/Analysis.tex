@@ -1,13 +1,12 @@
-\section*{Appendix A: Comparison and Analysis of the bisimulation equivalence algorithms}
-% no \IEEEPARstart
+\section*{Appendix B: Comparison and Analysis of the bisimulation equivalence algorithms}
 
-There is no official set of benchmarks for testing algorithms for computing bisimulation equivalence \cite{PiazzaPolicriti}. And it is also very difficult to randomly generate suitable labeled transition systems. Therefore, we used the academical examples from mCRL2 as experimental test models. 
+There is no official set of benchmarks for testing algorithms for computing bisimulation equivalence \cite{PiazzaPolicriti}. And it is also very difficult to randomly generate labeled transition systems suitable for proper testing of bisimulation equivalence. Therefore, we used the academical examples from mCRL2 as experimental test models. 
 
-The experiments were conducted on a laptop with the following specifications: 
+The experiments were conducted on a portable computer with the following specifications: 
 \begin{enumerate}
 	\item CPU: Intel Pentium P6100 2.0 GHz
 	\item Memory: 3 GB
-	\item ??? sth else???
+	\item OS: Windows 2007 Premium
 \end{enumerate}
 
 Each of the experiments carried out on our Java implementations of the two algorithms for computing bisimulation equivalence consisted of 10 repeated runs of each of the algorithms on each of the aldebaran test files and measuring the average running time in miliseconds. 
@@ -25,14 +24,14 @@ The results from these experiments are presented in Table \ref{table2}. The tabl
 	\\ \hline  
   \hline                       
 	aut &
-	nr.states &
-	nr.transitions &
-	$t (ms)$ &
-	$\Delta t (ms)$ &
-	$t (ms)$ &
-	$\Delta t (ms)$ &
-	nr.bisimilar pairs &
-	nr.bisimilar classes &
+	states &
+	transitions &
+	$t(ms)$ &
+	$\Delta t(ms)$ &
+	$t(ms)$ &
+	$\Delta t(ms)$ &
+	bisimilar pairs &
+	bisimilar classes &
 	$tntf$
 	\\ \hline
 	
@@ -164,7 +163,7 @@ The results from the experiments carried out are presented graphically in Fig. \
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=5.0in]{naiv}
+\includegraphics[width=5.0in]{naive}
 \caption{Analysis of the running time of the naive bisimulation algorithm}
 \label{fig:naiveAnalysis}
 \end{figure}
