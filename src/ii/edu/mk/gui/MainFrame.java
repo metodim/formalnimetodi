@@ -66,7 +66,7 @@ public class MainFrame extends JXFrame {
 		statusBar = buildStatusBar();
 
 
-		setJMenuBar(menuBar);
+//		setJMenuBar(menuBar);
 //		setToolBar(toolBar);
 		add(statusBar, BorderLayout.SOUTH);
 		
