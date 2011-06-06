@@ -1,16 +1,6 @@
 \begin{abstract}
+This paper is a technical report of an effort to build a tool for automatic specification and analysis of concurrent systems. The tool we present here has implemented the CCS process language and can build LTSs (Labelled Transition Systems) from CCS expressions. Furthermore, it can be used to reduce the state space of an LTS and to check whether two LTSs exhibit the same behaviour, using strong and weak bisimulation equivalence. It can parse Henessy-Milner logic formulas as well and also implements the $U^{w}$ and $U^{s}$ operators that enable recursive definitions. The tool is very simple, but it has the functionality needed to perform modeling, specification and verification. We give an illustration of that process for two classical examples in the concurrency theory: the Alternating Bit Protocol and Peterson's mutual exclusion algorithm.
 
-The Calculus of Communicating Systems (CCS) is a young branch in process calculus introduced 
-by Robin Milner. CCS's theory has promising results in the field of modeling and analysing 
-of reactive systems. Despite CCS's success, there are only few computer tools that are available
-for modeling and analysis of CCS's theory. This paper is a technical report of an effort to
-build a tool that is able to parse CCS's expressions, build LTSs 
-(Labelled Transition Systems) from CCS and can calculate if two LTS are strongly or weakly bisimilar
-by using naive method or by using Fernandez's method. The tool is simple, but it has the 
-functionality needed to perform modeling, specification and verification.
-
-TODO: Revise the abstract as a short summary of the report.
-
-\keywords{CCS, LTS, Bisimulation, LTS minimization, LTS comparation, Formal verification, Henessy-Milner logic.}
+\keywords{CCS, LTS, Bisimulation equivalence, LTS minimization, LTS comparation, Formal verification, Henessy-Milner logic.}
 
 \end{abstract}

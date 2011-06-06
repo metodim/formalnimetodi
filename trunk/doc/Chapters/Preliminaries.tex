@@ -1,6 +1,6 @@
 \section{Preliminaries}
 
-In this section, we give some preliminaries of the basic terminology used throughout the report.
+In this section, we give some definitions of the basic terminology used throughout the report.
 
 \begin{definition}
 (Calculus of Communicating Systems): Calculus of Communicating Systems is algebraic theory to formalize the notion of concurrent computation. Commonly known as CCS.
@@ -27,29 +27,40 @@ In this section, we give some preliminaries of the basic terminology used throug
 \end{definition}
 
 \begin{definition}
-Let $P$ and $Q$ be CCS processes or, more generally, states in a labeled transition system. For each action $a$, we shall write
+Let $P$ and $Q$ be CCS processes or, more generally, states in a labeled transition system. For each action $a$,
 $P\stackrel{a}{\Rightarrow}Q$ iff:
 \begin{itemize}
 	\item Either $a\neq\tau$ and there are processes $P'$ and $Q'$ such that $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}P'\ \stackrel{a}{\rightarrow}\ Q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
 	\item Or $a=\tau$ and $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
 \end{itemize}
-where we write $\left(\stackrel{\tau}{\rightarrow}\right)^{*}$ for he reflexive and transitive closure of the relation $\stackrel{\tau}{\rightarrow}$.
+where $\left(\stackrel{\tau}{\rightarrow}\right)^{*}$ denotes the reflexive and transitive closure of the relation $\stackrel{\tau}{\rightarrow}$.
 \end{definition}
 
 \begin{definition}
-(weak bisimulation and observational equivalence): A binary relation $R$ over the set of states of an LTS is a weak bisimulation iff, whenever $s_{1}Rs_{2}$ and $a$ is an action (including $\tau$):
+(Weak bisimulation / Observational equivalence): A binary relation $R$ over the set of states of an LTS is a weak bisimulation (observational equivalence) iff, whenever $s_{1}Rs_{2}$ and $a$ is an action (including $\tau$):
 \begin{itemize}
 	\item If $s_{1}\stackrel{a}{\rightarrow}s_{1}'$ then there is a transition $s_{2}\stackrel{a}{\Rightarrow}s_{2}'$ such that $s_{1}'Rs_{2}'$;
 	\item If $s_{2}\stackrel{a}{\rightarrow}s_{2}'$ then there is a transition $s_{1}\stackrel{a}{\Rightarrow}s_{1}'$ such that $s_{1}'Rs_{2}'$;
 \end{itemize}
+Two states $s$ and $s'$ are observationally equivalent (or weakly bisimilar), written $s\approx s'$, iff there is a weak bisimulation equivalence that relates them.
 \end{definition}
 
 \begin{definition}
-(Hennessy Milner formulae): The set $M$ Hennessy Milner formulae over a set of actions $Act$ is given by the following abstract syntax:
+	(Saturation): Let $T\subseteq S\times Act\times S$ be an LTS. Then
+\begin{align*}
+ T^{*} &=\left\{\left(p,a,q\right)| p\stackrel{a}{\Rightarrow}q\right\}= \\
+ &=T\cup\left(\stackrel{a}{\rightarrow}\right)^{*}\cup\left\{\left(p,a,q\right)| a\neq\tau\wedge\left(\exists p',q'\in A\right) p\left(\stackrel{\tau}{\rightarrow}\right)^{*}p'\stackrel{a}{\rightarrow}q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}
+\end{align*} 
+is a saturation of T.\\
+Two LTSs are weakly bisimilar iff their saturated LTSs are strongly bisimilar. 
+\end{definition}
+
+\begin{definition}
+(Hennessy-Milner): The set of $M$ Hennessy-Milner formulas over a set of actions $Act$ is given by the following abstract syntax:
 \begin{equation*}
   F,G::=tt |ff | F\wedge G | F \vee G|\left\langle a \right\rangle F|\left[ a \right] F
 \end{equation*}
-where $a \in Act$ and we use $tt$ and $ff$ to denoto true and false, respectively. 
+where $a \in Act$ and $tt$ and $ff$ denote $true$ and $false$, respectively. 
 If $A=\left\{ a_{1},...,a_{n} \right\} \subseteq Act \left( n \geq 0\right)$, 
 we use use the abbreviation $\left\langle A \right\rangle F$ for the formula 
 $\left\langle a_{1} \right\rangle F \vee ... \vee \left\langle a_{n} \right\rangle F$ and 
