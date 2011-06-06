@@ -1,8 +1,8 @@
 \subsection{Peterson's algorithm - Modeling,  Specification and Testing}
 
-Peterson's algorithm \cite{Peterson} is a simple algorithm designed to ensure mutual exclusion between two processes without any special hardware support. It represents a simple refinement of ideas from earlier mutex algorithms such as Dekker's algorithm \cite{Dekker}. Mutual exclusion (often abbreviated as mutex) algorithms are used in concurrent programming to avoid the simultaneous use of a common resource by critical sections. A critical section is a piece of code in which a process or thread accesses a common resource. 
+Peterson's algorithm \cite{Peterson} is a simple algorithm designed to ensure mutual exclusion between two processes without any special hardware support. It represents a simple refinement of ideas from earlier mutex algorithms such as Dekker's algorithm \cite{Dekker}. Mutual exclusion (often abbreviated as mutex) algorithms are used in concurrent programming to avoid the simultaneous use of a common resource by critical sections. A critical section is a piece of code in which a process or thread accesses a shared resource. 
 
-\subsubsection{Modeling and Specification.}In Peterson's algorithm for mutual exclusion, there are:
+\subsubsection{Modeling and Specification.}In Peterson's algorithm for mutual exclusion, there are \cite{ReactiveSystems}:
 \begin{itemize}
   \item Two processes $P_{1}$ and $P_{2}$ that want to access the same resource, i.e. eneter the critical section;
 	\item Two shared variables $b_{1}$ and $b_{2}$ which indicate whether process $P_{1}$ and process $P_{2}$ are trying to enter the critical section;
@@ -29,14 +29,9 @@ In order to ensure mutual exclusion, each process $P_{i}$, $i\in\left\{1,2\right
 \end{algorithmic}
 \end{algorithm}
 
-The desired behaviour of the Peterson's algorithm is as the one of any simple mutex algorithm. Initially, both processes enter their critical sections, however once one of the processes has entered its critical section, the other process cannot enter its own critical section until the first process has exited its critical section. Therefore, a suitable CCS specification of the behaviour of a mutual exclusion algorithm like Peterson's is given as follows:
-\begin{equation}
-	MutexSpec = enter1.exit1.MutexSpec + enter2.exit2.MutexSpec
-\end{equation}
-
 Modeling the algorithm of Peterson includes, among other tasks, translation of the algorithm's pseudocode description of the behaviour of the processes $P_{1}$ and $P_{2}$ into the model of CCS or LTSs. 
 
-Following the message-passing paradigm on which CCS is based, the variables manipulated by the processes $P_{1}$ and $P_{2}$ are viewed as passive agents that react to actions performed by the processes. The description of the variables used in Peterson's algorithm as processes can be done as follows:
+Following the message-passing paradigm on which CCS is based, the variables manipulated by the processes $P_{1}$ and $P_{2}$ are viewed as passive agents that react to actions performed by the processes. The description of the variables used in Peterson's algorithm as processes can be done as follows \cite{ReactiveSystems}:
 \begin{enumerate}
 	\item The process representing the shared boolean variable $b_{1}$ has two states and its behaviour can be represented by the following CCS expressions:\\
 				\begin{equation*}\label{b1_imp}
@@ -105,7 +100,12 @@ Assuming that the initial value of the variable $k$ is 1, our CCS description of
 	PETERSON \stackrel{def}{=} \left(B1f|B2f|K1|P1|P2\right)\backslash L
 \end{equation}
 
-\subsubsection{Testing.} Testing the preservation of the mutual exclusion property is one of the approaches that can be used to establish the correctness of the Peterson's algorithm. A test is a finite rooted LTS over the set of actions $Act\cup\left\{\overline{bad}\right\}$, where $bad$ is a distinguished channel name not occurring in $Act$. The idea is that the test would act as a monitor process that 'observes' the behaviour of a process and reports an error in case of an occurrence of an undesirable situation by performing a $bad$-labelled transition. Assuming that the monitor process outputs 'bad' when it discovers that two enter actions have occurred without intervening exit, a CCS process describing this behaviour is:
+On the other hand, the desired behaviour of the Peterson's algorithm is as the one of any simple mutex algorithm. Initially, both processes enter their critical sections, however once one of the processes has entered its critical section, the other process cannot enter its own critical section until the first process has exited its critical section. Therefore, a suitable CCS specification of the behaviour of a mutual exclusion algorithm like Peterson's is given as follows:
+\begin{equation}
+	MutexSpec = enter1.exit1.MutexSpec + enter2.exit2.MutexSpec
+\end{equation}
+
+\subsubsection{Testing.} Testing the preservation of the mutual exclusion property is one of the approaches that can be used to establish the correctness of the Peterson's algorithm. A test is a finite rooted LTS over the set of actions $Act\cup\left\{\overline{bad}\right\}$, where $bad$ is a distinguished channel name not occurring in $Act$. The idea is that the test would act as a monitor process that 'observes' the behaviour of a process and reports an error in case of an occurrence of an undesirable situation by performing a $bad$-labelled transition. Assuming that the monitor process outputs 'bad' when it discovers that two enter actions have occurred without intervening exit, a CCS process describing this behaviour is \cite{ReactiveSystems}:
 \begin{equation*}\label{mut_test}
   \begin{array}{lcl}
   	MutexTest = \overline{enter1}.MutexTest1 + \overline{enter2}.MutexTest2 \\
@@ -124,4 +124,4 @@ where
 \end{equation*}
 can initially perform the action $\overline{bad}$.
 
-Indeed, the LTS of the CCS expression (\ref{pet_test}) generated by our tool does not have states which afford $bad$ transitions. This proves that Peterson's algorithm ensures mutual exclusion.
+Indeed, the LTS of the above CCS expression generated by our tool does not have states which afford $bad$ transitions. This proves that Peterson's algorithm ensures mutual exclusion.
