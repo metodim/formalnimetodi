@@ -20,8 +20,13 @@ import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 public class AldebaranUtils {
 
+	private final static Logger LOG = LogManager.getLogger(AldebaranUtils.class);
+	
 	public static AldebaranFile readFile(File file) throws IOException {
 		AldebaranFile aldebaranFile = new AldebaranFile();
 
@@ -38,8 +43,11 @@ public class AldebaranUtils {
 	}
 
 	public static void writeFile(AldebaranFile aldebaranFile, File file) throws IOException {
-		if (!file.canWrite())
-			throw new IllegalArgumentException("Can not write in this file");
+		if(file.createNewFile()){
+			LOG.debug("Created a new file: " + file.getName());
+		} else {
+			LOG.debug("Rewriting existing file: " + file.getName());
+		}
 
 		BufferedWriter bufWriter = new BufferedWriter(new FileWriter(file, false));
 

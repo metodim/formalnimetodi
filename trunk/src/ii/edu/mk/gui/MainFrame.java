@@ -28,6 +28,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXStatusBar;
+import org.joda.time.DateTime;
 
 
 /**
@@ -199,9 +200,24 @@ public class MainFrame extends JXFrame {
 		Timer statusBarMemory = new Timer(1000, memoryLabel);
 		statusBarMemory.start();
 
+		JXStatusBar.Constraint timerConstraint = new JXStatusBar.Constraint();
+		timerConstraint.setFixedWidth(200);
+		TimerLabel timerLabel = new TimerLabel();
+		statusBar.add(timerLabel, timerConstraint);
+		Timer statusBarTimer = new Timer(1000, timerLabel);
+		statusBarTimer.start();
+
 		return statusBar;
 	}
 	
+	private static class TimerLabel extends JLabel implements ActionListener {
+		private static final long serialVersionUID = 1L;
+		DateTime dateTime;
+		public void actionPerformed(ActionEvent e) {
+			dateTime = new DateTime();
+			this.setText(dateTime.toString("dd-mm-YYYY") + dateTime.toString(" HH:mm:ss"));
+		}
+	}
 	private static class MemoryLabel extends JLabel implements ActionListener {
 		private static final long serialVersionUID = 1L;
 		Runtime runtime = Runtime.getRuntime();
