@@ -39,7 +39,7 @@ class Builder {
 	
 	void defineClientJars(){
 		jars =  ["swingx-core-1.6.2.jar",
-//				"joda-time-1.6.2.jar",
+				"joda-time-1.6.2.jar",
 				"miglayout-3.7.4-swing.jar",
 				"log4j-1.2.16.jar",
 				"antlr-runtime-3.3.jar",
@@ -97,11 +97,18 @@ class Builder {
                     dir:var.'tmp.dir',
                     includes:"**/*.class"
             )
+			fileset(
+				dir:var.'tmp.dir',
+				includes:"org/joda/time/tz/data/**/*"
+			)
             fileset(
                     dir:workspace + var.'src.dir',
                     includes:"ii/resources/"
             )
-            
+			fileset(
+				dir:workspace + var.'src.dir',
+				includes:"log4j.properties"
+		)
             manifest() {
                 attribute(
                         name:Attributes.Name.IMPLEMENTATION_TITLE,
@@ -165,8 +172,7 @@ class Builder {
 				overwrite:true
 			);
 			ant.delete(
-				dir:var.'tmp.dir' + "/" + "META-INF",
-				includeEmptyDirs:true
+				file:var.'tmp.dir' + "/META-INF/MANIFEST.MF",
 			)
 		};
 	}  
