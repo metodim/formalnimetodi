@@ -1,8 +1,9 @@
 \section{HML and $U^{w}$ and $U^{s}$ operators}
+\label{sec:hml}
 
-Henessy-Milner logic \cite{HenessyMilner} is a multimodal logic used to characterize the properties of a system which describe some aspects of the system's behaviour. Its syntax is defined by the following BNF grammar \cite{ModelingAndAnalysis2}:
+Henessy-Milner logic \cite{HenessyMilner} is a multimodal logic used to characterize the properties of a system which describe some aspects of the system's behaviour. Its syntax is defined by the following BNF grammar \cite{ModelingAndAnalysis}:
 \begin{equation}\label{eq:hml_bnf}
-\phi ::= tt \hspace{1 mm} | \hspace{1 mm} ff \hspace{1 mm} | \hspace{1 mm} \neg\phi \hspace{1 mm} | \hspace{1 mm}\phi\wedge\phi \hspace{1 mm} |
+\phi ::= \mathit{tt} \hspace{1 mm} | \hspace{1 mm} \mathit{ff} \hspace{1 mm} | \hspace{1 mm} \neg\phi \hspace{1 mm} | \hspace{1 mm}\phi\wedge\phi \hspace{1 mm} |
 \hspace{1 mm} \phi\vee\phi | \left\langle a\right\rangle \phi \hspace{1 mm} | \hspace{1 mm} \left[a\right]\phi \hspace{1 mm}
 \end{equation}
 

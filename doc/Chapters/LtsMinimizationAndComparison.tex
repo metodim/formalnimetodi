@@ -1,5 +1,7 @@
-\section{LTS minimization and comparison}
-Bisimulation equivalence (bisimilarity) is a binary relation between labeled transition systems which associates systems that can simulate each other's behaviour in a stepwise manner. This enables comparison of different transition systems with respect to behavioural relations. An alternative perspective is to consider bisimulation equivalence as a relation between states of a single labelled transition system. By considering the quotient transition system under such a relation, smaller models are obtained \cite{ModelChecking}.
+\section{Minimization and comparison of labeled transition systems}
+\label{sec:bisimulation}
+
+Bisimulation equivalence (bisimilarity) is a binary relation between labeled transition systems which associates systems that can simulate each other's behaviour in a stepwise manner [REF]. This enables comparison of different transition systems with respect to behavioural relations. An alternative perspective is to consider bisimulation equivalence as a relation between states of a single labelled transition system. By considering the quotient transition system under such a relation, smaller models are obtained \cite{ModelChecking}.
 
 The bisimulation equivalence finds its extensive application in many areas of computer science such as concurrency theory, formal verification, set theory, etc. For instance, in formal verification minimization with respect to bisimulation equivalence is used to reduce the size of the state space to be analyzed. Also, bisimulation equivalence is of particular interest in model checking, in specific to check the equivalence of an implementation of a certain system with respect to its specification model.
 
@@ -29,14 +31,14 @@ Our implementation of the algorithm takes as an input an LTS in aldebaran format
 The algorithm then computes the strong bisimulation equivalence and outputs it as pairs of bisimilar states.
 
 The algorithm due to Fernandez exploits the idea of the relationship between strong bisimulation equivalence 
-and the relational coarsest partition problem solved by Paige and Tarjan. It represents adaptation of the 
+and the relational coarsest partition problem solved by Paige and Tarjan \cite{PaigeTarjan}. It represents adaptation of the 
 Paige-Tarjan algorithm of complexity $O(m \log n)$ to minimize labeled transition systems modulo bisimulation 
 equivalence by computing the coarsest partition problem with respect to the family of binary relations 
 $\left(T_a\right)_{a\in A}$ instead of one binary relation, where $T_a=\{(p,q)|(p,a,q)\in T\}$ is a transition 
-relation for action $a\in A$ and $T$ is a set of all transitions \cite{PaigeTarjan}\cite{Fernandez}. It has 
+relation for action $a\in A$ and $T$ is a set of all transitions \cite{Fernandez}. It has 
 $O(m \log n)$ complexity for a labeled transition system with $m$ transitions and $n$ states. 
 
-Our implementation of Fernandez's algorithm takes an LTS in aldebaran format as an input, generates a labelled graph and 
+Our implementation of Fernandez's algorithm takes an LTS in Aldebaran format as an input, generates a labelled graph and 
 then partitions the labeled graph into its coarsest blocks where each block represents a set of bisimilar states. Partition 
 is a set of mutually exclusive blocks whose union constitutes the graph universe.
 
@@ -58,7 +60,7 @@ Having computed the strong bisimulation equivalence, the next step in the reduct
 \end{enumerate}
 The procedure is repeated for all pairs of bisimilar states.
 
-This process of reduction with respect to strong bisimilarity is illustrated below in Fig. \ref{fig:graph1}. The results obtained by applying both algorithms for computing strong bisimulation equivalence are given in Table \ref{table1}. These results are then used as a basis for the reduction of the graph to its minimal form: all mutually bisimilar states are merged into a single state and their transitions are updated accordingly. 
+This process of reduction with respect to strong bisimilarity is illustrated below in Fig. \ref{fig:bisimGraph1}. The results obtained by applying both algorithms for computing strong bisimulation equivalence are given in Table \ref{table1}. These results are then used as a basis for the reduction of the graph to its minimal form: all mutually bisimilar states are merged into a single state and their transitions are updated accordingly. 
 
 \begin{figure}[h]
 	\centering
@@ -169,7 +171,7 @@ Finally the saturated LTS is:
 
 Having computed the observational equivalence (weak bisimilarity) of the LTS, the process of minimizing the original LTS is the same as the process for minimization modulo strong bisimilarity applied on the saturated LTS.
 
-\subsection{Comparison of two LTSs modulo strong bisimilarity.}
+\subsection{Comparison of two LTSs modulo strong bisimilarity}
 The idea for the implementation of the equivalence checking of two labeled transition systems modulo strong bisimilarity was based on the following fact: Two labelled transition systems are (strongly) bisimilar iff their initial states are bisimilar \cite{ModellingAndAnalysis}.
 
 That means that in order to check whether two labeled transition systems are bisimilar it is enough to check whether their initial states are bisimilar. This can be done using the following approach:
@@ -179,7 +181,7 @@ That means that in order to check whether two labeled transition systems are bis
 	\item A check is performed to see if the initial states belong to the same bisimulation equivalence class
 \end{enumerate}
 
-The correctness of the implementation was tested with the use of ltsconvert and ltscompare tools of mCRL2, micro Common Representation Language 2.
+The correctness of the implementation was tested with the use of ltsconvert and ltscompare tools of mCRL2 \cite{mCRL2}.
 
 \subsection{Comparison of two LTSs modulo weak bisimilarity}
 The comparison of two LTSs modulo weak bisimilariy amounts to checking strong bisimilarity over the saturated LTSs \cite{ReactiveSystems}. In another words, two LTSs are weakly bisimilar iff their saturated LTSs are strongly bisimilar. Following this fact, we implemented the comparison of two LTSs modulo weak bisimilarity by applying the saturation algorithm over the original LTSs in order to obtain their saturated LTSs, after which the process of comparison of the saturated LTSs modulo strong bisimilarity was applied as described above.

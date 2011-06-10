@@ -15,12 +15,13 @@
 \DeclareGraphicsExtensions{.jpeg,.jpg,.png}
 
 \usepackage{url}
-\urldef{\mailsa}\path|jane.jovanovski@gmail.com, maja.siljanoska@gmail.com, carevski@gmail.com, dragan.sahpaski@gmail.com, pgorcevski@t-home.mk, metodi.micev@gmail.com, b.ilijoski@gmail.com, vlatko.gmk@gmail.com|
+\urldef{\mailsa}\path| jane.jovanovski@gmail.com, maja.siljanoska@gmail.com, carevski@gmail.com, dragan.sahpaski@gmail.com, pgorcevski@t-home.mk, metodi.micev@gmail.com, b.ilijoski@gmail.com, vlatko.gmk@gmail.com|
 \usepackage[pdfpagelabels,hypertexnames=false,breaklinks=true,bookmarksopen=true,bookmarksopenlevel=2]{hyperref}
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{amsmath}
 \usepackage{subfigure}
+\usepackage{appendix}
 
 \begin{document}
 
@@ -33,8 +34,7 @@
 \thispagestyle{plain}
 \pagenumbering{arabic}
 
-\title{A tool for modeling, manipulation and analysis of concurrent systems based on CCS process language and LTS as its semantic model}
-\subtitle{(Technical Report)\footnote{This technical report is a result of a group project work for the course in Formal methods at the MSc studies in Computer Sciences at the Institute of Informatics 2010/2011}}
+\title{TMACS: a Tool for Modeling, Manipulation, and Analysis of Concurrent Systems}
 
 \input{./Chapters/Authors}
 
@@ -55,6 +55,9 @@
 \input{./Chapters/Conclusion} 
 \input{./Chapters/Acknowledgment} 
 \input{./Chapters/Bibliography} 
+
+%\bibliographystyle{splncs}
+%\bibliography{tmacs}
 
 \input{./Chapters/Analysis}
 \input{./Chapters/CCSGrammar}
