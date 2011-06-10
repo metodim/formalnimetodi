@@ -67,9 +67,9 @@ On the other hand, ABP should act as a simple buffer, therefore its CCS specific
 	\end{array}
 \end{equation}
 
-\subsubsection{Verification.} In order to verify the Alternating Bit Protocol, we need to prove that the implementation meets the specification with respect to some behavioural equivalence. We will show that an observational equivalence between $\mathit{Buf}$ and $\mathit{ABP}$ can be found, i.e. that $\mathit{ABP}\approx \mathit{Imp}$. For that purpose, first we use our tool to obtain the labelled graphs corresponding to the CCS representations of $\mathit{Buf}$ and $\mathit{ABP}$, and afterwards we perform a comparison of the LTSs modulo weak bisimilarity which yields a positive answer about the existance of weak bisimulation equivalence between $\mathit{Buf}$ and $\mathit{ABP}$.
+\subsubsection{Verification.} In order to verify the Alternating Bit Protocol, we need to prove that the implementation meets the specification with respect to some behavioural equivalence. We will show that an observational equivalence between $\mathit{Buf}$ and $\mathit{ABP}$ can be found, i.e. that $\mathit{ABP}\approx \mathit{Imp}$. For that purpose, first we use our tool to obtain the labelled graphs corresponding to the CCS representations of $\mathit{Buf}$ and $\mathit{ABP}$, and afterwards we perform a comparison of the labeled transition systems modulo weak bisimilarity which yields a positive answer about the existance of weak bisimulation equivalence between $\mathit{Buf}$ and $\mathit{ABP}$.
 
-The weak bisimulation equivalence obtained by running any of the two bisimulation algorithms implemented in our tool over the saturated LTSs is given in Table \ref{table3}:
+The weak bisimulation equivalence obtained by running any of the two bisimulation algorithms implemented in our tool over the saturated labeled transition systems is given in Table \ref{table3}:
 
 \begin{table}
 \begin{tabular}{| p{6.5cm} | p{3.5cm} | }
