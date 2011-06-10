@@ -1,17 +1,17 @@
 \section{Minimization and comparison of labeled transition systems}
 \label{sec:bisimulation}
 
-Bisimulation equivalence (bisimilarity) is a binary relation between labeled transition systems which associates systems that can simulate each other's behaviour in a stepwise manner [REF]. This enables comparison of different transition systems with respect to behavioural relations. An alternative perspective is to consider bisimulation equivalence as a relation between states of a single labelled transition system. By considering the quotient transition system under such a relation, smaller models are obtained \cite{ModelChecking}.
+Bisimulation equivalence (bisimilarity) \cite{Park} is a binary relation between labeled transition systems which associates systems that can simulate each other's behaviour in a stepwise manner which enables comparison of different transition systems \cite{ModelChecking}. An alternative perspective is to consider the bisimulation equivalence as a relation between states of a single labeled transition system. Using the quotient transition system under such a relation, smaller models of the labeled transition system can be obtained \cite{ModelChecking}.
 
 The bisimulation equivalence finds its extensive application in many areas of computer science such as concurrency theory, formal verification, set theory, etc. For instance, in formal verification minimization with respect to bisimulation equivalence is used to reduce the size of the state space to be analyzed. Also, bisimulation equivalence is of particular interest in model checking, in specific to check the equivalence of an implementation of a certain system with respect to its specification model.
 
-Our tool implements both options: reducing the size of the state space of a given LTS and checking the equivalence of two labeled transition systems, using two behavioral equivalence relations: strong bisimilarity and observational equivalence (weak bisimilarity).
+TMACS implements both options: reducing the size of the state space of a given labeled transition system and checking the equivalence of two labeled transition systems, using two behavioral equivalence relations: strong bisimilarity and observational equivalence (weak bisimilarity).
 
-\subsection{Minimization of an LTS modulo strong bisimilarity}
-The process of reducing the size of the state space of an LTS was implemented using an approach which consists of two steps:
+\subsection{Minimization of a labeled transition system modulo strong bisimilarity}
+The process of reducing the size of the state space of a labeled transition system was implemented using an approach which consists of two steps:
 \begin{enumerate}
-\item Computing strong bisimulation equivalence (strong bisimilarity) for the LTS;
-\item Minimizing the LTS to its canonical form using the strong bisimilarity obtained in the first step;
+\item Computing strong bisimulation equivalence (strong bisimilarity) for the labeled transition system;
+\item Minimizing the labeled transition system to its canonical form using the strong bisimilarity obtained in the first step;
 \end{enumerate}
 
 The first step, computing strong bisimulation equivalence, was implemented with two different methods: the so called
@@ -23,7 +23,7 @@ the largest fixed point of the monotic function $F$ as defined in \cite{Reactive
 point theorem. This algorithm has time complexity of $O(mn)$ for a labeled transition system with \emph{m} transitions and \emph{n} 
 states. 
 
-Our implementation of the algorithm takes as an input an LTS in aldebaran format, and generates the corresponding labelled graph as a list of nodes representing the states which use the following data structure:
+Our implementation of the algorithm takes as an input a labeled transition system in aldebaran format, and generates the corresponding labelled graph as a list of nodes representing the states which use the following data structure:
 \begin{itemize}
 	\item $S_p=\{(a, q)\}$ - set of pairs $(a, q)$ for state $p$ where $a$ is an outgoing action for $p$ and $q$ is a state
 	reachable from $p$ with the action $a$
@@ -38,7 +38,7 @@ $\left(T_a\right)_{a\in A}$ instead of one binary relation, where $T_a=\{(p,q)|(
 relation for action $a\in A$ and $T$ is a set of all transitions \cite{Fernandez}. It has 
 $O(m \log n)$ complexity for a labeled transition system with $m$ transitions and $n$ states. 
 
-Our implementation of Fernandez's algorithm takes an LTS in Aldebaran format as an input, generates a labelled graph and 
+Our implementation of Fernandez's algorithm takes a labeled transition system in Aldebaran format as an input, generates a labelled graph and 
 then partitions the labeled graph into its coarsest blocks where each block represents a set of bisimilar states. Partition 
 is a set of mutually exclusive blocks whose union constitutes the graph universe.
 
@@ -51,7 +51,7 @@ To define graph states and transitions we used the following terminology represe
 	\item infoB$(a, p)$ - info map for block $B$, state $p$ and action $a$
 \end{itemize}
 
-Having computed the strong bisimulation equivalence, the next step in the reduction of the state space of the LTS uses the bisimulation equivalence obtained in the first step in order to minimize the labeled graph. This reduction is implemented as follows:
+Having computed the strong bisimulation equivalence, the next step in the reduction of the state space of the labeled transition system uses the bisimulation equivalence obtained in the first step in order to minimize the labeled graph. This reduction is implemented as follows:
 \begin{enumerate}
 	\item If a pair of states $(p, q)$ is bisimilar, then the two states are merged into one single state $k=p\cup q$;
 	\item All incoming transitions $r \stackrel{a}{\rightarrow} p$ and $s \stackrel{a}{\rightarrow} q$ are replaced by transitions $r \stackrel{a}{\rightarrow} k$ and $s \stackrel{a}{\rightarrow} k$;
@@ -65,25 +65,25 @@ This process of reduction with respect to strong bisimilarity is illustrated bel
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=3.5in]{bisimGraph1}
-	\caption{Example LTS graph and its minimial form modulo strong bisimilarity. The red dashed arrows depict the mapping of the states using the computed bisimulation equivalence. States 2 and 3 are merged into state 2 in the minimal graph, and states 4,5 and 6 are merged into state 3 in the minimal graph.}
+	\caption{Example of a labeled transition system graph and its minimial form modulo strong bisimilarity. The red dashed arrows depict the mapping of the states using the computed bisimulation equivalence. States 2 and 3 are merged into state 2 in the minimal graph, and states 4,5 and 6 are merged into state 3 in the minimal graph.}
 	\label{fig:bisimGraph1}
 \end{figure}
 
 \begin{table}[h]
 \begin{tabular}{| l | p{10.5cm}| }
   \hline                       
-  Algorithm & LTS graph \\ \hline
+  Algorithm & Bisimulation algorithm output \\ \hline
   Naive & (2, 3), (3, 2), (4, 5), 
 (5, 4), (4, 6), (6, 4), (5, 6), (6, 5), (0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6) \\ \hline
   Fernandez & \{0\}, \{1\}, \{2\}, \{3\}, \{4, 5, 6\} \\ \hline  
 \end{tabular}
 \\
-\caption{Computing strong bisimularity for the example LTS graph from Fig.\ref{fig:bisimGraph1}}
+\caption{Computing strong bisimularity for the example labeled graph from Fig.\ref{fig:bisimGraph1}}
 \label{table1}
 \end{table}
 
-\subsection{Minimization of an LTS modulo weak bisimilarity}
-The minimization of an LTS modulo observational equivalence (weak bisimilarity) is reduced to the problem of minimization of an LTS modulo strong bisimilarity, using a technique called saturation. Intuitevely, saturation amounts to first precomputing the weak transition relation and then constructing a new pair of finite processes whose original transitions are replaced by the weak transitions \cite{ReactiveSystems}. Once the algorithm for saturation is run and the LTS is saturated, the computation of weak bisimilarity amounts to computing strong bisimilarity of the saturated LTS.
+\subsection{Minimization of a labeled transition system modulo weak bisimilarity}
+The minimization of a labeled transition system modulo observational equivalence (weak bisimilarity) is reduced to the problem of minimization modulo strong bisimilarity, using a technique called saturation. Intuitevely, saturation amounts to first precomputing the weak transition relation and then constructing a new pair of finite processes whose original transitions are replaced by the weak transitions \cite{ReactiveSystems}. Once the algorithm for saturation is run and the original labeled transition system is saturated, the computation of weak bisimilarity amounts to computing strong bisimilarity of the saturated labeled transition system.
 
 The algorithm for saturation in our tool was implemented as follows: The set of triples ${R}$ can be partitioned in ${2n}$ sets with: 
 \begin{equation*}
@@ -157,7 +157,7 @@ for every $p\in S$, and then construct:
 	\end{array}
 \end{equation*}
 
-Finally the saturated LTS is:
+Finally the saturated labeled transition system is:
 \begin{equation*}
 	T^{*}=\bigcup_{p\in S}\left(T^{*}_{\tau p}\cup T^{*}_{bp}\right)=\left(\stackrel{\tau}{\rightarrow}\right)^{*}\cup\left\{\left(p,a,q\right)|a\neq\tau\wedge\left(\exists p',q'\in A\right) p\left(\stackrel{\tau}{\rightarrow}\right)^{*}p'\stackrel{a}{\rightarrow}q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}
 \end{equation*}
@@ -165,13 +165,13 @@ Finally the saturated LTS is:
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=4.5in]{saturation2}
-\caption{Example saturated LTS}
+\caption{Example saturated labeled transition system graph}
 \label{fig:saturation2}
 \end{figure}
 
-Having computed the observational equivalence (weak bisimilarity) of the LTS, the process of minimizing the original LTS is the same as the process for minimization modulo strong bisimilarity applied on the saturated LTS.
+Having computed the observational equivalence (weak bisimilarity) of the original labeled transition system, the process of its minimization is the same as the process for minimization modulo strong bisimilarity applied on the saturated labeled transition system.
 
-\subsection{Comparison of two LTSs modulo strong bisimilarity}
+\subsection{Comparison of two labeled transition systems modulo strong bisimilarity}
 The idea for the implementation of the equivalence checking of two labeled transition systems modulo strong bisimilarity was based on the following fact: Two labelled transition systems are (strongly) bisimilar iff their initial states are bisimilar \cite{ModellingAndAnalysis}.
 
 That means that in order to check whether two labeled transition systems are bisimilar it is enough to check whether their initial states are bisimilar. This can be done using the following approach:
@@ -183,5 +183,5 @@ That means that in order to check whether two labeled transition systems are bis
 
 The correctness of the implementation was tested with the use of ltsconvert and ltscompare tools of mCRL2 \cite{mCRL2}.
 
-\subsection{Comparison of two LTSs modulo weak bisimilarity}
-The comparison of two LTSs modulo weak bisimilariy amounts to checking strong bisimilarity over the saturated LTSs \cite{ReactiveSystems}. In another words, two LTSs are weakly bisimilar iff their saturated LTSs are strongly bisimilar. Following this fact, we implemented the comparison of two LTSs modulo weak bisimilarity by applying the saturation algorithm over the original LTSs in order to obtain their saturated LTSs, after which the process of comparison of the saturated LTSs modulo strong bisimilarity was applied as described above.
+\subsection{Comparison of two labeled transition systems modulo weak bisimilarity}
+The comparison of two labeled transition systems modulo weak bisimilariy amounts to checking strong bisimilarity over the saturated labeled transition systems \cite{ReactiveSystems}. In another words, two labeled transition systems are weakly bisimilar iff their saturated labeled transition systems are strongly bisimilar. Following this fact, we implemented the comparison of two labeled transition systems modulo weak bisimilarity by applying the saturation algorithm over the original labeled graphs in order to obtain their saturated labeled graphs, after which the process of comparison of the saturated labeled transition systems modulo strong bisimilarity was applied as described above.

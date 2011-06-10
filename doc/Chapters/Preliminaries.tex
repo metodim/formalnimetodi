@@ -1,7 +1,7 @@
 \section{Preliminaries}
 \label{sec:preliminaries}
 
-In this section, we give some formal definitions of the basic terminology used throughout the report [REF].
+In this section, we give some formal definitions of the basic terminology used throughout the report \cite{ReactiveSystems}\cite{ModellingAndAnalysis}.
 
 \begin{definition}
 (Calculus of Communicating Systems): Calculus of Communicating Systems is algebraic theory to formalize the notion of concurrent computation. Commonly known as CCS.
@@ -38,7 +38,7 @@ where $\left(\stackrel{\tau}{\rightarrow}\right)^{*}$ denotes the reflexive and 
 \end{definition}
 
 \begin{definition}
-(Weak bisimulation equivalence/Observational equivalence): A binary relation $R$ over the set of states of an LTS is a weak bisimulation (observational equivalence) iff, whenever $s_{1}Rs_{2}$ and $a$ is an action (including $\tau$):
+(Weak bisimulation equivalence/Observational equivalence): A binary relation $R$ over the set of states of a labeled transition system is a weak bisimulation (observational equivalence) iff, whenever $s_{1}Rs_{2}$ and $a$ is an action (including $\tau$):
 \begin{itemize}
 	\item If $s_{1}\stackrel{a}{\rightarrow}s_{1}'$ then there is a transition $s_{2}\stackrel{a}{\Rightarrow}s_{2}'$ such that $s_{1}'Rs_{2}'$;
 	\item If $s_{2}\stackrel{a}{\rightarrow}s_{2}'$ then there is a transition $s_{1}\stackrel{a}{\Rightarrow}s_{1}'$ such that $s_{1}'Rs_{2}'$;
@@ -47,7 +47,7 @@ Two states $s$ and $s'$ are observationally equivalent (or weakly bisimilar), wr
 \end{definition}
 
 \begin{definition}
-(Saturation): Let $T\subseteq S\times Act\times S$ be an LTS. Then
+(Saturation): Let $T\subseteq S\times Act\times S$ be a labeled transition system. Then
 \begin{align*}
  T^{*} &=\left\{\left(p,a,q\right)| p\stackrel{a}{\Rightarrow}q\right\}= \\
  &=T\cup\left(\stackrel{a}{\rightarrow}\right)^{*}\cup\left\{\left(p,a,q\right)| a\neq\tau\wedge\left(\exists p',q'\in A\right) p\left(\stackrel{\tau}{\rightarrow}\right)^{*}p'\stackrel{a}{\rightarrow}q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}

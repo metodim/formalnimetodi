@@ -3,29 +3,29 @@
 
 In this section we present how to use the tool to show that the specification and 
 implementation of the ABP are weakly bisimiliar. As a first step we always need to
-generate the LTSs from both the specification and implementation of the system that
+generate the labeled transition systems from both the specification and implementation of the system that
 we are trying to model. That can be done in the tab "CCS to LTS" in the tool. As shown
 in Fig. \ref{fig:abptoolusage1} in the upper text area we need to write down the CCS 
 expressions that describe the system or load them from a file. One constraint here
 is that a general CCS expression that describes the whole system has to be put on
-the first line. The algorithm for generating the LTS graph starts evaulation and 
+the first line. The algorithm for generating the labeled graph starts evaulation and 
 construction of the graph starting from the first line. When we have our CCS expressions
 put in place we have to click "Generate LTS". This action will make the application
-parse the expression and if no errors are found will start generating the LTS graph
+parse the expression and if no errors are found will start generating the labeled graph
 The results from the generated graph will be presented in the lower text area in 
 Aldebaran format. The users can save the results in a file or can click "View LTS Graph" 
-which causes the tool to display a computer generated image of the LTS graph.
+which causes the tool to display a computer generated image of the labeled graph.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=5in]{ABPToolUsage1}
-\caption{Tool Usage: ABP Modeling and Generating LTS}
+\caption{Tool Usage: ABP Modeling and Generating labeled transition system}
 \label{fig:abptoolusage1}
 \end{figure}
 
-LTS minimization can be done in the "LTS minimization" tab. The minimization is pretty 
-straigthforward process. As shown in Fig. \ref{fig:abptoolusage2} and Fig. \ref{fig:abptoolusage3}
-LTS is loaded from file, a method of calculation has to be chosen and in order to perform
+Reduction of the state space of a labeled transition system can be done in the "LTS minimization" tab. The minimization is pretty 
+straigthforward process. As shown in Fig.~\ref{fig:abptoolusage2} and Fig.~\ref{fig:abptoolusage3}
+the labeled transtion system is loaded from an Aldebaran file, a method of calculation has to be chosen and in order to perform
 calculation the user has to click the button "Calculate".
 
 \begin{figure}[h]
@@ -42,12 +42,11 @@ calculation the user has to click the button "Calculate".
 \label{fig:abptoolusage3}
 \end{figure}
 
-Checking for LTS bisimilarity is performed in the "LTS comparison" tab. This tab is 
-similary to the one for the minimization. As shown in Fig. \ref{fig:abptoolusage4} and
-Fig. \ref{fig:abptoolusage5} two LTSs have to be loaded from file. In order to check for LTS 
-bisimilarity the user has to chose a method for calculation and click on the button 
+Checking for labeled transition system bisimilarity is performed in the "LTS comparison" tab. This tab is 
+similar to the one for the minimization. As shown in Fig.~\ref{fig:abptoolusage4} and
+Fig.~\ref{fig:abptoolusage5} two labeled transition systems have to be loaded from Aldebaran files. In order to perform comparison of the two labeled transition systems with respect to strong or weak bisimulation equivalence, the user has to choose a method for calculation and click on the button 
 "Calculate". The results will be displayed on the right side of the button and they
-give information whether the LTSs are bisimilar and how long the calculation lasted.
+give information whether the labeled transition systems are bisimilar and how long the calculation lasted.
 
 \begin{figure}[h]
 \centering
