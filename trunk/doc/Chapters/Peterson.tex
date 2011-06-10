@@ -4,12 +4,12 @@ Peterson's algorithm \cite{Peterson} is a simple algorithm designed to ensure mu
 
 \subsubsection{Modeling and Specification.}In Peterson's algorithm for mutual exclusion, there are \cite{ReactiveSystems}:
 \begin{itemize}
-  \item Two processes $P_{1}$ and $P_{2}$ that want to access the same resource, i.e. eneter the critical section;
+  \item Two processes $P_{1}$ and $P_{2}$ that want to access the same resource, i.e. enter the critical section;
 	\item Two shared variables $b_{1}$ and $b_{2}$ which indicate whether process $P_{1}$ and process $P_{2}$ are trying to enter the critical section;
 	\item A shared integer variable $k$ that can take one of the values 1 or 2 and indicates which process is next to enter the critical section;
 \end{itemize}
 
-The boolean variables $b_{1}$ and $b_{2}$ are initialized to values $'false'$ because neither of the processes is interested yet to enter the critical section, whereas the initial value of $k$ is arbitrary. 
+The boolean variables $b_{1}$ and $b_{2}$ are initialized to values $false$ because neither of the processes is interested yet to enter the critical section, whereas the initial value of $k$ is arbitrary. 
 
 In order to ensure mutual exclusion, each process $P_{i}$, $i\in\left\{1,2\right\}$, executes the following algorithm presented in pseudocode, where $j$ denotes the index of the other process. 
 
@@ -17,13 +17,13 @@ In order to ensure mutual exclusion, each process $P_{i}$, $i\in\left\{1,2\right
 \caption{Peterson's algorithm pseudocode}
 \begin{algorithmic}
 \WHILE{$true$} 
-	\STATE '<noncritical section>';
+	\STATE $\left\langle noncritical \hspace{1mm} section \right\rangle$;  
 	\STATE $b_{i} \gets true$;
 	\STATE $k \gets j$;
-	\WHILE {$\left(b_{j} and k = j\right)$}
+	\WHILE {$\left(b_{j} \hspace{1mm} and \hspace{1mm} k = j\right)$}
 		 \STATE skip;
 	\ENDWHILE
-	\STATE '<critical section>';
+	\STATE $\left\langle \mathit{critical} \mathit{section} \right\rangle$;
 	\STATE $b_{i} \gets false$;
 \ENDWHILE
 \end{algorithmic}
