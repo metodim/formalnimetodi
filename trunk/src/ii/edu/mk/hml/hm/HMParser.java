@@ -33,7 +33,7 @@ public class HMParser {
   
   //Constants
   private String[] grammarRules = {
-      "$ˆ$ˆ$ˆˆˆ",                 //0
+//      "$ï¿½$ï¿½$ï¿½ï¿½ï¿½",                 //0
       "Term Expression",          //1
       "AND Term Expression",      //2
       "OR Term Expression",       //3

@@ -12,7 +12,7 @@ public class Parameters<T> {
 	private static final String s = File.separator;
 	
 	public static final Parameters<String> RESOURCE_PATH =  new Parameters<String>("ii"+s+"resources"+s);
-	public static final Parameters<String> APP_NAME =  new Parameters<String>("CCS");
+	public static final Parameters<String> APP_NAME =  new Parameters<String>("TMACS");
 	public static final Parameters<Dimension> SCREEN_RESOLUTION = new Parameters<Dimension>(new Dimension(1024, 768));
 	public static final Parameters<Font> DEFAULT_TEXT_FIELD_FONT = new Parameters<Font>(new Font("monospaced", 0, 14));
 	
