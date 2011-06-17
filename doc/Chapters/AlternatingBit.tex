@@ -1,29 +1,29 @@
-\subsection{Alternating Bit Protocol - Modelling, Specification and Verification}
+\subsection{Alternating bit protocol - modelling, specification and verification}
 
 The alternating bit protocol is a simple yet effective protocol (usually used as a test case), designed to ensure reliable communication through unreliable transmission mediums, and it is used for managing the retransmission of lost messages \cite{ReactiveSystems}\cite{Kulick}.
 
 \subsubsection{Modelling and Specification.}
-The representation of the Alternating Bit Protocol (abbreviated as ABP in the rest of the section) consists of a $sender$ $S$, a $receiver$ $R$ and two channels $transport$ $T$ and $acknowledge$ $A$ as shown below. 
+The representation of the Alternating Bit Protocol consists of a $sender$ $S$, a $receiver$ $R$ and two channels $transport$ $T$ and $acknowledge$ $A$ as shown below. 
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=4.5in]{abp}
-\caption{Alternating Bit Protocol}
+\caption{Alternating Bit Protocol representation}
 \label{fig:abp}
 \end{figure}
 
-The only visible transitions in the ABP are $deliver$ and $accept$, which can occur only sequentially, whereas all others are internal synchronizations. Sender $S$ sends a message to a receiver $R$. Each message sent by $S$ contains the protocol bit, 0 or 1. Channel from $S$ to $R$ is initialized and there are no messages in transit. There is no direct communication between the sender $S$ and the receiver $R$, and all messages must travel trough the medium ($transport$ and $acknowledge$ channel). 
+The only visible transitions in the alternating bit protocol are $deliver$ and $accept$, which can occur only sequentially, whereas all others are internal synchronizations. Sender $S$ sends a message which contains the protocol bit, 0 or 1, to a receiver $R$. The channel from $S$ to $R$ is initialized and there are no messages in transit. There is no direct communication between the sender $S$ and the receiver $R$, and all messages must travel trough the medium ($transport$ and $acknowledge$ channel). 
 
-The functioning of ABP can be described as follows \cite{ReactiveSystems}:
+The functioning of the alternating bit protocol can be described as follows \cite{ReactiveSystems}:
 \begin{enumerate}
-	\item When a sender $S$ sends a message, it sends it repeatedly (with its corresponding bit) until it receives an acknowledgment ($ack0$ or $ack1$) from the receiver $R$ that contains the same protocol bit as the message being sent. Therefore, the behaviour of the process representing the sender can be described as:
+	\item The sender $S$ sends a message repeatedly (with its corresponding bit) until it receives an acknowledgment ($ack0$ or $ack1$) from the receiver $R$ that contains the same protocol bit as the message being sent. This behaviour of the process representing the sender can be described as:
 				\begin{equation*}\label{send_imp}
 				    \begin{array}{lcl}
 							S = \overline{send0}.S+ack0.accept.S_{1}+ack1.S \\
 							S_{1}=\overline{send1}.S_{1}+ack1.accept.S+ack0.S_{1}				  
 						\end{array}
 				\end{equation*}
-	      The transport channel transmits the message to the receiver, but it may lose the message (lossy channel) or transmit it several times (chatty channel). Therefore, the description of the behaviour of the process representing the transport channel is given with the CCS expression:
+	      The transport channel transmits the message to the receiver, but it may lose the message (lossy channel) or transmit it several times (chatty channel). Therefore, the description of the behaviour of the process representing the transport channel is given with CCS expression as follows:
 	      \begin{equation*}\label{trans_imp}
 	      	\begin{array}{lcl}
 						T=send0.\left(T+T_{1}\right)+send1.\left(T+T_{2}\right)\\
@@ -31,7 +31,7 @@ The functioning of ABP can be described as follows \cite{ReactiveSystems}:
 						T_{2}=\overline{receive1}.\left(T+T_{2}\right)
 					\end{array}
 				\end{equation*}
-  \item When $R$ receives a message, it sends a reply to $S$ that includes the protocol bit of the message received. When then receiver will receive the message for the first time, it will deliver it for processing, while subsequent messages with the same bit will be simply acknowledged. That yields the following CCS expression for the receiver:
+  \item When the receiver $R$ receives a message, it sends a reply to $S$ which includes the protocol bit of the message received. When the message is received for the first time, the receiver will deliver it for processing, while subsequent messages with the same bit will be simply acknowledged. That yields the following CCS expression for the receiver:
   			\begin{equation*}\label{rec_imp}
 				    \begin{array}{lcl}
 							R=receive0.\overline{deliver}.R_{1}+\overline{reply1}.R+receive1.R \\
@@ -49,17 +49,16 @@ The functioning of ABP can be described as follows \cite{ReactiveSystems}:
   \item When $S$ receives an acknowledgment containing the same bit as the message it is currently transmitting, it stops transmitting that message, flips the protocol bit, and repeats the protocol for the next message.\cite{Kulick}\cite{ProcessAlgebraParallel}
 \end{enumerate}
 
-Having described the behaviour of the ABP components, the CCS process term describing the behaviour of the protocol as a whole can be obtained as a parallel composition of the processes describing the sender, the transport channel, the receiver and the acknowledgement channel, restricted on the set of actions:
+Having described the behaviour of the alternating bit protocol components, the CCS process expression describing the behaviour of the protocol as a whole can be obtained as a parallel composition of the processes describing the sender, the transport channel, the receiver and the acknowledgement channel:
+\begin{equation}\label{abp_imp}
+	\mathit{ABP} \stackrel{def}{=}\left(S|T|R|A\right)\backslash L,
+\end{equation}
+restricted on the set of actions:
 \begin{equation*}
   L = \left(send0,send1,receive0,receive1,reply0,reply1,ack0,ack1\right)
 \end{equation*}
 
-Therefore, the CCS implementation of the Alternating Bit Protocol is given as:
-\begin{equation}\label{abp_imp}
-	\mathit{ABP} \stackrel{def}{=}\left(S|T|R|A\right)\backslash L
-\end{equation}
-
-On the other hand, ABP should act as a simple buffer, therefore its CCS specification is defined as follows:
+This CCS expression represents the implementation of the alternating bit protocol which details the proposed means for achieving the desired high-level behaviour the alternating bit protocol should exhibit. This desired high-level behaviour is that the alternating bit protocol should act as a simple buffer, therefore its CCS specification is defined as follows:
 \begin{equation}\label{eq:abp_spec}
 	\begin{array}{lcl}
 		\mathit{Buf} = \mathit{accept.Buf'}\\
@@ -67,9 +66,9 @@ On the other hand, ABP should act as a simple buffer, therefore its CCS specific
 	\end{array}
 \end{equation}
 
-\subsubsection{Verification.} In order to verify the Alternating Bit Protocol, we need to prove that the implementation meets the specification with respect to some behavioural equivalence. We will show that an observational equivalence between $\mathit{Buf}$ and $\mathit{ABP}$ can be found, i.e. that $\mathit{ABP}\approx \mathit{Imp}$. For that purpose, first we use our tool to obtain the labelled graphs corresponding to the CCS representations of $\mathit{Buf}$ and $\mathit{ABP}$, and afterwards we perform a comparison of the labeled transition systems modulo weak bisimilarity which yields a positive answer about the existance of weak bisimulation equivalence between $\mathit{Buf}$ and $\mathit{ABP}$.
+\subsubsection{Verification.} In order to verify the alternating bit protocol, we need to prove that the implementation $ABP$ meets the specification $Buf$ with respect to some behavioural equivalence. We shall show that an observational equivalence between $\mathit{Buf}$ and $\mathit{ABP}$ can be found, i.e. that $\mathit{ABP}\approx \mathit{Imp}$. For that purpose, first we use TMACS to obtain the labeled graphs corresponding to the CCS representations of $\mathit{Buf}$ and $\mathit{ABP}$, and afterwards we perform a comparison of the labeled transition systems modulo weak bisimilarity which yields a positive answer about the existance of weak bisimulation equivalence between $\mathit{Buf}$ and $\mathit{ABP}$.
 
-The weak bisimulation equivalence obtained by running any of the two bisimulation algorithms implemented in our tool over the saturated labeled transition systems is given in Table \ref{table3}:
+The weak bisimulation equivalence obtained by running any of the two bisimulation algorithms implemented in TMACS over the saturated labeled transition systems is given in Table~\ref{table3}:
 
 \begin{table}
 \begin{tabular}{| p{6.5cm} | p{3.5cm} | }
@@ -103,6 +102,6 @@ $\left(S1|\left(T+T2\right)|R|\left(A+A1\right)\right)\backslash L$ &
   \\ \hline  
 \end{tabular}
 \\
-\caption{Verification of Alternating Bit Protocol using weak bisimilarity (observational equivalence)}
+\caption{Verification of the alternating bit protocol using weak bisimilarity}
 \label{table3}
 \end{table}

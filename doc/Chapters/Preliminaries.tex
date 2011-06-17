@@ -1,71 +1,72 @@
 \section{Preliminaries}
 \label{sec:preliminaries}
 
-In this section, we give some formal definitions of the basic terminology used throughout the report \cite{ReactiveSystems}\cite{ModellingAndAnalysis}.
+In this section, we give some formal definitions of the basic terminology used throughout the paper \cite{ReactiveSystems}\cite{ModellingAndAnalysis}\cite{WeakBisimulation}.
 
 \begin{definition}
 (Calculus of Communicating Systems): Calculus of Communicating Systems is algebraic theory to formalize the notion of concurrent computation. Commonly known as CCS.
 \end{definition}
 
 \begin{definition}
-(Labelled transition system): A labelled transition system is a five tuple $A=\left(S, Act, \rightarrow, s, T \right)$ where
+(Labeled transition system): A labeled transition system is a 5-tuple $A=\left(S, Act, \rightarrow, s_{0}, F \right)$ where
 \begin{itemize}
 	\item $S$ is set of $states$,
 	\item $Act$ is a set of actions, possibly multi-actions,
 	\item $\rightarrow \subseteq S \times Act \times S$ is a transition relation,
-	\item $s \in S$ is the initial state,
-	\item $T \subseteq S$ is the set of terminating states.	
+	\item $s_{0} \in S$ is the initial state,
+	\item $F \subseteq S$ is the set of terminating states.	
 \end{itemize}
 \end{definition}
 
 \begin{definition}
-(Strong bisimulation equivalence): Let $A_{1}=\left(S_{1}, Act, \rightarrow_{1}, s_{1}, T_{1}\right)$ and $A_{2}=\left(S_{2}, Act, \rightarrow_{2}, s_{2}, T_{2}\right)$ be labelled transition systems. A binary relation $R \subseteq S_{1} \times S_{2}$ is called a strong bisimulation relation iff for all $s \in S_{1}$ and $t \in S_{2}$ such that $sRt$ holds, it also holds for all actions $a \in Act$ that:
+(Strong bisimulation equivalence): Let $A_{1}=\left(S_{1}, Act, \rightarrow_{1}, s_{1}, F_{1}\right)$ and $A_{2}=\left(S_{2}, Act, \rightarrow_{2}, s_{2}, F_{2}\right)$ be labeled transition systems. A binary relation $\mathcal{R} \subseteq S_{1} \times S_{2}$ is called a strong bisimulation relation iff for all $s \in S_{1}$ and $t \in S_{2}$ such that $s\mathcal{R} t$ holds, it also holds for all actions $a \in Act$ that:
 \begin{enumerate}
-\item if $s\stackrel{a}{\rightarrow}_{1}s'$ then there is a $t' \in S_{2}$ such that $t\stackrel{a}{\rightarrow}_{2}t'$ with $s'Rt'$,
-\item if $t\stackrel{a}{\rightarrow}_{2}t'$ then there is a $s' \in S_{1}$ such that $s\stackrel{a}{\rightarrow}_{1}s'$ with $s'Rt'$, and
-\item $s \in T_{1}$ if and only in $t \in T_{2}$.
+\item if $s\stackrel{a}{\rightarrow}_{1}s'$ then there is a transition $t' \in S_{2}$ such that $t\stackrel{a}{\rightarrow}_{2}t'$ with $s'\mathcal{R} t'$,
+\item if $t\stackrel{a}{\rightarrow}_{2}t'$ then there is a transition $s' \in S_{1}$ such that $s\stackrel{a}{\rightarrow}_{1}s'$ with $s'\mathcal{R} t'$, and
+\item $s \in T_{1}$ iff $t \in T_{2}$.
 \end{enumerate}
+Two states $s$ and $s'$ are strongly bisimilar, written $s\sim s'$, if there is a strong bisimulation equivalence $\mathcal{R}$ that relates them.
 \end{definition}
 
 \begin{definition}
-Let $P$ and $Q$ be CCS processes or, more generally, states in a labeled transition system. For each action $a$,
-$P\stackrel{a}{\Rightarrow}Q$ iff:
+Let $P$ and $Q$ be two processes or, more generally, states in a labeled transition system. For each action $a$,
+$P\stackrel{a}{\Rightarrow}Q$ is a weak transition iff:
 \begin{itemize}
-	\item Either $a\neq\tau$ and there are processes $P'$ and $Q'$ such that $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}P'\ \stackrel{a}{\rightarrow}\ Q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
-	\item Or $a=\tau$ and $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
+	\item either $a\neq\tau$ and there are processes $P'$ and $Q'$ such that $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}P'\ \stackrel{a}{\rightarrow}\ Q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
+	\item or $a=\tau$ and $P\left(\stackrel{\tau}{\rightarrow}\right)^{*}Q$,
 \end{itemize}
 where $\left(\stackrel{\tau}{\rightarrow}\right)^{*}$ denotes the reflexive and transitive closure of the relation $\stackrel{\tau}{\rightarrow}$.
 \end{definition}
 
 \begin{definition}
-(Weak bisimulation equivalence/Observational equivalence): A binary relation $R$ over the set of states of a labeled transition system is a weak bisimulation (observational equivalence) iff, whenever $s_{1}Rs_{2}$ and $a$ is an action (including $\tau$):
-\begin{itemize}
-	\item If $s_{1}\stackrel{a}{\rightarrow}s_{1}'$ then there is a transition $s_{2}\stackrel{a}{\Rightarrow}s_{2}'$ such that $s_{1}'Rs_{2}'$;
-	\item If $s_{2}\stackrel{a}{\rightarrow}s_{2}'$ then there is a transition $s_{1}\stackrel{a}{\Rightarrow}s_{1}'$ such that $s_{1}'Rs_{2}'$;
-\end{itemize}
-Two states $s$ and $s'$ are observationally equivalent (or weakly bisimilar), written $s\approx s'$, iff there is a weak bisimulation equivalence that relates them.
+(Weak bisimulation equivalence): A binary relation $\mathcal{R}$ over the set of states of a labeled transition system is a weak bisimulation (observational equivalence) iff, whenever $s_{1}\mathcal{R} s_{2}$ and $a$ is an action (including $\tau$):
+\begin{enumerate}
+	\item if $s_{1}\stackrel{a}{\rightarrow}s_{1}'$ then there is a weak transition $s_{2}\stackrel{a}{\Rightarrow}s_{2}'$ such that $s_{1}'\mathcal{R} s_{2}'$;
+	\item if $s_{2}\stackrel{a}{\rightarrow}s_{2}'$ then there is a weak transition $s_{1}\stackrel{a}{\Rightarrow}s_{1}'$ such that $s_{1}'\mathcal{R} s_{2}'$;
+\end{enumerate}
+Two states $s$ and $s'$ are observationally equivalent (or weakly bisimilar), written $s\approx s'$, iff there is a weak bisimulation equivalence $\mathcal{R}$ that relates them.
 \end{definition}
 
 \begin{definition}
-(Saturation): Let $T\subseteq S\times Act\times S$ be a labeled transition system. Then
+(Saturation): Let $A=\left(S, Act, \rightarrow, s, F \right)$ be a labeled transition system. Then a saturation of $A$ is
 \begin{align*}
- T^{*} &=\left\{\left(p,a,q\right)| p\stackrel{a}{\Rightarrow}q\right\}= \\
- &=T\cup\left(\stackrel{a}{\rightarrow}\right)^{*}\cup\left\{\left(p,a,q\right)| a\neq\tau\wedge\left(\exists p',q'\in A\right) p\left(\stackrel{\tau}{\rightarrow}\right)^{*}p'\stackrel{a}{\rightarrow}q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}
-\end{align*} 
-is a saturation of T.\\
+ A^{*} &=\left\{\left(p,a,q\right)| p\stackrel{a}{\Rightarrow}q\right\}= \\
+ &=A\cup\left(\stackrel{a}{\rightarrow}\right)^{*}\cup\left\{\left(p,a,q\right)| a\neq\tau\wedge\left(\exists p',q'\in Act\right) p\left(\stackrel{\tau}{\rightarrow}\right)^{*}p'\stackrel{a}{\rightarrow}q'\left(\stackrel{\tau}{\rightarrow}\right)^{*}q\right\}.
+\end{align*}
 Two labeled transition systems are weakly bisimilar iff their saturated labeled transition systems are strongly bisimilar. 
 \end{definition}
 
 \begin{definition}
-(Hennessy-Milner): The set of Hennessy-Milner formulas over a set of actions $Act$ is given by the following abstract syntax:
+(Hennessy-Milner logic): The set of Hennessy-Milner formulas over a set of actions $Act$ is given by the following abstract syntax:
 \begin{equation*}
   F,G::=\mathit{tt} | \mathit{ff} | F\wedge G | F \vee G|\left\langle a \right\rangle F|\left[ a \right] F
 \end{equation*}
-where $a \in Act$ and $\mathit{tt}$ and $\mathit{ff}$ denote $true$ and $false$, respectively. 
+where $a\in Act$ and $\mathit{tt}$ and $\mathit{ff}$ denote $true$ and $false$, respectively. 
 If $A=\left\{ a_{1},...,a_{n} \right\} \subseteq Act \left( n \geq 0\right)$, 
-we use use the abbreviation $\left\langle A \right\rangle F$ for the formula 
+we use the abbreviation $\left\langle A \right\rangle F$ for the formula 
 $\left\langle a_{1} \right\rangle F \vee ... \vee \left\langle a_{n} \right\rangle F$ and 
 $\left[ a \right] F$ for the formula 
 $\left[ a_{1} \right] F \wedge ... \wedge \left[ a_{n} \right]F$. 
 (If $A=\emptyset$ then $\left\langle a\right\rangle F=\mathit{ff}$ and $\left[a\right] = \mathit{tt}$.)
 \end{definition}
+\vspace{3mm}
