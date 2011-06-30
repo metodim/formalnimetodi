@@ -1,18 +1,22 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces AST Example}}{5}{figure.11}
-\contentsline {figure}{\numberline {2}{\ignorespaces Graph 1}}{8}{figure.21}
-\contentsline {figure}{\numberline {3}{\ignorespaces Minimized Graph 1}}{9}{figure.23}
-\contentsline {figure}{\numberline {4}{\ignorespaces Reflexive, transitive closure of $\tau $. The original graph is depicted with red lines}}{11}{figure.30}
-\contentsline {figure}{\numberline {5}{\ignorespaces Example saturated LTS}}{11}{figure.31}
-\contentsline {figure}{\numberline {6}{\ignorespaces Alternating bit protocol}}{12}{figure.33}
-\contentsline {figure}{\numberline {7}{\ignorespaces Tool Usage: ABP Modeling and Generating LTS}}{15}{figure.40}
-\contentsline {figure}{\numberline {8}{\ignorespaces Tool Usage: ABP Minimization, Weak, Naive}}{15}{figure.41}
-\contentsline {figure}{\numberline {9}{\ignorespaces Tool Usage: ABP Minimization, Strong, Fernandez}}{16}{figure.42}
-\contentsline {figure}{\numberline {10}{\ignorespaces Tool Usage: ABP Bisimilarity, Weak, Fernandez}}{16}{figure.43}
-\contentsline {figure}{\numberline {11}{\ignorespaces Tool Usage: ABP Bisimilarity, String, Naive}}{16}{figure.44}
-\contentsline {figure}{\numberline {12}{\ignorespaces Peterson-Hamilton's algorithm}}{17}{figure.46}
-\contentsline {figure}{\numberline {13}{\ignorespaces Live cycle of one process}}{18}{figure.47}
-\contentsline {figure}{\numberline {14}{\ignorespaces Model of Peterson-Hamilton algorithm}}{19}{figure.48}
-\contentsline {figure}{\numberline {15}{\ignorespaces Analysis of the running time of the naive bisimulation algorithm}}{23}{figure.78}
-\contentsline {figure}{\numberline {16}{\ignorespaces Analysis of the running time of the bisimulation algorithm due to Fernandez}}{23}{figure.79}
-\contentsline {figure}{\numberline {17}{\ignorespaces Comparison of the running time of the two bisimulation algorithms}}{24}{figure.80}
-\contentsline {figure}{\numberline {18}{\ignorespaces Ratio of the running times of the two bisimulation algorithm}}{25}{figure.81}
+\contentsline {figure}{\numberline {1}{\ignorespaces AST Example}}{8}{figure.14}
+\contentsline {figure}{\numberline {2}{\ignorespaces Workflow of all operations for producing an LTS graph from a CCS expression}}{9}{figure.17}
+\contentsline {figure}{\numberline {3}{\ignorespaces Reflexive, transitive closure of $\tau $. The original graph is depicted with red lines}}{10}{figure.20}
+\contentsline {figure}{\numberline {4}{\ignorespaces Example saturated LTS}}{11}{figure.21}
+\contentsline {figure}{\numberline {5}{\ignorespaces Alternating bit protocol}}{12}{figure.23}
+\contentsline {figure}{\numberline {6}{\ignorespaces Tool Usage: ABP Modeling and Generating LTS}}{14}{figure.30}
+\contentsline {figure}{\numberline {7}{\ignorespaces Tool Usage: ABP Minimization, Weak, Naive}}{15}{figure.31}
+\contentsline {figure}{\numberline {8}{\ignorespaces Tool Usage: ABP Minimization, Strong, Fernandez}}{15}{figure.32}
+\contentsline {figure}{\numberline {9}{\ignorespaces Tool Usage: ABP Bisimilarity, Weak, Fernandez}}{16}{figure.33}
+\contentsline {figure}{\numberline {10}{\ignorespaces Tool Usage: ABP Bisimilarity, String, Naive}}{16}{figure.34}
+\contentsline {figure}{\numberline {11}{\ignorespaces Peterson-Hamilton's algorithm}}{17}{figure.36}
+\contentsline {figure}{\numberline {12}{\ignorespaces Live cycle of one process}}{18}{figure.37}
+\contentsline {figure}{\numberline {13}{\ignorespaces Model of Peterson-Hamilton algorithm}}{18}{figure.38}
+\contentsline {figure}{\numberline {14}{\ignorespaces Analysis of the running time of the naive bisimulation algorithm}}{22}{figure.52}
+\contentsline {figure}{\numberline {15}{\ignorespaces Analysis of the running time of the bisimulation algorithm due to Fernandez}}{23}{figure.53}
+\contentsline {figure}{\numberline {16}{\ignorespaces Comparison of the running time of the two bisimulation algorithms}}{23}{figure.54}
+\contentsline {figure}{\numberline {17}{\ignorespaces Ratio of the running times of the two bisimulation algorithm}}{24}{figure.55}
+\contentsline {figure}{\numberline {18}{\ignorespaces Analysis of the running time of the naive bisimulation algorithm}}{27}{figure.62}
+\contentsline {figure}{\numberline {19}{\ignorespaces Analysis of the running time of the bisimulation algorithm due to Fernandez}}{27}{figure.63}
+\contentsline {figure}{\numberline {20}{\ignorespaces Comparison of the running time of the two bisimulation algorithms}}{28}{figure.64}
+\contentsline {figure}{\numberline {21}{\ignorespaces Ratio of the running times of the two bisimulation algorithm}}{28}{figure.65}
+\contentsline {figure}{\numberline {22}{\ignorespaces Syntax diagram for the CCS grammar}}{29}{figure.67}
