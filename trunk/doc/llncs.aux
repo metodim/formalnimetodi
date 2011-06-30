@@ -14,90 +14,110 @@
 \@writefile{toc}{\contentsline {title}{Formal Methods Technical Report}{1}{chapter.2}}
 \@writefile{toc}{\authcount {8}}
 \@writefile{toc}{\contentsline {author}{ Jane Jovanovski \and Maja Siljanoska\and Vladimir Carevski \and \unskip \ \ignorespaces  Dragan Sahpaski \and Petar Gjorcevski \and Metodi Micev \and \unskip \ \ignorespaces  Bojan Ilijoski \and Vlado Georgiev }{1}{chapter.2}}
+\citation{CWB}
+\citation{mCRL2}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{5}{section.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Related work}{5}{subsection.8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Outline}{6}{subsection.9}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}CCS parsing and LTS generation}{6}{section.10}}
+\newlabel{sec:parsing}{{2}{6}{CCS parsing and LTS generation\relax }{section.10}{}}
+\newlabel{eq:ccs_bnf}{{1}{6}{CCS parsing and LTS generation\relax }{equation.11}{}}
 \citation{ANTLRRef}
-\citation{NiklausWirth}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{4}{section.7}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Parsing and LTS generation}{4}{section.8}}
-\newlabel{eq:ccs_bnf}{{1}{4}{Parsing and LTS generation\relax }{equation.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces AST Example}}{5}{figure.11}}
-\newlabel{fig:ast_example}{{1}{5}{AST Example\relax }{figure.11}{}}
-\newlabel{eq:ccs_example}{{2}{5}{Parsing and LTS generation\relax }{equation.10}{}}
-\citation{ModelChecking}
-\citation{ReactiveSystems1}
-\citation{ReactiveSystems2}
-\citation{ReactiveSystems1}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Bisimulation equivalence}{6}{section.12}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Minimization of an LTS modulo bisimilarity.}{6}{subsection.14}}
-\citation{PaigeTarjan}
-\citation{Fernandez}
-\citation{ModellingAndAnalysis}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Graph 1}}{8}{figure.21}}
-\newlabel{fig:graph1}{{2}{8}{Graph 1\relax }{figure.21}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Computing strong bisimularity for Graph 1}}{8}{table.22}}
-\newlabel{table1}{{1}{8}{Computing strong bisimularity for Graph 1\relax }{table.22}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Comparison of two LTSs modulo bisimilarity.}{8}{subsection.24}}
-\citation{mCRL2Ref}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Minimized Graph 1}}{9}{figure.23}}
-\newlabel{fig:bisimGraph1}{{3}{9}{Minimized Graph 1\relax }{figure.23}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Saturation and weak bisimulation equivalence}{9}{section.28}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}The algorithm for saturation.}{10}{subsection.29}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Reflexive, transitive closure of $\tau $. The original graph is depicted with red lines}}{11}{figure.30}}
-\newlabel{fig:saturation}{{4}{11}{Reflexive, transitive closure of $\tau $. The original graph is depicted with red lines\relax }{figure.30}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Example saturated LTS}}{11}{figure.31}}
-\newlabel{fig:saturation2}{{5}{11}{Example saturated LTS\relax }{figure.31}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Generating the parser}{7}{subsection.12}}
+\newlabel{eq:ccs_example}{{2}{7}{Generating the parser\relax }{equation.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}CCS domain model and LTS graph generation}{7}{subsection.15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces AST Example}}{8}{figure.14}}
+\newlabel{fig:ast_example}{{1}{8}{AST Example\relax }{figure.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Workflow of operations}{8}{subsection.16}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Saturation and weak bisimulation equivalence}{8}{section.18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Workflow of all operations for producing an LTS graph from a CCS expression}}{9}{figure.17}}
+\newlabel{fig:workflow}{{2}{9}{Workflow of all operations for producing an LTS graph from a CCS expression\relax }{figure.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The algorithm for saturation.}{10}{subsection.19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Reflexive, transitive closure of $\tau $. The original graph is depicted with red lines}}{10}{figure.20}}
+\newlabel{fig:saturation}{{3}{10}{Reflexive, transitive closure of $\tau $. The original graph is depicted with red lines\relax }{figure.20}{}}
 \citation{ReactiveSystems3}
 \citation{Kulick}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Alternating Bit Protocol - Modelling, Specification and Verification}{12}{section.32}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Alternating bit protocol}}{12}{figure.33}}
-\newlabel{fig:abp}{{6}{12}{Alternating bit protocol\relax }{figure.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Example saturated LTS}}{11}{figure.21}}
+\newlabel{fig:saturation2}{{4}{11}{Example saturated LTS\relax }{figure.21}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Alternating Bit Protocol - Modelling, Specification and Verification}{11}{section.22}}
 \citation{Kulick}
 \citation{ProcessAlgebraParallel}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Verification of Alternating Bit Protocol}}{13}{table.38}}
-\newlabel{table3}{{2}{13}{Verification of Alternating Bit Protocol\relax }{table.38}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Alternating Bit Protocol - Tool Usage Example}{14}{subsection.39}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Peterson and Hamilton algorithm - Modeling, Specification and Testing}{14}{section.45}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Tool Usage: ABP Modeling and Generating LTS}}{15}{figure.40}}
-\newlabel{fig:abptoolusage1}{{7}{15}{Tool Usage: ABP Modeling and Generating LTS\relax }{figure.40}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Tool Usage: ABP Minimization, Weak, Naive}}{15}{figure.41}}
-\newlabel{fig:abptoolusage2}{{8}{15}{Tool Usage: ABP Minimization, Weak, Naive\relax }{figure.41}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Tool Usage: ABP Minimization, Strong, Fernandez}}{16}{figure.42}}
-\newlabel{fig:abptoolusage3}{{9}{16}{Tool Usage: ABP Minimization, Strong, Fernandez\relax }{figure.42}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Tool Usage: ABP Bisimilarity, Weak, Fernandez}}{16}{figure.43}}
-\newlabel{fig:abptoolusage4}{{10}{16}{Tool Usage: ABP Bisimilarity, Weak, Fernandez\relax }{figure.43}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Tool Usage: ABP Bisimilarity, String, Naive}}{16}{figure.44}}
-\newlabel{fig:abptoolusage5}{{11}{16}{Tool Usage: ABP Bisimilarity, String, Naive\relax }{figure.44}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Peterson-Hamilton's algorithm}}{17}{figure.46}}
-\newlabel{fig:model1}{{12}{17}{Peterson-Hamilton's algorithm\relax }{figure.46}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Live cycle of one process}}{18}{figure.47}}
-\newlabel{fig:model1}{{13}{18}{Live cycle of one process\relax }{figure.47}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Model of Peterson-Hamilton algorithm}}{19}{figure.48}}
-\newlabel{fig:model2}{{14}{19}{Model of Peterson-Hamilton algorithm\relax }{figure.48}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}$U^w$ and $U^s$ implementation}{20}{section.49}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Alternating bit protocol}}{12}{figure.23}}
+\newlabel{fig:abp}{{5}{12}{Alternating bit protocol\relax }{figure.23}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Verification of Alternating Bit Protocol}}{13}{table.28}}
+\newlabel{table3}{{1}{13}{Verification of Alternating Bit Protocol\relax }{table.28}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Alternating Bit Protocol - Tool Usage Example}{13}{subsection.29}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Tool Usage: ABP Modeling and Generating LTS}}{14}{figure.30}}
+\newlabel{fig:abptoolusage1}{{6}{14}{Tool Usage: ABP Modeling and Generating LTS\relax }{figure.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Tool Usage: ABP Minimization, Weak, Naive}}{15}{figure.31}}
+\newlabel{fig:abptoolusage2}{{7}{15}{Tool Usage: ABP Minimization, Weak, Naive\relax }{figure.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Tool Usage: ABP Minimization, Strong, Fernandez}}{15}{figure.32}}
+\newlabel{fig:abptoolusage3}{{8}{15}{Tool Usage: ABP Minimization, Strong, Fernandez\relax }{figure.32}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Peterson and Hamilton algorithm - Modeling, Specification and Testing}{15}{section.35}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Tool Usage: ABP Bisimilarity, Weak, Fernandez}}{16}{figure.33}}
+\newlabel{fig:abptoolusage4}{{9}{16}{Tool Usage: ABP Bisimilarity, Weak, Fernandez\relax }{figure.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Tool Usage: ABP Bisimilarity, String, Naive}}{16}{figure.34}}
+\newlabel{fig:abptoolusage5}{{10}{16}{Tool Usage: ABP Bisimilarity, String, Naive\relax }{figure.34}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Peterson-Hamilton's algorithm}}{17}{figure.36}}
+\newlabel{fig:model1}{{11}{17}{Peterson-Hamilton's algorithm\relax }{figure.36}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Live cycle of one process}}{18}{figure.37}}
+\newlabel{fig:model1}{{12}{18}{Live cycle of one process\relax }{figure.37}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Model of Peterson-Hamilton algorithm}}{18}{figure.38}}
+\newlabel{fig:model2}{{13}{18}{Model of Peterson-Hamilton algorithm\relax }{figure.38}{}}
+\citation{HenessyMilner}
+\citation{ModelingAndAnalysis2}
+\citation{ReactiveSystems5}
+\citation{HMLRecursion}
+\@writefile{toc}{\contentsline {section}{\numberline {6}HML and $U^{w}$ and $U^{s}$ operators}{19}{section.39}}
+\newlabel{eq:hml_bnf}{{3}{19}{HML and $U^{w}$ and $U^{s}$ operators\relax }{equation.40}{}}
+\newlabel{eq:hmlrec_bnf}{{5}{19}{HML and $U^{w}$ and $U^{s}$ operators\relax }{equation.42}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}HML parsing}{20}{subsection.43}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}$U^{w}$ and $U^{s}$ implementation}{20}{subsection.44}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusions and Future Work}{20}{section.46}}
 \citation{PiazzaPolicriti}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{22}{section.72}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Results of the comperisons}}{22}{table.77}}
-\newlabel{table2}{{3}{22}{Results of the comperisons\relax }{table.77}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Analysis of the running time of the naive bisimulation algorithm}}{23}{figure.78}}
-\newlabel{fig:naiveAnalysis}{{15}{23}{Analysis of the running time of the naive bisimulation algorithm\relax }{figure.78}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Analysis of the running time of the bisimulation algorithm due to Fernandez}}{23}{figure.79}}
-\newlabel{fig:fernandezAnalysis}{{16}{23}{Analysis of the running time of the bisimulation algorithm due to Fernandez\relax }{figure.79}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Results of the comperisons}}{22}{table.51}}
+\newlabel{table2}{{2}{22}{Results of the comperisons\relax }{table.51}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Analysis of the running time of the naive bisimulation algorithm}}{22}{figure.52}}
+\newlabel{fig:naiveAnalysis}{{14}{22}{Analysis of the running time of the naive bisimulation algorithm\relax }{figure.52}{}}
 \bibcite{ReactiveSystems}{AILS07}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Comparison of the running time of the two bisimulation algorithms}}{24}{figure.80}}
-\newlabel{fig:comparison1}{{17}{24}{Comparison of the running time of the two bisimulation algorithms\relax }{figure.80}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Analysis of the running time of the bisimulation algorithm due to Fernandez}}{23}{figure.53}}
+\newlabel{fig:fernandezAnalysis}{{15}{23}{Analysis of the running time of the bisimulation algorithm due to Fernandez\relax }{figure.53}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Comparison of the running time of the two bisimulation algorithms}}{23}{figure.54}}
+\newlabel{fig:comparison1}{{16}{23}{Comparison of the running time of the two bisimulation algorithms\relax }{figure.54}{}}
 \bibcite{ANTLRRef}{Par07}
-\bibcite{NiklausWirth}{NW}
 \bibcite{ModelChecking}{BK08}
 \bibcite{ReactiveSystems1}{AILS07a}
 \bibcite{ReactiveSystems2}{AILS07b}
+\bibcite{ReactiveSystems3}{AILS07c}
+\bibcite{ReactiveSystems4}{AILS07d}
+\bibcite{ReactiveSystems5}{AILS07e}
 \bibcite{Fernandez}{Fer89}
+\bibcite{CWB}{CWB}
 \bibcite{PaigeTarjan}{PT87}
 \bibcite{ModellingAndAnalysis}{GR09}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Ratio of the running times of the two bisimulation algorithm}}{24}{figure.55}}
+\newlabel{fig:comparison2}{{17}{24}{Ratio of the running times of the two bisimulation algorithm\relax }{figure.55}{}}
+\bibcite{ModellingAndAnalysis2}{GR09a}
 \bibcite{PiazzaPolicriti}{DPP04}
 \bibcite{HandbookProcessAlgebra1}{BPS01a}
 \bibcite{HandbookProcessAlgebra2}{BPS01b}
-\bibcite{ReactiveSystems3}{AILS07a}
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Ratio of the running times of the two bisimulation algorithm}}{25}{figure.81}}
-\newlabel{fig:comparison2}{{18}{25}{Ratio of the running times of the two bisimulation algorithm\relax }{figure.81}{}}
 \bibcite{Kulick}{Kul94}
-\bibcite{ProcessAlgebraParallel}{Kul94}
-\bibcite{mCRL2Ref}{mCRL2Ref}
+\bibcite{ProcessAlgebraParallel}{AG09}
+\bibcite{HenessyMilner}{HM85}
+\bibcite{HMLRecursion}{AI85}
+\bibcite{Peterson}{Pet81}
+\bibcite{Dekker}{Dij68}
+\bibcite{mCRL2}{mCRL2}
+\citation{PiazzaPolicriti}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Results of the comperisons}}{26}{table.61}}
+\newlabel{table2}{{3}{26}{Results of the comperisons\relax }{table.61}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Analysis of the running time of the naive bisimulation algorithm}}{27}{figure.62}}
+\newlabel{fig:naiveAnalysis}{{18}{27}{Analysis of the running time of the naive bisimulation algorithm\relax }{figure.62}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Analysis of the running time of the bisimulation algorithm due to Fernandez}}{27}{figure.63}}
+\newlabel{fig:fernandezAnalysis}{{19}{27}{Analysis of the running time of the bisimulation algorithm due to Fernandez\relax }{figure.63}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Comparison of the running time of the two bisimulation algorithms}}{28}{figure.64}}
+\newlabel{fig:comparison1}{{20}{28}{Comparison of the running time of the two bisimulation algorithms\relax }{figure.64}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Ratio of the running times of the two bisimulation algorithm}}{28}{figure.65}}
+\newlabel{fig:comparison2}{{21}{28}{Ratio of the running times of the two bisimulation algorithm\relax }{figure.65}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Syntax diagram for the CCS grammar}}{29}{figure.67}}
+\newlabel{fig:CCSGrammar}{{22}{29}{Syntax diagram for the CCS grammar\relax }{figure.67}{}}

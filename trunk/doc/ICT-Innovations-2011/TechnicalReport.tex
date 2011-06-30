@@ -1,0 +1,70 @@
+% This is LLNCS.DEM the demonstration file of
+% the LaTeX macro package from Springer-Verlag
+% for Lecture Notes in Computer Science,
+% version 2.4 for LaTeX2e as of 16. April 2010
+%
+
+\documentclass{llncs}
+%
+\usepackage{makeidx}  % allows for indexgeneration
+\usepackage[pdftex]{graphicx}
+% declare the path(s) where your graphic files are
+\graphicspath{{./Images/}}
+% and their extensions so you won't have to specify these with
+% every instance of \includegraphics[scale=•]{•}=•]{•}
+\DeclareGraphicsExtensions{.jpeg,.jpg,.png}
+
+\usepackage{url}
+\urldef{\mailsa}\path| janejovanovski@gmail.com, maja.siljanoska@gmail.com, carevski@gmail.com, dragan.sahpaski@gmail.com, pgorcevski@t-home.mk, metodi.micev@gmail.com, b.ilijoski@gmail.com, vlatko.gmk@gmail.com|
+\usepackage[pdfpagelabels,hypertexnames=false,breaklinks=true,bookmarksopen=true,bookmarksopenlevel=2]{hyperref}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{subfigure}
+%\usepackage[belowskip=-15pt,aboveskip=0pt]{caption}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}
+
+\begin{document}
+
+\mainmatter
+
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\pagestyle{plain}
+\thispagestyle{plain}
+\pagenumbering{arabic}
+
+\title{TMACS: a Tool for Modeling, Manipulation, and Analysis of Concurrent Systems}
+
+\input{./Chapters/Authors}
+
+\maketitle
+
+\input{./Chapters/Abstract} % Abstract
+
+\input{./Chapters/Introduction} % Chapter1
+%\input{./Chapters/Preliminaries} % Chapter2
+\input{./Chapters/Parsing} % Chapter3
+%\input{./Chapters/test}
+\input{./Chapters/LtsMinimizationAndComparison} % Chapter4
+% \input{./Chapters/UwAndUsImplementation} % Chapter5
+\input{./Chapters/Application} % Chapter6
+%\input{./Chapters/Bisimilarity} 
+%\input{./Chapters/Saturation} 
+%\input{./Chapters/AlternatingBitProtocol} 
+%\input{./Chapters/PetersonAndHamilton} 
+\input{./Chapters/Conclusion} 
+%\input{./Chapters/Acknowledgment} 
+\input{./Chapters/Bibliography} 
+
+%\bibliographystyle{splncs}
+%\bibliography{tmacs}
+
+%\appendix
+%\input{./Chapters/Analysis}
+%\input{./Chapters/CCSGrammar}
+%\input{./Chapters/HMLGrammar}
+%\input{./Chapters/ToolUsage}
+
+\end{document}

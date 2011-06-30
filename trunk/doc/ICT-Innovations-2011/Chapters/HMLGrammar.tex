@@ -1,0 +1,31 @@
+\section*{Appendix C: HML grammar}
+\label{appendixC}
+
+The grammar that recognizes HML expressions and is used in our tool is given below.
+
+\begin{enumerate}
+\item $HML \Rightarrow$ Term Expression
+\item Expression $\Rightarrow$ $\hspace{1 mm} AND \hspace{1 mm} $ Term Expression
+\item Expression $\Rightarrow$ $\hspace{1 mm} OR \hspace{1 mm} $ Term Expression
+\item Expression $\Rightarrow$ $\hspace{1 mm} Uw \hspace{1 mm} $ Term Expression
+\item Expression $\Rightarrow$ $\hspace{1 mm} Us \hspace{1 mm} $ Term Expression
+\item Expression $\Rightarrow$ $\lambda$
+\item Term $\Rightarrow$ $NOT$ Term
+\item Term $\Rightarrow$ [ Actions ] Term
+\item Term $\Rightarrow$ $\langle$ Actions $\rangle$ Term
+\item Term $\Rightarrow$ $TT$
+\item Term $\Rightarrow$ $FF$
+\item Term $\Rightarrow$ ( $HML$ )
+\item Actions $\Rightarrow$ Action
+\item Actions $\Rightarrow$ { Action ActionsList }
+\item ActionsList $\Rightarrow$ Action ActionsList
+\item ActionsList $\Rightarrow$ $\lambda$
+\item Action $\Rightarrow$ Literal Name
+\item Name $\Rightarrow$ Literal
+\item Name $\Rightarrow$ Number
+\item Name $\Rightarrow$ $\lambda$
+\item Literal $\Rightarrow \hspace{1 mm}  a  \hspace{1 mm} \vert \hspace{1 mm}  b  \hspace{1 mm}  \vert c \hspace{1 mm}  \vert \hspace{1 mm} d \hspace{1 mm} \vert \hspace{1 mm} e \hspace{1 mm} \vert \hspace{1 mm} f \hspace{1 mm} \vert \hspace{1 mm} g \hspace{1 mm} \vert \hspace{1 mm} h \hspace{1 mm} \vert \hspace{1 mm} i \hspace{1 mm} \vert \hspace{1 mm} j \hspace{1 mm} \vert \hspace{1 mm} k \hspace{1 mm} \vert \hspace{1 mm} l \hspace{1 mm} \vert \hspace{1 mm} m \hspace{1 mm} \vert \hspace{1 mm} n \hspace{1 mm} \vert \hspace{1 mm} o \hspace{1 mm} \vert \hspace{1 mm} p \hspace{1 mm} \vert \hspace{1 mm} q \hspace{1 mm} \vert \hspace{1 mm} r \hspace{1 mm} \vert \hspace{1 mm} s \hspace{1 mm} \vert \hspace{1 mm} t \hspace{1 mm} \vert \hspace{1 mm} u \hspace{1 mm} \vert \hspace{1 mm} v \hspace{1 mm} \vert \hspace{1 mm} w \hspace{1 mm} \vert \hspace{1 mm} x \hspace{1 mm} \vert \hspace{1 mm} y \hspace{1 mm} \vert \hspace{1 mm} z$
+\item Number $\Rightarrow \hspace{1 mm} 0 \hspace{1 mm} \vert \hspace{1 mm} 1 \hspace{1 mm} \vert \hspace{1 mm} 2 \hspace{1 mm} \vert \hspace{1 mm} 3 \hspace{1 mm} \vert \hspace{1 mm} 4 \hspace{1 mm} \vert \hspace{1 mm} 5 \hspace{1 mm} \vert \hspace{1 mm} 6 \hspace{1 mm} \vert \hspace{1 mm} 7 \hspace{1 mm} \vert \hspace{1 mm} 8 \hspace{1 mm} \vert \hspace{1 mm} 9$
+\end{enumerate}
+
+

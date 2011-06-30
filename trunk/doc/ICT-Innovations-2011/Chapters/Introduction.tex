@@ -1,0 +1,35 @@
+\section{Introduction}
+
+%Due to the increasing complexity of the real-life systems, manual analysis is very hard and often impossible. Therefore, having computer support for modeling, analysing, and verifying system behaviour is of an essential importance. This implies that the systems' properties and behaviour need to be described by formal methods with an explicit formal semantics.%
+
+One of the process languages used to formally describe and analyse any collection of interacting processes is the Calculus of Communication Systems (CCS), process algebra introduced by Robin Milner and based on the message-passing paradigm \cite{Milner1}\cite{Milner2}. CCS, like any process algebra, can be exploited to describe both specifications of the expected behaviours of the processes and their implementations \cite{HandbookProcessAlgebra}. The standard semantic model for CCS and various other process languages is the notion of labeled transition systems, a model first used by Keller to study concurrent systems \cite{Keller}. In order to analyze process behaviour and establish formally whether two processes offer the same behavior, different notions of behavioral equivalences over (states of) labeled transition systems have been proposed \cite{ReactiveSystems}.
+
+One of the key behavioral equivalences is the strong bisimilarity \cite{Park} which relates processes whose behaviours are indistinguishable from each other \cite{UnderstandingConcurrentSystems}. Weak bisimilarity \cite{Milner1}\cite{Milner3} is a looser equivalence that abstracts away from internal (non-observable) actions. These and other behavioral equivalences can be employed to reduce the size of the state space of a labeled transition system and to check the equivalence between the behaviours of two labeled transition systems. This finds an extensive application in model checking and formal verification \cite{ModelChecking}\cite{ReactiveSystems}.
+
+This paper presents TMACS, a tool that can be used to automate the process of modeling, specification, and verification of concurrent systems described by the CCS process language. TMACS stands for Tool for Modeling, Manipulation, and Analysis of Concurrent Systems. It is given as a Java executable jar library with very simple Graphical User Interface (GUI). TMACS can parse CCS expressions, generate labeled transition system from CCS in Aldebaran format \cite{Aldebaran}, reduce a labeled transition system to its canonical form with respect to strong or weak bisimilarity and check whether two labeled transition systems are strongly or weakly bisimilar.
+
+\subsection{Related work} 
+Different tools for modeling, specification and verification of concurrent reactive systems have been developed over the past two decades. Probably the most famous and most commonly used ones, especially in the academic environment, are the Edinburgh Concurrency Workbench (CWB) \cite{CWB} and micro Common Representation Language 2 (mCRL2) \cite{mCRL2}\cite{ProcessAlgebraParallel}. 
+
+CWB is a tool for analysis of cuncurrent systems, which allows for equivalence, preorder and model checking using a variety of different process semantics. %It also allows defining of behaviours in an extended version of CCS and performing various analysis of these behaviours. We used CWB to validate our tool, e.g., for checking CCS validity and also for testing algorithms for strong and weak bisimularity of labeled graphs. 
+Although CWB covers much of the functionality of TMACS and more, it has a command interpreter interface that is more difficult to work with, unlike our tool that has a Graphical User Interface (GUI), and is very intuitive. As far as we know CWB does not have the functionality for exporting labeled transition system graphs in Aldebaran format, that TMACS has. 
+
+mCRL2, the successor of $\mu$CRL, is a formal specification language that can be used to specify and analyse the behaviour of distrubuted systems and protocols. %Its accompanying toolset contains extensive collection of tools to automatically translate any mCRL2 specification to a linear process, manipulate and simulate linear processes, generate the state space associated with a linear process, manipulate and visualize state spaces, etc. All mCRL2 tools can be used from the command line, but mCRL2 has an enhanced Graphical User Interface (GUI) as well, which makes it very user-friendly and easy to use. We also used mCRL2 to validate and test TMACS, e.g., for testing the algorithms for minimization and comparison of labeled graphs using strong and weak bisimilarity. 
+However, to our knowledge, mCRL2 does not provide the possibility to define systems' behaviour in the CCS process language.
+% nor to specify systems' properties using Hennessy-Milner logic. 
+Also, even though mCRL2 supports minimization modulo strong and weak bisimulation equivalence, it does not output the computed bisimulation, a feature that we have implemented in TMACS.  
+
+\subsection{Outline} 
+The contributions of this paper are organized as follows. 
+%In Section~\ref{sec:preliminaries} we introduce formally some of the basic terminology used throughout the paper. 
+Section~\ref{sec:parsing} presents the implementation of the CCS process language and generation of labeled transition systems as a semantic model of process expressions.
+%, and it also discusses some of the choices made during the implementation. 
+Section~\ref{sec:bisimulation} describes 
+%the process of reducing the size of the state space of a labeled transition system as well as 
+checking the equivalence between two labeled transition systems with respect to behavioural equivalences such as strong weak bisimilarity. It includes implementation details of two algorithms for computing strong bisimulation equivalence, the naive algorithm \cite{ReactiveSystems} and the advanced algorithm due to Fernandez \cite{Fernandez}. It also entails a description of the saturation technique together with a respective algorithm for saturating a labeled transition system
+%which reduces the problem of computing weak bisimulation equivalence to computing strong bisimilarity over the saturated systems 
+\cite{ReactiveSystems}. 
+Next, in Section~\ref{sec:application}, we illustrate the application of TMACS for modeling, specification and verification on one classical example in the concurrency theory: the alternating bit protocol \cite{ABP1}\cite{ABP2}. 
+% and Peterson's mutual exclusion algorithm \cite{Peterson}. 
+Finally, we give some conclusions and some directions for future development of the tool in Section~\ref{sec:conclusion}. 
+%We also include four appendices. Appendix A contains the experimental results we got with analysis of the running times of the TMACS implementations of the two algorithms for computing bisimulation equivalence. Appendix B shows the syntax diagram for the grammar that recognizes CCS expressions, while Appendix C presents the grammar for Hennessy-Milner logic expressions. Finally, Appendix D includes some visual illustration of the tool's usage via screenshots of the graphical application.

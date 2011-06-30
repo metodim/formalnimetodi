@@ -1,0 +1,34 @@
+\section{Hennessy-Milner logic with recursion}
+\label{sec:hml}
+
+Hennessy-Milner logic \cite{HennessyMilner} is a multimodal logic used to characterize the properties of a system which describe some aspects of the system's behaviour. Its syntax is defined by the following BNF grammar:
+\begin{equation}\label{eq:hml_bnf}
+\phi ::= \mathit{tt} \hspace{1 mm} | \hspace{1 mm} \mathit{ff} \hspace{1 mm} | \hspace{1 mm} \neg\phi \hspace{1 mm} | \hspace{1 mm}\phi\wedge\phi \hspace{1 mm} |
+\hspace{1 mm} \phi\vee\phi | \left\langle a\right\rangle \phi \hspace{1 mm} | \hspace{1 mm} \left[a\right]\phi \hspace{1 mm}
+\end{equation}
+
+A single Hennessy-Milner logic formula can only describe a finite part of the overall behaviour of a process \cite{ReactiveSystems}. Therefore, the Henessy-Milner logic was extended to allow for recursive definitions \cite{Larsen} by the introduction of two operators: the so called 'strong until' operator $U^{s}$ and the so called 'weak until' operator $U^{w}$. These operators are expressed as follows \cite{ReactiveSystems}:
+\begin{equation}
+	\begin{array}{lcl}
+		F \hspace{1 mm} U^{s} \hspace{1 mm} G \stackrel{min}{=} G \vee \left(F \wedge \langle Act \rangle tt \wedge \left[Act\right]\left(F \hspace{1 mm} U^{s} \hspace{1 mm} G\right)\right)\\
+		F \hspace{1 mm} U^{w} \hspace{1 mm} G \stackrel{max}{=} G \vee \left(F \wedge \left[Act\right] \left(F \hspace{1 mm} U^{w} \hspace{1 mm} G\right)\right)
+	\end{array}
+\end{equation}
+
+The BNF grammar describing the set of Hennessy-Milner logic formulas with recursion is as follows \cite{HMLRecursion}:
+\begin{equation}\label{eq:hmlrec_bnf}
+\phi ::= \mathit{tt} \hspace{1 mm} | \hspace{1 mm} \mathit{ff} \hspace{1 mm} | \hspace{1 mm} \neg\phi \hspace{1 mm} | \hspace{1 mm}\phi\wedge\phi \hspace{1 mm} |
+\hspace{1 mm} \phi\vee\phi | \left\langle a\right\rangle \phi \hspace{1 mm} | \hspace{1 mm} \left[a\right]\phi \hspace{1 mm} | \hspace{1 mm} X | \hspace{1 mm} min\left(X,\phi \right) \hspace{1 mm} | \hspace{1 mm} max\left(X,\phi \right) \hspace{1 mm}
+\end{equation}
+where $X$ is a formula variable and $min\left(X,\phi\right) \hspace{1 mm}$ (respectively $max\left(X,\phi\right) \hspace{1 mm}$) stands for the least (respectively largest) solution of the recursion equation $X = \phi$.
+
+\subsection{Hennessy-Milner logic parsing}
+The implementation of the Hennessy-Milner logic in TMACS works as follows. For a given Hennessy-Milner logic expression and a labeled transition system, we should get an output whether that expression is valid for the corresponding labeled graph. One Hennessy-Milner logic expression can be made of these set of tokens \{"AND", "OR", "UW", "US", "NOT", "[", "]", "$\langle$", "$\rangle$", "TT", "FF", "(", ")", "$\{$", "$\}$", ","\}. 
+
+The first part of the process is called tokenization \cite{Compilers}. It includes demarcation and classification of the input string sections. As the resulting tokens are being read, they are passed on to the Hennessy-Milner logic parser. This parser was implemented as a LR top-down parser \cite{Compilers}, parser that is able to recognize a non-deterministic grammar which is essential for the evaluation of the Hennessy-Milner expressions. By reading the tokens, we move in a wayù through the graph and determine if some of the following steps are possible. Every condition is kept on a stack which enables to return later to any of the previous conditions. The process is finished when the expression is processed or when it is in a condition from which none of the following actions can be taken over.
+
+\subsection{'Strong until' and 'weak until' operators implementation}
+TMACS implements the 'strong until' ($U^{s}$) and 'weak until' ($U^{w}$) operators to allow for recursive definitions of Hennessy-Milner logic formulas. Their implementation in TMACS was done as follows. First we get the current state as the state which contains all the nodes that satisfied the previous actions. For example, if we have the expression $\langle a\rangle\langle a\rangle \mathit{TT} \hspace{1 mm} U^{s} \hspace{1 mm} \langle b\rangle \mathit{TT}$, then we get all the nodes that we can reach, starting from the start node, with two actions $a$. As soon as we encounter an 'until' operation, in this case $U^{s}$, we take the start state and check if we can make an action $b$ from some node. If we are not able to do the action $b$, then we repeat the process, do the action $a$ again, and check if we can do the action $b$. This process is repeated until we come to a state in which we are not able to do action $a$ from all nodes in that state.
+
+At the end we check the operator's type (strong or weak). If the operator is strong, then only one node in its state is enough. If it is weak, we check if there are no nodes in its new state, or if we can get from the starting node to some of its neighbors through the action $b$. 
+
