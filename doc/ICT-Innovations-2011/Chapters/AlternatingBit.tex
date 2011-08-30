@@ -1,8 +1,7 @@
 %\subsection{Alternating bit protocol - modelling, specification and verification}
-The alternating bit protocol is a simple yet effective protocol (usually used as a test case), designed to ensure reliable communication through unreliable transmission mediums, and it is used for managing the retransmission of lost messages \cite{ReactiveSystems}\cite{Kulick}.
 
 \subsubsection{Modelling and Specification.}
-The representation of the Alternating Bit Protocol consists of a $sender$ $S$, a $receiver$ $R$ and two channels $transport$ $T$ and $acknowledge$ $A$ as shown below. 
+The representation of the Alternating Bit Protocol consists of a $sender$ $S$, a $receiver$ $R$ and two channels $transport$ $T$ and $acknowledge$ $A$ as shown on Fig.~\ref{fig:abp}. 
 
 \begin{figure}[h]
 \centering
@@ -13,7 +12,7 @@ The representation of the Alternating Bit Protocol consists of a $sender$ $S$, a
 
 The only visible transitions in the alternating bit protocol are $deliver$ and $accept$, which can occur only sequentially, whereas all others are internal synchronizations. Sender $S$ sends a message which contains the protocol bit, 0 or 1, to a receiver $R$. The channel from $S$ to $R$ is initialized and there are no messages in transit. There is no direct communication between the sender $S$ and the receiver $R$, and all messages must travel trough the medium ($transport$ and $acknowledge$ channel). 
 
-The functioning of the alternating bit protocol can be described as follows \cite{ReactiveSystems}:
+The functioning of the alternating bit protocol can be described as \cite{ReactiveSystems}:
 \begin{enumerate}
 	\item The sender $S$ sends a message repeatedly (with its corresponding bit) until it receives an acknowledgment ($ack0$ or $ack1$) from the receiver $R$ that contains the same protocol bit as the message being sent. This behaviour of the process representing the sender can be described as:
 				\begin{equation*}\label{send_imp}
@@ -37,7 +36,7 @@ The functioning of the alternating bit protocol can be described as follows \cit
 							R_{1}=receive1.\overline{deliver}.R+\overline{reply0}.R_{1}+receive0.R_{1}			  
 						\end{array}
 				\end{equation*}
-        Again, the acknowledgement channel sends the $ack$ to sender, and it can also acknowledge it several times or lose it on the way to the sender. Therefore the CCS expression describing the ackowledgement channel and its behaviour is given as follows:
+        Again, the acknowledgement channel sends the $ack$ to sender, and it can also acknowledge it several times or lose it on the way to the sender. Therefore the ackowledgement channel and its behaviour is described as follows:
         \begin{equation*}\label{trans_imp}
 	      	\begin{array}{lcl}
 						A=reply0.\left(A+A_{1}\right)+reply1.\left(A+A_{2}\right)\\
@@ -70,7 +69,7 @@ This CCS expression represents the implementation of the alternating bit protoco
 The weak bisimulation equivalence obtained by running any of the two bisimulation algorithms implemented in TMACS over the saturated labeled transition systems is given in Table~\ref{table3}:
 
 \begin{table}
-\begin{tabular}{| p{6.5cm} | p{3.5cm} | }
+\begin{tabular}{| p{7.5cm} | p{4.5cm} | }
 	
   \hline                       
 	ABP implementation states &
@@ -100,7 +99,7 @@ $\left(S1|\left(T+T2\right)|R|\left(A+A1\right)\right)\backslash L$ &
   $\mathit{Buf'}$
   \\ \hline  
 \end{tabular}
-\\
+
 \caption{Verification of the alternating bit protocol using weak bisimilarity}
 \label{table3}
 \end{table}
